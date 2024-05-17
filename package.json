@@ -10,9 +10,6 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/serialize": "^1.1.4",
-    "@emotion/styled": "^11.11.5",
     "axios": "^1.6.8",
     "next": "14.2.2",
     "react": "^18",
@@ -20,9 +17,6 @@
     "react-notion-x": "^6.16.0"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-typescript": "^7.24.1",
-    "@babel/preset-react": "^7.24.1",
-    "@emotion/babel-plugin": "^11.11.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.5.2",
@@ -34,10 +28,10 @@
     "babel-plugin-macros": "^3.1.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
+    "jsdom": "^24.0.0",
     "msw": "^2.3.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "twin.macro": "^3.4.1",
     "typescript": "^5",
     "vitest": "^1.6.0"
   }
