@@ -1,4 +1,5 @@
 export async function enableMocking() {
+  console.log("enableMocking");
   if (typeof window === "undefined") {
     const { server } = await import("./server");
     console.log("MSW server");
