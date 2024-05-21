@@ -18,11 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="flex flex-col w-full max-w-screen-xl mx-auto">
-        <MSWStarter>
-          <Header />
-          <main className="grow">{children}</main>
-          <Footer />
-        </MSWStarter>
+        <Header />
+        <main className="grow">{children}</main>
+        <Footer />
       </body>
     </html>
   );
