@@ -1,19 +1,15 @@
 import PostCard, { PostCardSkeleton } from "@/components/posts/PostCard";
-import { getDatabaseList } from "@/notion/notion";
+import { getDatabaseTags, getPosts } from "@/api/notion";
 import { Suspense } from "react";
+import PostsGrid from "@/components/PostsGrid";
+import LNB from "@/components/LNB";
+import FilterablePosts from "@/components/posts/FilterablePosts";
 
 export const revalidate = 86400;
 
 export default async function PostListPage() {
-  const pages = await getDatabaseList();
+  const posts = await getPosts();
+  const tags = await getDatabaseTags();
 
-  return (
-    <div className="flex flex-col gap-8 w-full items-center p-32 overflow-y-auto">
-      {pages.map((page) => (
-        <Suspense key={page.id} fallback={PostCardSkeleton()}>
-          <PostCard data={page} />
-        </Suspense>
-      ))}
-    </div>
-  );
+  return <FilterablePosts tags={tags} posts={posts} />;
 }

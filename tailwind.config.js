@@ -16,8 +16,20 @@ const convertSpacingWithoutPx = (spacing) =>
   }, {});
 
 module.exports = {
+  mode: "jit",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
+  safelist: [
+    "bg-red-100",
+    "bg-green-100",
+    "bg-gray-100",
+    "bg-blue",
+    "bg-orange-100",
+    "bg-brown-100",
+    "bg-yellow-100",
+    "bg-pink-100",
+    "bg-purple-100",
+  ],
   theme: {
     // TODO: 반응형 break point에 맞게 설정. sm은 항상 0
     screens: {

@@ -24,37 +24,39 @@ export function PostCardSkeleton() {
 export default function PostCard({ data }: PostCardProps) {
   const title = data.properties["제목"].title[0].plain_text as string;
   const tags = data.properties["Tags"].multi_select as {
+    id: string;
     name: string;
     color: string;
   }[];
   const cover = data.cover?.external.url as string;
-  const icon = data.icon ? (data.icon.external.url as string) : "/mascot.png";
+  const icon = data.icon?.external?.url
+    ? (data.icon.external.url as string)
+    : "/mascot.png";
   const publishTime = data.properties["날짜"].date.start;
 
   return (
-    <Link
-      className="clickable flex flex-col items-center w-320 shadow-lg"
-      href={`/posts/${data.id}`}
-    >
-      <Image
-        src={cover}
-        alt="cover"
-        width={320}
-        height={200}
-        style={{ width: 320, height: 200 }}
-      />
-      <div className="flex flex-row-reverse w-full p-4 text-14">
-        <div>{publishTime}</div>
-      </div>
-      <h2 className="flex items-center gap-4 p-4">
-        <Image src={icon} alt="icon" width={24} height={24} />
-        {title}
-      </h2>
-      <div className="flex gap-8 p-4 pb-6">
-        {tags.map(({ name, color }) => (
-          <Tag key={`_${name}`} name={name} color={color} />
-        ))}
-      </div>
+    <Link href={`/posts/${data.id}`}>
+      <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm">
+        <Image
+          src={cover}
+          alt="cover"
+          width={320}
+          height={200}
+          style={{ width: 320, height: 200 }}
+        />
+        <div className="flex flex-col gap-4 items-center w-full">
+          <time className="self-end p-4 text-14">{publishTime}</time>
+          <Image src={icon} alt="icon" width={24} height={24} />
+          <h2 className="flex items-center gap-4 p-4 overflow-hidden text-ellipsis truncate">
+            {title}
+          </h2>
+          <div className="flex gap-8 p-4 pb-6">
+            {tags.map(({ id, name, color }) => (
+              <Tag key={`_${name}`} id={id} name={name} color={color} />
+            ))}
+          </div>
+        </div>
+      </article>
     </Link>
   );
 }
