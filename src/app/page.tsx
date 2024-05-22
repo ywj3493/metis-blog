@@ -1,3 +1,12 @@
-export default function Home() {
-  return <section>Main Page</section>;
+import FeaturedPosts from "@/components/FeaturedPost";
+import Hero from "@/components/about/Hero";
+
+export default function HomePage() {
+  return (
+    <section>
+      <Hero />
+      {/* @ts-expect-error Server Component */}
+      <FeaturedPosts />
+    </section>
+  );
 }

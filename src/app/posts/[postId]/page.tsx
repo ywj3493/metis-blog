@@ -1,5 +1,5 @@
+import { getPage } from "@/api/notion";
 import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
-import { getPage } from "@/notion/notion";
 
 type PostDetailPageProps = {
   params: { postId: string };
