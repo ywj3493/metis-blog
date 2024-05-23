@@ -47,9 +47,7 @@ export default function PostCard({ data }: PostCardProps) {
         <div className="flex flex-col gap-4 items-center w-full">
           <time className="self-end p-4 text-14">{publishTime}</time>
           <Image src={icon} alt="icon" width={24} height={24} />
-          <h2 className="flex items-center gap-4 p-4 overflow-hidden text-ellipsis truncate">
-            {title}
-          </h2>
+          <h2 className="px-12 w-full text-center truncate">{title}</h2>
           <div className="flex gap-8 p-4 pb-6">
             {tags.map(({ id, name, color }) => (
               <Tag key={`_${name}`} id={id} name={name} color={color} />

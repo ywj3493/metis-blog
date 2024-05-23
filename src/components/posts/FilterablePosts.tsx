@@ -21,7 +21,7 @@ export default function FilterablePosts({ tags, posts }: FilterablePostsProps) {
         );
 
   return (
-    <div className="flex">
+    <div className="flex my-24">
       <LNB
         tags={tags}
         selectedTags={selectedTags}

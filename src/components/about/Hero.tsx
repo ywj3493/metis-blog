@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="text-center">
+    <section className="flex flex-col gap-4 text-center">
       <Image
         className="mx-auto"
         src={"/mascot.png"}
