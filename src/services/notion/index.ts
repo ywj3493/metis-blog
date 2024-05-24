@@ -5,12 +5,17 @@ import { NotionAPI } from "notion-client";
 
 const notionToken = process.env.NOTION_KEY;
 const notionDatabaseId = process.env.NOTION_DATABASE_ID;
+const notionUser = process.env.NOTION_USER_ID;
+const notionTokenv2 = process.env.NOTION_TOKEN_V2;
 
 const notion = new Client({
   auth: notionToken,
 });
 
-const notionApi = new NotionAPI();
+const notionApi = new NotionAPI({
+  activeUser: notionUser,
+  authToken: notionTokenv2,
+});
 
 export async function getPosts() {
   const response = await notion.databases.query({
