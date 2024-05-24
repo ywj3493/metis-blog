@@ -1,9 +1,5 @@
-import PostCard, { PostCardSkeleton } from "@/components/posts/PostCard";
-import { getDatabaseTags, getPosts } from "@/api/notion";
-import { Suspense } from "react";
-import PostsGrid from "@/components/PostsGrid";
-import LNB from "@/components/LNB";
 import FilterablePosts from "@/components/posts/FilterablePosts";
+import { getDatabaseTags, getPosts } from "@/services/notion";
 
 export const revalidate = 86400;
 
