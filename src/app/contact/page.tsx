@@ -1,12 +1,21 @@
 import ContactForm from "@/components/contact/ContactForm";
+import { Metadata } from "next";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { RiNotionFill } from "react-icons/ri";
 
 const LINKS = [
-  { icon: <AiFillGithub />, url: "" },
-  { icon: <AiFillLinkedin />, url: "" },
+  { icon: <AiFillGithub />, url: "https://github.com/ywj3493" },
+  {
+    icon: <AiFillLinkedin />,
+    url: "https://www.linkedin.com/in/%EC%9B%85%EC%9E%AC-%EC%9C%A4-aa086a291/",
+  },
   { icon: <RiNotionFill />, url: "" },
 ];
+
+export const metadata: Metadata = {
+  title: "contact",
+  description: "메티에게 메일 보내기",
+};
 
 export default function ContactPage() {
   return (

@@ -37,10 +37,16 @@ export async function getPosts() {
   return response.results as DatabaseObjectResponse[];
 }
 
-export async function getPage(id: string) {
-  const response = await notionApi.getPage(id);
+export async function getPostMetadata(id: string) {
+  const response = await notion.pages.retrieve({
+    page_id: id,
+  });
 
-  return response;
+  const title = (response as any).properties["제목"].title[0].plain_text;
+
+  return {
+    title,
+  };
 }
 
 export async function getDatabaseTags() {
@@ -51,4 +57,10 @@ export async function getDatabaseTags() {
   const tags = (response as any).properties["Tags"].multi_select.options;
 
   return tags as Tag[];
+}
+
+export async function getPage(id: string) {
+  const response = await notionApi.getPage(id);
+
+  return response;
 }
