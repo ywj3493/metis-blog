@@ -1,7 +1,7 @@
 import FilterablePosts from "@/components/posts/FilterablePosts";
 import { getDatabaseTags, getPosts } from "@/services/notion";
 
-export const revalidate = 86400;
+export const revalidate = 180;
 
 export default async function PostListPage() {
   const posts = await getPosts();
