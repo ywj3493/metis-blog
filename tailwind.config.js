@@ -36,6 +36,7 @@ module.exports = {
       sm: "0px",
       md: "848px",
       lg: "1280px",
+      lx: "1920px",
     },
 
     extend: {
