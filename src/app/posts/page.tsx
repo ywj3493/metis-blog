@@ -1,5 +1,8 @@
 import FilterablePosts from "@/components/posts/FilterablePosts";
-import { getDatabaseTags, getPosts } from "@/services/_external/notion";
+import {
+  getNotionPostDatabaseTags,
+  getNotionPosts,
+} from "@/services/_external/notion";
 import { Metadata } from "next";
 
 export const revalidate = 180;
@@ -10,8 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PostListPage() {
-  const posts = await getPosts();
-  const tags = await getDatabaseTags();
+  const posts = await getNotionPosts();
+  const tags = await getNotionPostDatabaseTags();
 
   return <FilterablePosts tags={tags} posts={posts} />;
 }
