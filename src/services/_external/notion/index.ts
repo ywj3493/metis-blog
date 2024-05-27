@@ -17,7 +17,7 @@ const notionApi = new NotionAPI({
   authToken: notionTokenv2,
 });
 
-export async function getPosts() {
+export async function getNotionPosts() {
   const response = await notion.databases.query({
     database_id: notionDatabaseId as string,
     filter: {
@@ -37,7 +37,7 @@ export async function getPosts() {
   return response.results as DatabaseObjectResponse[];
 }
 
-export async function getPostMetadata(id: string) {
+export async function getNotionPostMetadata(id: string) {
   const response = await notion.pages.retrieve({
     page_id: id,
   });
@@ -49,7 +49,7 @@ export async function getPostMetadata(id: string) {
   };
 }
 
-export async function getDatabaseTags() {
+export async function getNotionPostDatabaseTags() {
   const response = await notion.databases.retrieve({
     database_id: notionDatabaseId as string,
   });
@@ -59,7 +59,7 @@ export async function getDatabaseTags() {
   return tags as Tag[];
 }
 
-export async function getPage(id: string) {
+export async function getNotionPage(id: string) {
   const response = await notionApi.getPage(id);
 
   return response;

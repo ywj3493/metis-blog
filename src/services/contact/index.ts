@@ -1,4 +1,4 @@
-import { EmailForm } from "../email";
+import { EmailForm } from "../_external/email";
 
 export async function sendContactEmail(form: EmailForm) {
   const response = await fetch("/api/contact", {
