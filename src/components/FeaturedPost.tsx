@@ -1,4 +1,4 @@
-import { getPosts } from "@/services/notion";
+import { getPosts } from "@/services/_external/notion";
 import PostsGrid from "./PostsGrid";
 
 export default async function FeaturedPosts() {

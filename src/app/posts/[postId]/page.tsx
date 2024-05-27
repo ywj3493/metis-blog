@@ -1,5 +1,9 @@
 import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
-import { getPage, getPostMetadata, getPosts } from "@/services/notion";
+import {
+  getPage,
+  getPostMetadata,
+  getPosts,
+} from "@/services/_external/notion";
 
 type PostDetailPageProps = {
   params: { postId: string };
