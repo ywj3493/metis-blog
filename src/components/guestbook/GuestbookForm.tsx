@@ -5,6 +5,7 @@ import { createGuestbook } from "@/services/guestbooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "../Loading";
+import { sendAlarmEmail } from "@/services/alarm";
 
 export default function GuestbookForm({
   refetch,
@@ -32,6 +33,11 @@ export default function GuestbookForm({
       .then(() => {
         setIsPostLoading(false);
         reset();
+        sendAlarmEmail({
+          from: name,
+          subject: "방명록",
+          message: content,
+        });
         refetch();
       })
       .catch((e) => {

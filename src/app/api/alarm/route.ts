@@ -2,7 +2,7 @@ import { sendEamil } from "@/services/_external/email";
 import * as yup from "yup";
 
 const bodySchema = yup.object().shape({
-  from: yup.string().email().required(),
+  from: yup.string().required(),
   subject: yup.string().required(),
   message: yup.string().required(),
 });
