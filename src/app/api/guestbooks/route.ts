@@ -2,6 +2,13 @@ import {
   getNotionGuestbooks,
   postNotionGuestbook,
 } from "@/services/_external/notion";
+import * as yup from "yup";
+
+const bodySchema = yup.object().shape({
+  name: yup.string().required("이름은 필수입니다."),
+  content: yup.string().required("내용은 필수입니다."),
+  isPrivate: yup.boolean().required(),
+});
 
 export async function GET() {
   return getNotionGuestbooks()
@@ -29,6 +36,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
+  if (!bodySchema.isValidSync(body)) {
+    return new Response("이름, 내용을 입력 해주세요.", {
+      status: 400,
+    });
+  }
 
   return postNotionGuestbook(body)
     .then((response) => {
