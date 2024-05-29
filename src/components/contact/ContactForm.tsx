@@ -1,8 +1,9 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { useState } from "react";
 import Banner, { BannerData } from "./Banner";
 import { sendContactEmail } from "@/services/contact";
+import { useForm } from "react-hook-form";
 
 type Form = {
   from: string;
@@ -11,25 +12,17 @@ type Form = {
 };
 
 export default function ContactForm() {
-  const fromInputRef = useRef<HTMLInputElement>(null);
-  const subjectInputRef = useRef<HTMLInputElement>(null);
-  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+  const { register, reset, handleSubmit } = useForm<Form>();
 
   const [bannerData, setBannerData] = useState<BannerData | null>();
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = {
-      from: fromInputRef.current?.value as string,
-      subject: subjectInputRef.current?.value as string,
-      message: messageInputRef.current?.value as string,
-    };
+  const handleSendContactEmail = (formData: Form) => {
+    setIsSending(true);
     sendContactEmail(formData)
       .then(() => {
         setBannerData({ message: "감사합니다.", state: "success" });
-        fromInputRef.current?.value === "";
-        subjectInputRef.current?.value === "";
-        messageInputRef.current?.value === "";
+        reset();
       })
       .catch((e) => {
         setBannerData({
@@ -38,6 +31,7 @@ export default function ContactForm() {
         });
       })
       .finally(() => {
+        setIsSending(false);
         setTimeout(() => {
           setBannerData(null);
         }, 2000);
@@ -47,14 +41,14 @@ export default function ContactForm() {
   return (
     <>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(handleSendContactEmail)}
         className="w-full max-w-md flex flex-col gap-8 m-8 p-8 bg-slate-400 rounded-lg"
       >
         <label htmlFor="from" className="font-semibold">
           보내는 사람
         </label>
         <input
-          ref={fromInputRef}
+          {...register("from")}
           type="email"
           id="from"
           name="from"
@@ -65,14 +59,27 @@ export default function ContactForm() {
         <label htmlFor="subject" className="font-semibold">
           제목
         </label>
-        <input ref={subjectInputRef} id="subject" name="subject" required />
+        <input {...register("subject")} id="subject" name="subject" required />
         <label htmlFor="message" className="font-semibold">
           내용
         </label>
-        <textarea rows={10} ref={messageInputRef} id="message" name="message" />
-        <button type="submit" className="bg-blue text-white font-bold">
-          보내기
-        </button>
+        <textarea
+          rows={10}
+          {...register("message")}
+          id="message"
+          name="message"
+        />
+        {isSending ? (
+          <p className="bg-gray-500 text-white text-center">전송중...</p>
+        ) : (
+          <button
+            type="submit"
+            className="bg-blue text-white font-bold"
+            disabled={isSending}
+          >
+            보내기
+          </button>
+        )}
       </form>
       {bannerData && <Banner banner={bannerData} />}
     </>
