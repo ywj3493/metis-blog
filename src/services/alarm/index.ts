@@ -1,7 +1,7 @@
 import { EmailForm } from "../_external/email";
 
-export async function sendContactEmail(form: EmailForm) {
-  const response = await fetch("/api/contact", {
+export async function sendAlarmEmail(form: EmailForm) {
+  const response = await fetch("/api/alarm", {
     method: "POST",
     body: JSON.stringify(form),
     headers: {
