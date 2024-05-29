@@ -6,7 +6,7 @@ import { NotionAPI } from "notion-client";
 export type Guestbook = {
   name: string;
   content: string;
-  status: "공개" | "비공개";
+  isPrivate: boolean;
 };
 
 const notionToken = process.env.NOTION_KEY;
@@ -106,7 +106,7 @@ export async function getNotionPage(id: string) {
 export async function postNotionGuestbook({
   name,
   content,
-  status,
+  isPrivate,
 }: Guestbook) {
   const response = await notion.pages.create({
     parent: {
@@ -138,7 +138,7 @@ export async function postNotionGuestbook({
       },
       상태: {
         status: {
-          name: status,
+          name: isPrivate ? "비공개" : "공개",
         },
       },
     },
@@ -148,7 +148,7 @@ export async function postNotionGuestbook({
     id: response.id,
     name: name,
     content: content,
-    status: status,
+    isPrivate: isPrivate,
   };
 
   return results;
@@ -162,12 +162,6 @@ export async function postNotionGuestbook({
 export async function getNotionGuestbooks() {
   const response = await notion.databases.query({
     database_id: notionGuestbookDatabaseId as string,
-    filter: {
-      property: "상태",
-      status: {
-        equals: "공개",
-      },
-    },
     sorts: [
       {
         property: "남긴날짜",

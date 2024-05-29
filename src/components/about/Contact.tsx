@@ -1,5 +1,3 @@
-import ContactForm from "@/components/contact/ContactForm";
-import { Metadata } from "next";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { RiNotionFill } from "react-icons/ri";
 
@@ -12,15 +10,10 @@ const LINKS = [
   { icon: <RiNotionFill />, url: "" },
 ];
 
-export const metadata: Metadata = {
-  title: "contact",
-  description: "메티에게 메일 보내기",
-};
-
-export default async function ContactPage() {
+export default function Contact() {
   return (
-    <section className="flex flex-col items-center ">
-      <h2 className="text-3xl font-bold my-2">Contact Me</h2>
+    <>
+      <h2 className="text-3xl font-bold my-2">연락처</h2>
       <p>dbsdndwo12@gmail.com</p>
       <ul className="flex gap-4 my-8">
         {LINKS.map((link, index) => (
@@ -35,7 +28,6 @@ export default async function ContactPage() {
           </a>
         ))}
       </ul>
-      <ContactForm />
-    </section>
+    </>
   );
 }
