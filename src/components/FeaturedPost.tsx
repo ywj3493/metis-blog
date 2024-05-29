@@ -1,5 +1,5 @@
-import { getNotionPosts } from "@/services/_external/notion";
 import PostsGrid from "./PostsGrid";
+import { getNotionPosts } from "@/services/_external/notion";
 
 export default async function FeaturedPosts() {
   const posts = await getNotionPosts();

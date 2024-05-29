@@ -13,7 +13,7 @@ const menus: Menu[] = [
   },
   {
     url: "/contact",
-    name: "방명록",
+    name: "연락",
   },
   {
     url: "/posts",

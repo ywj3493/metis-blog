@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "메티에게 메일 보내기",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
   return (
     <section className="flex flex-col items-center ">
       <h2 className="text-3xl font-bold my-2">Contact Me</h2>
@@ -35,7 +35,6 @@ export default function ContactPage() {
           </a>
         ))}
       </ul>
-      <h2 className="text-3xl font-bold">메일로 연락 주세요.</h2>
       <ContactForm />
     </section>
   );
