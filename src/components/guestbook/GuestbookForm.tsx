@@ -5,7 +5,11 @@ import { createGuestbook } from "@/services/guestbooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function GuestbookForm() {
+export default function GuestbookForm({
+  refetch,
+}: {
+  refetch: () => Promise<any>;
+}) {
   const { register, reset, handleSubmit } = useForm<Guestbook>();
 
   const [isPostLoading, setIsPostLoading] = useState(false);
@@ -16,6 +20,7 @@ export default function GuestbookForm() {
       .then(() => {
         setIsPostLoading(false);
         reset();
+        refetch();
       })
       .catch((e) => {
         console.error(e);
@@ -26,7 +31,12 @@ export default function GuestbookForm() {
     <form onSubmit={handleSubmit(handleBuildForm)}>
       <input type="text" {...register("name")} placeholder="이름" />
       <textarea placeholder="내용" {...register("content")} />
-      <button type="submit">전송</button>
+
+      {isPostLoading ? (
+        <div>전송 중...</div>
+      ) : (
+        <button type="submit">전송</button>
+      )}
     </form>
   );
 }
