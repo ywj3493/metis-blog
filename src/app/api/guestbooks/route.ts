@@ -24,7 +24,6 @@ export async function GET() {
       );
     })
     .catch((e) => {
-      console.log(e);
       return new Response(
         JSON.stringify({ message: "게스트북 가져오기에 실패했습니다." }),
         {

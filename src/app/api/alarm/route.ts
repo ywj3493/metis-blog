@@ -25,7 +25,6 @@ export async function POST(request: Request) {
       );
     })
     .catch((e) => {
-      console.log(e);
       return new Response(JSON.stringify({ message: "메일 전송에 실패함" }), {
         status: 500,
       });
