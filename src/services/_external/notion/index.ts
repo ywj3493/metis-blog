@@ -2,6 +2,8 @@ import { Tag } from "@/components/LNB";
 import { Client } from "@notionhq/client";
 import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";
+import { block } from "sharp";
+import { text } from "stream/consumers";
 
 export type Guestbook = {
   name: string;
@@ -56,15 +58,44 @@ export async function getNotionPosts() {
  * @returns
  */
 export async function getNotionPostMetadata(id: string) {
-  const response = await notion.pages.retrieve({
+  const pageResponse = await notion.pages.retrieve({
     page_id: id,
+  });
+  const contentResponse = await notion.blocks.children.list({
+    block_id: id,
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = response.properties["제목"].title[0].plain_text;
+  const title = pageResponse.properties["제목"].title[0].plain_text;
+
+  /* @ts-expect-error Notion Type Error */
+  const tags = pageResponse.properties["Tags"].multi_select.map(
+    /* @ts-expect-error Notion Type Error */
+    (tag) => tag.name
+  );
+
+  const content =
+    contentResponse.results
+      .filter(
+        (block) =>
+          /* @ts-expect-error Notion Type Error */
+          block.type === "paragraph" ||
+          /* @ts-expect-error Notion Type Error */
+          block.type === "numberd_list_item" ||
+          /* @ts-expect-error Notion Type Error */
+          block.type === "bulleted_list_item"
+      )
+      .map((block) =>
+        /* @ts-expect-error Notion Type Error */
+        block[block.type].rich_text.map(({ plain_text }) => plain_text)
+      )
+      .filter((text) => text.length > 0)
+      .map((text) => text.join("")) || "";
 
   return {
     title,
+    content,
+    tags,
   };
 }
 
