@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:deep": "DEEP_TEST=true vitest --run"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
