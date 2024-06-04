@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "contact",
-  description: "메티에게 메일 보내기",
+  description: "메티에게 방명록 남기기",
 };
 
 export default async function GuestbooksPage() {
