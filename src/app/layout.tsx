@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "메티의 블로그 | %s",
   },
   description:
-    "안녕하세요. Meti 입니다. 노션 TIL 에서 작성한 것을 공개하는 블로그 입니다.",
+    "안녕하세요. 메티입니다. 노션 TIL 에서 작성한 것을 공개하는 블로그 입니다.",
   icons: "icon.png",
 };
 
