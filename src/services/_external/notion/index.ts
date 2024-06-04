@@ -2,8 +2,6 @@ import { Tag } from "@/components/LNB";
 import { Client } from "@notionhq/client";
 import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";
-import { block } from "sharp";
-import { text } from "stream/consumers";
 
 export type Guestbook = {
   name: string;
@@ -74,23 +72,18 @@ export async function getNotionPostMetadata(id: string) {
     (tag) => tag.name
   );
 
-  const content =
-    contentResponse.results
-      .filter(
-        (block) =>
-          /* @ts-expect-error Notion Type Error */
-          block.type === "paragraph" ||
-          /* @ts-expect-error Notion Type Error */
-          block.type === "numberd_list_item" ||
-          /* @ts-expect-error Notion Type Error */
-          block.type === "bulleted_list_item"
-      )
-      .map((block) =>
-        /* @ts-expect-error Notion Type Error */
-        block[block.type].rich_text.map(({ plain_text }) => plain_text)
-      )
-      .filter((text) => text.length > 0)
-      .map((text) => text.join("")) || "";
+  /* @ts-expect-error Notion Type Error */
+  const content = contentResponse.results
+    /* @ts-expect-error Notion Type Error */
+    .filter((block) => block.type === "paragraph")
+    /* @ts-expect-error Notion Type Error */
+    .find((block) => block.paragraph.rich_text.length > 0)
+    /* @ts-expect-error Notion Type Error */
+    .paragraph.rich_text.map((text) => text.plain_text)
+    .join("")
+    .substr(0, 77);
+
+  console.log(content);
 
   return {
     title,
