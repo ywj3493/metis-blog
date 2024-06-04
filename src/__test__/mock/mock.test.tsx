@@ -15,8 +15,6 @@ describe("MockingTest in client", () => {
     const ageInput = screen.getByPlaceholderText("age");
     const postButton = screen.getByText("POST");
 
-    screen.debug();
-
     await userEvent.type(nameInput, "김영수");
     await userEvent.type(ageInput, "2");
     await userEvent.click(postButton);
