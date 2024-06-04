@@ -72,18 +72,16 @@ export async function getNotionPostMetadata(id: string) {
     (tag) => tag.name
   );
 
-  /* @ts-expect-error Notion Type Error */
-  const content = contentResponse.results
-    /* @ts-expect-error Notion Type Error */
-    .filter((block) => block.type === "paragraph")
-    /* @ts-expect-error Notion Type Error */
-    .find((block) => block.paragraph.rich_text.length > 0)
-    /* @ts-expect-error Notion Type Error */
-    .paragraph.rich_text.map((text) => text.plain_text)
-    .join("")
-    .substr(0, 77);
-
-  console.log(content);
+  const content =
+    contentResponse.results
+      /* @ts-expect-error Notion Type Error */
+      .filter((block) => block.type === "paragraph")
+      /* @ts-expect-error Notion Type Error */
+      .find((block) => block.paragraph.rich_text.length > 0)
+      /* @ts-expect-error Notion Type Error */
+      ?.paragraph.rich_text.map((text) => text.plain_text)
+      .join("")
+      .substr(0, 77) || "";
 
   return {
     title,
