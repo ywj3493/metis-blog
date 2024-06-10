@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Metadata } from "next";
 
@@ -30,7 +30,7 @@ export default function RootLayout({
       <body className="flex flex-col w-full max-w-screen-xl mx-auto">
         <Header />
         <main className="grow">{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
