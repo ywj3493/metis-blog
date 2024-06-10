@@ -35,7 +35,7 @@ export default function PostCard({ data }: PostCardProps) {
   const publishTime = data.properties["날짜"].date.start;
 
   return (
-    <Link href={`/posts/${data.id}`} className="block mx-auto">
+    <Link href={`/posts/${data.id}`} className="block mx-auto h-min">
       <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm">
         <Image
           src={cover}
