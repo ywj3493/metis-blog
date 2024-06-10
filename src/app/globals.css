@@ -6,3 +6,7 @@ body {
   height: 100vh;
   overflow-y: auto;
 }
+
+.tooltip-wrapper:hover .tooltip-text {
+  @apply visible opacity-100;
+}
