@@ -2,6 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import Tag from "./posts/Tag";
+import TooltipWrapper from "./TooltipWrapper";
 
 export type Tag = {
   id: string;
@@ -34,8 +35,10 @@ export default function LNB({ tags, selectedTags, setSelectedTags }: LNBProps) {
   };
 
   return (
-    <div className="flex flex-col w-200 gap-4 items-center">
-      <div className="border-b-2 border-blue px-8">Tags</div>
+    <div className="flex flex-col w-200 gap-4 items-center sticky top-0 h-min mt-8">
+      <TooltipWrapper message="태그를 여러개 선택할 수 있습니다. or 조건으로 검색됩니다.">
+        <div className="border-b-2 border-blue px-8 cursor-default">Tags</div>
+      </TooltipWrapper>
       {tags.map(({ id, name, color }) => (
         <Tag
           key={id}
