@@ -4,6 +4,7 @@ import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints
 import LNB, { Tag } from "../LNB";
 import PostsGrid from "../PostsGrid";
 import { useState } from "react";
+import EmptyPosts from "./EmptyPosts";
 
 type FilterablePostsProps = {
   tags: Tag[];
@@ -20,6 +21,8 @@ export default function FilterablePosts({ tags, posts }: FilterablePostsProps) {
           selectedTags.has((post as any).properties.Tags.multi_select[0].id)
         );
 
+  const isFilteredPostsEmpty = filteredPosts.length === 0;
+
   return (
     <div className="flex my-24 w-full justify-center">
       <LNB
@@ -27,7 +30,11 @@ export default function FilterablePosts({ tags, posts }: FilterablePostsProps) {
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
-      <PostsGrid posts={filteredPosts} />
+      {isFilteredPostsEmpty ? (
+        <EmptyPosts />
+      ) : (
+        <PostsGrid posts={filteredPosts} />
+      )}
     </div>
   );
 }
