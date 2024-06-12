@@ -1,5 +1,7 @@
 "use client";
 
+import { useTheme } from "next-themes";
+
 type TagProps = {
   id: string;
   name: string;
@@ -15,16 +17,19 @@ export default function Tag({
   notSelected,
   onClick,
 }: TagProps) {
-  const convertedColor = notSelected
-    ? "white"
-    : color === "default"
-    ? "gray"
-    : color === "brown"
-    ? "red"
-    : color;
+  const { theme } = useTheme();
 
-  const dynamicClass =
-    color === "blue" ? `bg-${convertedColor}` : `bg-${convertedColor}-100`;
+  const defaultBg = theme === "dark" ? "black" : "white";
+  const defaultText = theme === "dark" ? "white" : "black";
+
+  const convertedBg =
+    color === "default" ? "gray" : color === "brown" ? "red" : color;
+
+  const dynamicBgColor = notSelected
+    ? `bg-${defaultBg}-100`
+    : `bg-${convertedBg}-100`;
+
+  const dynamicTextColor = notSelected ? `text-${defaultText}` : "text-black";
 
   const handleTagClick = () => {
     onClick?.(id);
@@ -32,7 +37,7 @@ export default function Tag({
 
   return (
     <div
-      className={`${dynamicClass} bg- py-4 px-12 text-12 rounded-4 clickable`}
+      className={`${dynamicBgColor} ${dynamicTextColor} py-4 px-12 text-12  rounded-4 clickable`}
       onClick={handleTagClick}
     >
       {name}

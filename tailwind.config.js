@@ -23,7 +23,7 @@ module.exports = {
     "bg-red-100",
     "bg-green-100",
     "bg-gray-100",
-    "bg-blue",
+    "bg-blue-100",
     "bg-orange-100",
     "bg-brown-100",
     "bg-yellow-100",
@@ -47,7 +47,16 @@ module.exports = {
       colors: {
         ...defaultTheme.colors,
 
-        blue: "#A9DFFC",
+        blue10: "#1D4B60", // darkest
+        blue9: "#396B80", // even darker
+        blue8: "#5589A0", // darker
+        blue7: "#71A9C0", // dark
+        blue6: "#91C9E3", // slightly dark
+        blue5: "#A9DFFC", // base color
+        blue4: "#B0DBFF", // slightly light
+        blue3: "#C3E4FF", // light
+        blue2: "#D7EEFF", // lighter
+        blue1: "#EAF6FF", // lightest
 
         // TODO: color setting
         black: "#1a1a1a",

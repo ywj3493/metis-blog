@@ -16,7 +16,7 @@ export default function Hero() {
       <h3 className="text-xl font-semibold">웹 프론트엔드 개발자</h3>
       <p>노션 TIL 에서 작성한 것을 공개하는 블로그 입니다.</p>
       <Link href="/guestbooks">
-        <button className="bg-blue font-bold rounded-xl py-4 px-16 text-gray-800">
+        <button className="bg-blue-200 font-bold rounded-xl py-4 px-16 text-gray-800">
           Contact
         </button>
       </Link>

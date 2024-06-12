@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import GuestbookCard from "./GuestbookCard";
 import GuestbookForm from "./GuestbookForm";
 import { getGuestbooks } from "@/services/guestbooks";
-import Loading from "../Loading";
 import Contact from "../about/Contact";
+import { LoadingSpinner } from "../Loading";
 
 export default function GuestbookList() {
   const [guestbooks, setGuestbooks] = useState([]);
@@ -32,7 +32,7 @@ export default function GuestbookList() {
       <div className="flex flex-col gap-12 items-center">
         <Contact />
         <GuestbookForm refetch={fetchGuestbooks} />
-        {isLoading && <Loading />}
+        {isLoading && <LoadingSpinner />}
         {guestbooks.map((guestbook: any) => (
           <GuestbookCard key={guestbook.id} guestbook={guestbook} />
         ))}

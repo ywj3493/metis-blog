@@ -15,7 +15,7 @@ function TestEmployeeItem({
   onClickDelete,
 }: TestEmployeeItemProps) {
   return (
-    <div className="grid grid-cols-4 h-48 rounded-5 border-blue items-center bg-white p-8">
+    <div className="grid grid-cols-4 h-48 rounded-5 border-blue-200 items-center bg-white p-8">
       <div className="font-r-16 text-black">{`사번: ${empNumber}`}</div>
       <div className="font-r-16 text-black">{`이름: ${name}`}</div>
       <div className="font-r-16 text-black">{`나이: ${age}`}</div>

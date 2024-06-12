@@ -4,8 +4,8 @@ import { Guestbook } from "@/services/_external/notion";
 import { createGuestbook } from "@/services/guestbooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Loading from "../Loading";
 import { sendAlarmEmail } from "@/services/alarm";
+import { LoadingSpinner } from "../Loading";
 
 export default function GuestbookForm({
   refetch,
@@ -74,11 +74,11 @@ export default function GuestbookForm({
           rows={3}
         />
         {isPostLoading ? (
-          <Loading />
+          <LoadingSpinner />
         ) : (
           <button
             type="submit"
-            className="bg-blue rounded-4 text-white disabled:bg-gray-300 disabled:cursor-not-allowed p-2 text-center"
+            className="bg-blue-200 rounded-4 text-white disabled:bg-gray-300 disabled:cursor-not-allowed p-2 text-center"
             disabled={!isValid}
           >
             전송

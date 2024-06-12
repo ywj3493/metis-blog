@@ -22,7 +22,7 @@ export default function Contact() {
             href={link.url}
             target="_blank"
             rel="noreferer"
-            className="text-5xl hover:text-blue"
+            className="text-5xl hover:text-blue-500"
           >
             {link.icon}
           </a>
