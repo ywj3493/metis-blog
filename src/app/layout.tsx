@@ -7,6 +7,7 @@ import "./globals.css";
 import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,9 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="flex flex-col w-full max-w-screen-xl mx-auto">
-        <Header />
-        <main className="grow">{children}</main>
-        {/* <Footer /> */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          <main className="grow">{children}</main>
+          {/* <Footer /> */}
+        </ThemeProvider>
       </body>
     </html>
   );
