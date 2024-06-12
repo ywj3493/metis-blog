@@ -23,9 +23,9 @@ export async function GET() {
         }
       );
     })
-    .catch((e) => {
+    .catch((error) => {
       return new Response(
-        JSON.stringify({ message: "게스트북 가져오기에 실패했습니다." }),
+        JSON.stringify({ message: "게스트북 가져오기에 실패했습니다.", error }),
         {
           status: 500,
         }
@@ -53,10 +53,9 @@ export async function POST(request: Request) {
         }
       );
     })
-    .catch((e) => {
-      console.log(e);
+    .catch((error) => {
       return new Response(
-        JSON.stringify({ message: "게스트북 생성에 실패했습니다." }),
+        JSON.stringify({ message: "게스트북 생성에 실패했습니다.", error }),
         {
           status: 500,
         }

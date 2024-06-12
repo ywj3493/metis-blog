@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Tag from "./posts/Tag";
 import TooltipWrapper from "./TooltipWrapper";
 

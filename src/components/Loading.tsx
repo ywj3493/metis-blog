@@ -6,7 +6,7 @@ export function LoadingSpinner() {
   );
 }
 
-export function LoadingDot({ className = "" }) {
+export function LoadingDot() {
   return (
     <div className="animate-pulse rounded-full w-24 h-24 bg-gray-300"></div>
   );
