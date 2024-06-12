@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import GuestbookCard from "./GuestbookCard";
 import GuestbookForm from "./GuestbookForm";
 import { getGuestbooks } from "@/services/guestbooks";
-import Contact from "../about/Contact";
 import { LoadingSpinner } from "../Loading";
 
 export default function GuestbookList() {

@@ -24,9 +24,12 @@ export async function POST(request: Request) {
         }
       );
     })
-    .catch((e) => {
-      return new Response(JSON.stringify({ message: "메일 전송에 실패함" }), {
-        status: 500,
-      });
+    .catch((error) => {
+      return new Response(
+        JSON.stringify({ message: "메일 전송에 실패함", error }),
+        {
+          status: 500,
+        }
+      );
     });
 }
