@@ -27,7 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html
+      lang="en"
+      className={inter.className}
+      suppressHydrationWarning={process.env.NODE_ENV === "production"}
+    >
       <body className="flex flex-col w-full max-w-screen-xl mx-auto">
         <ThemeProvider
           attribute="class"
