@@ -28,15 +28,12 @@ export default function GuestbookList() {
   }, []);
 
   return (
-    <section className="flex items-center gap-12">
-      <div className="flex flex-col gap-12 items-center">
-        <Contact />
-        <GuestbookForm refetch={fetchGuestbooks} />
-        {isLoading && <LoadingSpinner />}
-        {guestbooks.map((guestbook: any) => (
-          <GuestbookCard key={guestbook.id} guestbook={guestbook} />
-        ))}
-      </div>
-    </section>
+    <div className="flex flex-col gap-12 items-center">
+      <GuestbookForm refetch={fetchGuestbooks} />
+      {isLoading && <LoadingSpinner />}
+      {guestbooks.map((guestbook: any) => (
+        <GuestbookCard key={guestbook.id} guestbook={guestbook} />
+      ))}
+    </div>
   );
 }
