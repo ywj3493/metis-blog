@@ -47,7 +47,7 @@ export default function GuestbookForm({
 
   return (
     <>
-      <h2 className="text-xl font-bold">또는 방명록을 남겨주세요.</h2>
+      <h2 className="text-xl font-bold">방명록을 남겨주세요.</h2>
       <form
         onSubmit={handleSubmit(handleBuildForm)}
         className="flex flex-col w-320 p-8 gap-12 border-1 rounded-8 "

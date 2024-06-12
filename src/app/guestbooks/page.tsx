@@ -1,3 +1,4 @@
+import Contact from "@/components/about/Contact";
 import GuestbookList from "@/components/guestbook/GuestbookList";
 import { Metadata } from "next";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default async function GuestbooksPage() {
   return (
     <section className="flex flex-col items-center ">
+      <Contact />
       <GuestbookList />
     </section>
   );
