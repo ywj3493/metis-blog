@@ -14,7 +14,7 @@ const menus: Menu[] = [
   },
   {
     url: "/guestbooks",
-    name: "연락",
+    name: "방명록",
   },
   {
     url: "/posts",
