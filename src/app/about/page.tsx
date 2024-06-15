@@ -1,4 +1,6 @@
-import Hero from "@/components/about/Hero";
+import Contact from "@/components/about/Contact";
+import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
+import { getNotionAboutPage } from "@/services/_external/notion";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +8,13 @@ export const metadata: Metadata = {
   description: "메티 소개글",
 };
 
-export default function AboutPage() {
-  return <Hero />;
+export default async function AboutPage() {
+  const pageRecordMap = await getNotionAboutPage();
+
+  return (
+    <section className="flex flex-col items-center gap-16">
+      <ClientNotionRenderer recordMap={pageRecordMap} />
+      <Contact />
+    </section>
+  );
 }

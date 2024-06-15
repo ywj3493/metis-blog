@@ -10,6 +10,7 @@ export type Guestbook = {
 };
 
 const notionToken = process.env.NOTION_KEY;
+const notionAboutPageID = process.env.NOTION_ABOUT_PAGE_ID;
 const notionPostDatabaseId = process.env.NOTION_POST_DATABASE_ID;
 const notionGuestbookDatabaseId = process.env.NOTION_GUESTBOOK_DATABASE_ID;
 const notionUser = process.env.NOTION_USER_ID;
@@ -114,6 +115,18 @@ export async function getNotionPostDatabaseTags() {
  */
 export async function getNotionPage(id: string) {
   const response = await notionApi.getPage(id);
+
+  return response;
+}
+
+/**
+ * 노션 페이지 렌더링 데이터 가져오기
+ *
+ * @param id 페이지 아이디
+ * @returns
+ */
+export async function getNotionAboutPage() {
+  const response = await notionApi.getPage(notionAboutPageID as string);
 
   return response;
 }
