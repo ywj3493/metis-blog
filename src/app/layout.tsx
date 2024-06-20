@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 // import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import "react-notion-x/src/styles.css";
@@ -43,6 +45,8 @@ export default function RootLayout({
           <main className="grow">{children}</main>
           {/* <Footer /> */}
         </ThemeProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
