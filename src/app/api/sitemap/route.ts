@@ -40,6 +40,8 @@ export async function GET() {
     ...postUrls,
   ];
 
+  const formatDate = (date: Date) => date.toISOString();
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${sitemapList
@@ -47,7 +49,7 @@ export async function GET() {
         return `
           <url>
             <loc>${url}</loc>
-            <lastmod>${lastModified}</lastmod>
+            <lastmod>${formatDate(new Date(lastModified!))}</lastmod>
             <changefreq>${changeFrequency}</changefreq>
             <priority>${priority}</priority>
           </url>
