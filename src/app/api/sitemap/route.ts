@@ -1,9 +1,9 @@
 import { getNotionPosts } from "@/services/_external/notion";
 import { MetadataRoute } from "next";
 
-const baseUrl = process.env.BLOG_URL || "";
+export async function GET() {
+  const baseUrl = process.env.BLOG_URL || "";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getNotionPosts();
   const postUrls: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/posts/${post.id}`,
@@ -11,7 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "daily",
     priority: 0.8,
   }));
-  return [
+
+  const sitemapList = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -38,4 +39,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...postUrls,
   ];
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    ${sitemapList
+      .map(({ url, lastModified, changeFrequency, priority }) => {
+        return `
+          <url>
+            <loc>${url}</loc>
+            <lastmod>${lastModified}</lastmod>
+            <changefreq>${changeFrequency}</changefreq>
+            <priority>${priority}</priority>
+          </url>
+        `;
+      })
+      .join("")}
+  </urlset>`;
+
+  return new Response(sitemap, {
+    headers: {
+      "Content-Type": "application/xml",
+    },
+  });
 }
