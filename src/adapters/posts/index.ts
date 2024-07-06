@@ -1,0 +1,137 @@
+import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { IPost, ITag, MetisPostDatabaseResponse } from "./type";
+
+export function isITag(obj: unknown): obj is ITag {
+  const o = obj as ITag;
+  return (
+    typeof o === "object" &&
+    o !== null &&
+    typeof o.id === "string" &&
+    typeof o.name === "string" &&
+    typeof o.color === "string"
+  );
+}
+
+export function isIPost(obj: unknown): obj is IPost {
+  if (typeof obj !== "object" || obj === null) {
+    return false;
+  }
+
+  const o = obj as IPost;
+
+  return (
+    typeof o.id === "string" &&
+    typeof o.title === "string" &&
+    Array.isArray(o.tags) &&
+    o.tags.every(isITag) &&
+    typeof o.cover === "string" &&
+    typeof o.icon === "string" &&
+    typeof o.publishTime === "string"
+  );
+}
+
+export function isMetisPostDatabaseResponse(
+  obj: unknown
+): obj is MetisPostDatabaseResponse {
+  if (typeof obj !== "object" || obj === null) {
+    return false;
+  }
+
+  const o = obj as MetisPostDatabaseResponse;
+
+  if (typeof o.id !== "string") return false;
+  if (typeof o.properties !== "object" || o.properties === null) return false;
+  if (
+    typeof o.properties.제목 !== "object" ||
+    !Array.isArray(o.properties.제목.title)
+  )
+    return false;
+  if (
+    !o.properties.제목.title.every(
+      (titleItem) => typeof titleItem.plain_text === "string"
+    )
+  )
+    return false;
+  if (
+    typeof o.properties.Tags !== "object" ||
+    !Array.isArray(o.properties.Tags.multi_select)
+  )
+    return false;
+  if (
+    !o.properties.Tags.multi_select.every(
+      (tag) =>
+        typeof tag.id === "string" &&
+        typeof tag.name === "string" &&
+        typeof tag.color === "string"
+    )
+  )
+    return false;
+  if (
+    typeof o.properties.날짜 !== "object" ||
+    typeof o.properties.날짜.date !== "object"
+  )
+    return false;
+  if (typeof o.properties.날짜.date.start !== "string") return false;
+
+  return true;
+}
+
+export class Post implements IPost {
+  public id;
+  public title;
+  public tags;
+  public cover;
+  public icon;
+  public publishTime;
+
+  protected constructor(post: IPost) {
+    this.id = post.id;
+    this.title = post.title;
+    this.tags = post.tags.map(Tag.create);
+    this.cover = post.cover;
+    this.icon = post.icon;
+    this.publishTime = post.publishTime;
+  }
+
+  public static create(data: Post | IPost | DatabaseObjectResponse) {
+    if (data instanceof Post) return data;
+    if (isIPost(data)) {
+      return new Post(data);
+    }
+    if (isMetisPostDatabaseResponse(data)) {
+      const title = data.properties["제목"].title[0].plain_text;
+      const tags = data.properties["Tags"].multi_select;
+      const cover = data.cover?.external?.url ?? "";
+      const icon = data.icon?.external?.url ?? "/mascot.png";
+      const publishTime = data.properties["날짜"].date.start;
+      return new Post({
+        id: data.id,
+        title,
+        tags,
+        cover,
+        icon,
+        publishTime,
+      });
+    }
+    throw Error("Post 객체 생성 오류");
+  }
+}
+
+export class Tag implements ITag {
+  public id;
+  public name;
+  public color;
+  public description;
+
+  protected constructor(tag: ITag) {
+    this.id = tag.id;
+    this.name = tag.name;
+    this.color = tag.color;
+    this.description = tag.description;
+  }
+
+  public static create(data: Tag | ITag) {
+    if (data instanceof Tag) return data;
+    return new Tag(data);
+  }
+}
