@@ -36,14 +36,19 @@ export default function PostCard({ data }: PostCardProps) {
 
   return (
     <Link href={`/posts/${data.id}`} className="block mx-auto h-min">
-      <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm">
-        <Image
-          src={cover}
-          alt="cover"
-          width={320}
-          height={200}
-          style={{ width: 320, height: 200 }}
-        />
+      <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm hover:-translate-x-1 hover:-translate-y-1">
+        <div className={`relative`}>
+          <Image
+            src={cover}
+            alt="cover"
+            width={320}
+            height={200}
+            style={{ width: 320, height: 200 }}
+          />
+          <p className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white break-words">
+            {title}
+          </p>
+        </div>
         <div className="flex flex-col gap-4 items-center w-full">
           <time className="self-end p-4 text-14">{publishTime}</time>
           <Image src={icon} alt="icon" width={24} height={24} />

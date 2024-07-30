@@ -14,10 +14,8 @@ export default function Hero() {
         height={240}
         priority
       />
-      <h2 className="text-3xl font-bold mt-8">{"안녕하세요. 메티입니다."}</h2>
-      <h3 className="text-xl font-semibold">웹 프론트엔드 개발자</h3>
-      <p>노션 TIL 에서 작성한 것을 공개하는 블로그 입니다.</p>
-      <p>노션에 작성한 글들을 편하게 게시하기 위해 만들었습니다.</p>
+      <h2 className="text-3xl font-bold mt-8">안녕하세요. 메티입니다.</h2>
+      <p>노션에서 작성한 TIL을 쉽게 공개하기 위해 만든 블로그 입니다!</p>
       <p>블로그의 소스코드는 아래 버튼을 통해 확인해주세요.</p>
 
       <TooltipWrapper message="블로그 repository 주소">
