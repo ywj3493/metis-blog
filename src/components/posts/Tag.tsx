@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 
-type TagProps = {
+type TagChipProps = {
   id: string;
   name: string;
   color: string;
@@ -10,13 +10,13 @@ type TagProps = {
   onClick?: (id: string) => void;
 };
 
-export default function Tag({
+export default function TagChip({
   id,
   name,
   color,
   notSelected,
   onClick,
-}: TagProps) {
+}: TagChipProps) {
   const { theme } = useTheme();
 
   const defaultBg = theme === "dark" ? "black" : "white";

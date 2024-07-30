@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Tag from "./Tag";
 import Image from "next/image";
+import { Post } from "@/adapters/posts";
 
 type PostCardProps = {
-  // Notion API response 가 type 과 안 맞기 때문
-  data: any;
+  post: Post;
 };
 
 export function PostCardSkeleton() {
@@ -21,21 +21,11 @@ export function PostCardSkeleton() {
   );
 }
 
-export default function PostCard({ data }: PostCardProps) {
-  const title = data.properties["제목"].title[0].plain_text as string;
-  const tags = data.properties["Tags"].multi_select as {
-    id: string;
-    name: string;
-    color: string;
-  }[];
-  const cover = data.cover?.external.url as string;
-  const icon = data.icon?.external?.url
-    ? (data.icon.external.url as string)
-    : "/mascot.png";
-  const publishTime = data.properties["날짜"].date.start;
+export default function PostCard({ post }: PostCardProps) {
+  const { id, cover, title, publishTime, icon, tags } = post;
 
   return (
-    <Link href={`/posts/${data.id}`} className="block mx-auto h-min">
+    <Link href={`/posts/${id}`} className="block mx-auto h-min">
       <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm hover:-translate-x-1 hover:-translate-y-1">
         <div className={`relative`}>
           <Image

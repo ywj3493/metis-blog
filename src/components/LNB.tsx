@@ -1,15 +1,9 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import Tag from "./posts/Tag";
 import TooltipWrapper from "./TooltipWrapper";
-
-export type Tag = {
-  id: string;
-  name: string;
-  color: string;
-  description: string;
-};
+import { Tag } from "@/adapters/posts";
+import TagChip from "./posts/Tag";
 
 type LNBProps = {
   tags: Tag[];
@@ -42,7 +36,7 @@ export default function LNB({ tags, selectedTags, setSelectedTags }: LNBProps) {
         </div>
       </TooltipWrapper>
       {tags.map(({ id, name, color }) => (
-        <Tag
+        <TagChip
           key={id}
           id={id}
           name={name}

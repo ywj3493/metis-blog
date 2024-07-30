@@ -1,24 +1,32 @@
 "use client";
 
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import LNB, { Tag } from "../LNB";
+import LNB from "../LNB";
 import PostsGrid from "../PostsGrid";
 import { useState } from "react";
 import EmptyPosts from "./EmptyPosts";
+import { Post, Tag } from "@/adapters/posts";
+import { TagDatabaseResponse } from "@/adapters/posts/type";
+import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 type FilterablePostsProps = {
-  tags: Tag[];
-  posts: DatabaseObjectResponse[];
+  tagDataList: TagDatabaseResponse[];
+  dataList: DatabaseObjectResponse[];
 };
 
-export default function FilterablePosts({ tags, posts }: FilterablePostsProps) {
+export default function FilterablePosts({
+  tagDataList,
+  dataList,
+}: FilterablePostsProps) {
   const [selectedTags, setSelectedTags] = useState(new Set<string>());
+
+  const tags = tagDataList.map(Tag.create);
+  const posts = dataList.map(Post.create);
 
   const filteredPosts =
     selectedTags.size === 0
       ? posts
       : posts.filter((post) =>
-          selectedTags.has((post as any).properties.Tags.multi_select[0].id)
+          post.tags.some(({ id }) => selectedTags.has(id))
         );
 
   const isFilteredPostsEmpty = filteredPosts.length === 0;

@@ -1,6 +1,9 @@
-import { Guestbook } from "../_external/notion";
+import {
+  GuestbookDatabaseResponse,
+  GuestbookFormData,
+} from "@/adapters/guestbooks/type";
 
-export async function createGuestbook(guestForm: Guestbook) {
+export async function createGuestbook(guestForm: GuestbookFormData) {
   const response = await fetch("/api/guestbooks", {
     method: "POST",
     body: JSON.stringify(guestForm),
@@ -30,5 +33,5 @@ export async function getGuestbooks() {
     throw new Error(data.message || "알 수 없는 서버 에러");
   }
 
-  return data;
+  return data as GuestbookDatabaseResponse[];
 }

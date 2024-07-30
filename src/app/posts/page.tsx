@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PostListPage() {
-  const posts = await getNotionPosts();
-  const tags = await getNotionPostDatabaseTags();
+  const dataList = await getNotionPosts();
+  const tagDataList = await getNotionPostDatabaseTags();
 
-  return <FilterablePosts tags={tags} posts={posts} />;
+  return <FilterablePosts tagDataList={tagDataList} dataList={dataList} />;
 }

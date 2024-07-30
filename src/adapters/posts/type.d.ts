@@ -14,7 +14,7 @@ export interface IPost {
   publishTime: string;
 }
 
-export interface MetisPostDatabaseResponse {
+export interface PostDatabaseResponse {
   id: string;
   properties: {
     제목: {
@@ -31,7 +31,7 @@ export interface MetisPostDatabaseResponse {
       };
     };
   };
-  cover?: {
+  cover: {
     external?: {
       url?: string;
     };
@@ -41,4 +41,11 @@ export interface MetisPostDatabaseResponse {
       url?: string;
     };
   };
+}
+
+export interface TagDatabaseResponse {
+  id: string;
+  color: string;
+  name: string;
+  description: string;
 }

@@ -1,5 +1,4 @@
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { IGuestbook, MetisGuestbookDatabaseResponse } from "./type";
+import { IGuestbook, GuestbookDatabaseResponse } from "./type";
 
 export function isIGuestbook(obj: unknown): obj is IGuestbook {
   if (typeof obj !== "object" || obj === null) {
@@ -17,14 +16,14 @@ export function isIGuestbook(obj: unknown): obj is IGuestbook {
   );
 }
 
-export function isMetisGuestbookDatabaseResponse(
+export function isGuestbookDatabaseResponse(
   obj: unknown
-): obj is MetisGuestbookDatabaseResponse {
+): obj is GuestbookDatabaseResponse {
   if (typeof obj !== "object" || obj === null) {
     return false;
   }
 
-  const o = obj as MetisGuestbookDatabaseResponse;
+  const o = obj as GuestbookDatabaseResponse;
 
   if (typeof o.id !== "string") return false;
   if (typeof o.properties !== "object" || o.properties === null) return false;
@@ -69,7 +68,7 @@ export function isMetisGuestbookDatabaseResponse(
     o.properties.상태 === null
   )
     return false;
-  if (o.properties.상태.status.name !== ("공개" || "비공개")) return false;
+  if (typeof o.properties.상태.status.name !== "string") return false;
 
   return true;
 }
@@ -91,12 +90,12 @@ export class Guestbook implements IGuestbook {
     this.isPublic = status === "공개";
   }
 
-  public static create(data: Guestbook | IGuestbook | DatabaseObjectResponse) {
+  public static create(data: unknown) {
     if (data instanceof Guestbook) return data;
     if (isIGuestbook(data)) {
       return new Guestbook(data);
     }
-    if (isMetisGuestbookDatabaseResponse(data)) {
+    if (isGuestbookDatabaseResponse(data)) {
       const id = data.id;
       const name = data.properties["작성자"].title[0].plain_text;
       const content = data.properties["방명록"].rich_text[0].plain_text;
@@ -105,5 +104,6 @@ export class Guestbook implements IGuestbook {
 
       return new Guestbook({ id, name, content, date, status });
     }
+    throw Error("객체 생성 오류");
   }
 }

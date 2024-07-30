@@ -1,11 +1,11 @@
 "use client";
 
-import { Guestbook } from "@/services/_external/notion";
 import { createGuestbook } from "@/services/guestbooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendAlarmEmail } from "@/services/alarm";
 import { LoadingSpinner } from "../Loading";
+import { GuestbookFormData } from "@/adapters/guestbooks/type";
 
 export default function GuestbookForm({
   refetch,
@@ -17,7 +17,7 @@ export default function GuestbookForm({
     reset,
     handleSubmit,
     formState: { isValid },
-  } = useForm<Guestbook>({
+  } = useForm<GuestbookFormData>({
     defaultValues: {
       name: "",
       content: "",
@@ -27,7 +27,7 @@ export default function GuestbookForm({
 
   const [isPostLoading, setIsPostLoading] = useState(false);
 
-  const handleBuildForm = ({ name, content, isPrivate }: Guestbook) => {
+  const handleBuildForm = ({ name, content, isPrivate }: GuestbookFormData) => {
     setIsPostLoading(true);
     createGuestbook({ name, content, isPrivate })
       .then(() => {
