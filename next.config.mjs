@@ -12,6 +12,7 @@ const generateVerificationFile = () => {
 };
 
 const nextConfig = {
+  swcMinify: true,
   reactStrictMode: true,
   images: {
     remotePatterns: [

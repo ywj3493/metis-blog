@@ -275,6 +275,9 @@ module.exports = {
             display: "none",
           },
         },
+        ".text-border": {
+          "-webkit-text-stroke": "1px black",
+        },
       });
     }),
   ],
