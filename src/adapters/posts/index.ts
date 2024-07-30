@@ -1,16 +1,4 @@
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { IPost, ITag, MetisPostDatabaseResponse } from "./type";
-
-export function isITag(obj: unknown): obj is ITag {
-  const o = obj as ITag;
-  return (
-    typeof o === "object" &&
-    o !== null &&
-    typeof o.id === "string" &&
-    typeof o.name === "string" &&
-    typeof o.color === "string"
-  );
-}
+import { IPost, ITag, PostDatabaseResponse, TagDatabaseResponse } from "./type";
 
 export function isIPost(obj: unknown): obj is IPost {
   if (typeof obj !== "object" || obj === null) {
@@ -30,14 +18,14 @@ export function isIPost(obj: unknown): obj is IPost {
   );
 }
 
-export function isMetisPostDatabaseResponse(
+export function isPostDatabaseResponse(
   obj: unknown
-): obj is MetisPostDatabaseResponse {
+): obj is PostDatabaseResponse {
   if (typeof obj !== "object" || obj === null) {
     return false;
   }
 
-  const o = obj as MetisPostDatabaseResponse;
+  const o = obj as PostDatabaseResponse;
 
   if (typeof o.id !== "string") return false;
   if (typeof o.properties !== "object" || o.properties === null) return false;
@@ -93,12 +81,12 @@ export class Post implements IPost {
     this.publishTime = post.publishTime;
   }
 
-  public static create(data: Post | IPost | DatabaseObjectResponse) {
+  public static create(data: unknown) {
     if (data instanceof Post) return data;
     if (isIPost(data)) {
       return new Post(data);
     }
-    if (isMetisPostDatabaseResponse(data)) {
+    if (isPostDatabaseResponse(data)) {
       const title = data.properties["제목"].title[0].plain_text;
       const tags = data.properties["Tags"].multi_select;
       const cover = data.cover?.external?.url ?? "";
@@ -117,6 +105,29 @@ export class Post implements IPost {
   }
 }
 
+export function isITag(obj: unknown): obj is ITag {
+  const o = obj as ITag;
+  return (
+    o !== null &&
+    typeof o === "object" &&
+    typeof o.id === "string" &&
+    typeof o.name === "string" &&
+    typeof o.color === "string"
+  );
+}
+
+export function isTagDatabaseResponse(
+  obj: unknown
+): obj is TagDatabaseResponse {
+  const o = obj as TagDatabaseResponse;
+  return (
+    o !== null &&
+    typeof o.color === "string" &&
+    typeof o.id === "string" &&
+    typeof o.name === "string"
+  );
+}
+
 export class Tag implements ITag {
   public id;
   public name;
@@ -130,8 +141,14 @@ export class Tag implements ITag {
     this.description = tag.description;
   }
 
-  public static create(data: Tag | ITag) {
+  public static create(data: Tag | ITag | TagDatabaseResponse) {
     if (data instanceof Tag) return data;
-    return new Tag(data);
+    if (isITag(data)) {
+      return new Tag(data);
+    }
+    if (isTagDatabaseResponse(data)) {
+      return new Tag(data);
+    }
+    throw Error("Tag 객체 생성 오류");
   }
 }

@@ -6,7 +6,7 @@ export interface IGuestbook {
   status: string;
 }
 
-export interface MetisGuestbookDatabaseResponse {
+export interface GuestbookDatabaseResponse {
   id: string;
   properties: {
     작성자: {
@@ -30,4 +30,10 @@ export interface MetisGuestbookDatabaseResponse {
       };
     };
   };
+}
+
+export interface GuestbookFormData {
+  name: string;
+  content: string;
+  isPrivate: boolean;
 }

@@ -1,20 +1,15 @@
-import { Tag } from "@/components/LNB";
+import { GuestbookFormData } from "@/adapters/guestbooks/type";
+import { TagDatabaseResponse } from "@/adapters/posts/type";
 import { Client } from "@notionhq/client";
 import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";
-
-export type Guestbook = {
-  name: string;
-  content: string;
-  isPrivate: boolean;
-};
 
 const notionToken = process.env.NOTION_KEY;
 const notionAboutPageID = process.env.NOTION_ABOUT_PAGE_ID;
 const notionPostDatabaseId = process.env.NOTION_POST_DATABASE_ID;
 const notionGuestbookDatabaseId = process.env.NOTION_GUESTBOOK_DATABASE_ID;
 const notionUser = process.env.NOTION_USER_ID;
-const notionTokenv2 = process.env.NOTION_TOKEN_V2;
+const notionTokenV2 = process.env.NOTION_TOKEN_V2;
 
 const notion = new Client({
   auth: notionToken,
@@ -22,7 +17,7 @@ const notion = new Client({
 
 const notionApi = new NotionAPI({
   activeUser: notionUser,
-  authToken: notionTokenv2,
+  authToken: notionTokenV2,
 });
 
 /**
@@ -31,8 +26,11 @@ const notionApi = new NotionAPI({
  * @returns
  */
 export async function getNotionPosts() {
+  if (!notionPostDatabaseId) {
+    throw Error("notionPostDatabaseId is not settled.");
+  }
   const response = await notion.databases.query({
-    database_id: notionPostDatabaseId as string,
+    database_id: notionPostDatabaseId,
     filter: {
       property: "상태",
       status: {
@@ -50,7 +48,7 @@ export async function getNotionPosts() {
   return response.results as DatabaseObjectResponse[];
 }
 
-/**
+/**`
  * 블로그 포스트 메타데이터 가져오기
  *
  * @param id 페이지 아이디
@@ -97,14 +95,17 @@ export async function getNotionPostMetadata(id: string) {
  * @returns
  */
 export async function getNotionPostDatabaseTags() {
+  if (!notionPostDatabaseId) {
+    throw Error("notionPostDatabaseId is not settled.");
+  }
   const response = await notion.databases.retrieve({
-    database_id: notionPostDatabaseId as string,
+    database_id: notionPostDatabaseId,
   });
 
   /* @ts-expect-error Notion Type Error */
   const tags = response.properties["Tags"].multi_select.options;
 
-  return tags as Tag[];
+  return tags as TagDatabaseResponse[];
 }
 
 /**
@@ -126,7 +127,10 @@ export async function getNotionPage(id: string) {
  * @returns
  */
 export async function getNotionAboutPage() {
-  const response = await notionApi.getPage(notionAboutPageID as string);
+  if (!notionAboutPageID) {
+    throw Error("notionAboutPageID is not settled.");
+  }
+  const response = await notionApi.getPage(notionAboutPageID);
 
   return response;
 }
@@ -142,10 +146,13 @@ export async function postNotionGuestbook({
   name,
   content,
   isPrivate,
-}: Guestbook) {
+}: GuestbookFormData) {
+  if (!notionGuestbookDatabaseId) {
+    throw Error("notionGuestbookDatabaseId is not settled.");
+  }
   const response = await notion.pages.create({
     parent: {
-      database_id: notionGuestbookDatabaseId as string,
+      database_id: notionGuestbookDatabaseId,
     },
     properties: {
       작성자: {
@@ -195,8 +202,11 @@ export async function postNotionGuestbook({
  * @returns
  */
 export async function getNotionGuestbooks() {
+  if (!notionGuestbookDatabaseId) {
+    throw Error("notionGuestbookDatabaseId is not settled.");
+  }
   const response = await notion.databases.query({
-    database_id: notionGuestbookDatabaseId as string,
+    database_id: notionGuestbookDatabaseId,
     sorts: [
       {
         property: "남긴날짜",
