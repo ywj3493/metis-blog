@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction } from "react";
 import TooltipWrapper from "./TooltipWrapper";
 import { Tag } from "@/adapters/posts";
-import TagChip from "./posts/Tag";
+import TagChip from "./posts/TagChip";
 
 type LNBProps = {
   tags: Tag[];

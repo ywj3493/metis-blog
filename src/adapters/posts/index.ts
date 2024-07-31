@@ -141,7 +141,7 @@ export class Tag implements ITag {
     this.description = tag.description;
   }
 
-  public static create(data: Tag | ITag | TagDatabaseResponse) {
+  public static create(data: unknown) {
     if (data instanceof Tag) return data;
     if (isITag(data)) {
       return new Tag(data);
