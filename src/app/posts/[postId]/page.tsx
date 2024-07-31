@@ -1,4 +1,5 @@
 import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
+import PostNavigator from "@/components/posts/PostNavigator";
 import {
   getNotionPage,
   getNotionPostMetadata,
@@ -30,5 +31,11 @@ export async function generateStaticParams() {
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const pageRecordMap = await getNotionPage(params.postId);
 
-  return <ClientNotionRenderer recordMap={pageRecordMap} />;
+  return (
+    <>
+      <ClientNotionRenderer recordMap={pageRecordMap} />
+      {/* @ts-expect-error Server Component */}
+      <PostNavigator id={params.postId} />
+    </>
+  );
 }
