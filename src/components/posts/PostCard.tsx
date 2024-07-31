@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Tag from "./Tag";
 import Image from "next/image";
 import { Post } from "@/adapters/posts";
+import TagChip from "./TagChip";
 
 type PostCardProps = {
   post: Post;
@@ -45,7 +45,7 @@ export default function PostCard({ post }: PostCardProps) {
           <h2 className="px-12 w-full text-center truncate">{title}</h2>
           <div className="flex gap-8 p-4 pb-6">
             {tags.map(({ id, name, color }) => (
-              <Tag key={`_${name}`} id={id} name={name} color={color} />
+              <TagChip key={`_${name}`} id={id} name={name} color={color} />
             ))}
           </div>
         </div>
