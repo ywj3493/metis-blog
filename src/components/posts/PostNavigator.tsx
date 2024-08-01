@@ -18,7 +18,9 @@ export default async function PostNavigator({ id }: PostNavigatorProps) {
   const prevPost =
     currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
-  const { tags } = currentPost as Post;
+  if (!currentPost) throw Error("게시글 관련 문제가 생겼습니다.");
+
+  const { tags } = currentPost;
 
   const tagFilter = new Set(tags.map(({ id }) => id));
 
