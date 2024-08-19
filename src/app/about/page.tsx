@@ -1,6 +1,6 @@
 import Contact from "@/components/about/Contact";
 import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
-import { getNotionAboutPage } from "@/services/_external/notion";
+import { getNotionAboutPage } from "@/services/_external";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

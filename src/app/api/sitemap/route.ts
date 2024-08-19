@@ -1,4 +1,4 @@
-import { getNotionPosts } from "@/services/_external/notion";
+import { getNotionPosts } from "@/services/_external";
 import { MetadataRoute } from "next";
 
 export async function GET() {

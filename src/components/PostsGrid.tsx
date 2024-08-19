@@ -1,4 +1,4 @@
-import PostCard from "./posts/PostCard";
+import { PostCard } from "./posts/PostCard";
 import { Post } from "@/adapters/posts";
 
 type PostsGridProps = {

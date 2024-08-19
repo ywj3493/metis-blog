@@ -7,7 +7,7 @@ type Menu = {
   name: string;
 };
 
-const menus: Menu[] = [
+const MENUS: Menu[] = [
   {
     url: "/about",
     name: "소개",
@@ -30,7 +30,7 @@ export default function Header() {
         <h1 className="text-2xl font-bold">{"메티의 블로그"}</h1>
       </Link>
       <nav className="flex gap-16 clickable">
-        {menus.map(({ name, url }) => (
+        {MENUS.map(({ name, url }) => (
           <Link key={name} href={url}>
             {name}
           </Link>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import GuestbookCard from "./GuestbookCard";
 import GuestbookForm from "./GuestbookForm";
-import { getGuestbooks } from "@/services/guestbooks";
+import { getGuestbooks } from "@/services";
 import { Guestbook } from "@/adapters/guestbooks";
 import { LoadingSpinner } from "../common/Loading";
 
