@@ -1,9 +1,9 @@
 "use client";
 
-import { createGuestbook } from "@/services/guestbooks";
+import { createGuestbook } from "@/services";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { sendAlarmEmail } from "@/services/alarm";
+import { sendAlarmEmail } from "@/services";
 import { GuestbookFormData } from "@/adapters/guestbooks/type";
 import { LoadingSpinner } from "../common/Loading";
 

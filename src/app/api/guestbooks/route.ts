@@ -1,7 +1,4 @@
-import {
-  getNotionGuestbooks,
-  postNotionGuestbook,
-} from "@/services/_external/notion";
+import { getNotionGuestbooks, postNotionGuestbook } from "@/services/_external";
 import * as yup from "yup";
 
 const bodySchema = yup.object().shape({

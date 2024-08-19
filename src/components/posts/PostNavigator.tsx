@@ -1,4 +1,4 @@
-import { getNotionPosts } from "@/services/_external/notion";
+import { getNotionPosts } from "@/services/_external";
 import SmallPostCard from "./SmallPostCard";
 import { Post } from "@/adapters/posts";
 import TooltipWrapper from "../common/TooltipWrapper";

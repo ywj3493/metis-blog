@@ -7,21 +7,7 @@ type PostCardProps = {
   post: Post;
 };
 
-export function PostCardSkeleton() {
-  return (
-    <div className="skeleton-card space-y-4 p-4 w-320 h-300 bg-gray-100 rounded-lg">
-      <div className="skeleton-image bg-gray-200 rounded-lg w-full h-44 animate-pulse"></div>
-      <div className="skeleton-text-line bg-gray-200 rounded h-5 w-full animate-pulse"></div>
-      <div className="skeleton-text-line short bg-gray-200 rounded h-5 w-3/5 animate-pulse"></div>
-      <div className="skeleton-tags flex space-x-2">
-        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse"></div>
-        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse"></div>
-      </div>
-    </div>
-  );
-}
-
-export default function PostCard({ post }: PostCardProps) {
+export function PostCard({ post }: PostCardProps) {
   const { id, cover, title, publishTime, icon, tags } = post;
 
   return (
@@ -51,5 +37,19 @@ export default function PostCard({ post }: PostCardProps) {
         </div>
       </article>
     </Link>
+  );
+}
+
+export function PostCardSkeleton() {
+  return (
+    <div className="skeleton-card space-y-4 p-4 w-320 h-300 bg-gray-100 rounded-lg">
+      <div className="skeleton-image bg-gray-200 rounded-lg w-full h-44 animate-pulse"></div>
+      <div className="skeleton-text-line bg-gray-200 rounded h-5 w-full animate-pulse"></div>
+      <div className="skeleton-text-line short bg-gray-200 rounded h-5 w-3/5 animate-pulse"></div>
+      <div className="skeleton-tags flex space-x-2">
+        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse"></div>
+        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse"></div>
+      </div>
+    </div>
   );
 }

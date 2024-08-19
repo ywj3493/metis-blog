@@ -9,11 +9,13 @@ import { ExtendedRecordMap } from "notion-types";
 import "react-notion-x/src/styles.css";
 import { useTheme } from "next-themes";
 
-const ClientNotionRenderer = ({
-  recordMap,
-}: {
+type ClientNotionRendererProps = {
   recordMap: ExtendedRecordMap;
-}) => {
+};
+
+export default function ClientNotionRenderer({
+  recordMap,
+}: ClientNotionRendererProps) {
   const { theme } = useTheme();
   return (
     <NotionRenderer
@@ -29,6 +31,4 @@ const ClientNotionRenderer = ({
       disableHeader
     />
   );
-};
-
-export default ClientNotionRenderer;
+}

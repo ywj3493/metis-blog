@@ -1,8 +1,5 @@
 import { server } from "@/mocks/server";
-import {
-  getNotionPostMetadata,
-  getNotionPosts,
-} from "@/services/_external/notion";
+import { getNotionPostMetadata, getNotionPosts } from "@/services/_external";
 import { describe, expect, it } from "vitest";
 
 describe("Test for build all posts", () => {

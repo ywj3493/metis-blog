@@ -4,7 +4,7 @@ import {
   getNotionPage,
   getNotionPostMetadata,
   getNotionPosts,
-} from "@/services/_external/notion";
+} from "@/services/_external";
 
 type PostDetailPageProps = {
   params: { postId: string };

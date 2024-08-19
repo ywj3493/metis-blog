@@ -2,7 +2,7 @@ import FilterablePosts from "@/components/posts/FilterablePosts";
 import {
   getNotionPostDatabaseTags,
   getNotionPosts,
-} from "@/services/_external/notion";
+} from "@/services/_external";
 import { Metadata } from "next";
 
 export const revalidate = 180;
