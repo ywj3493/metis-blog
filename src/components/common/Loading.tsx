@@ -1,7 +1,7 @@
 export function LoadingPage() {
   return (
     <div className="w-full h-full flex justify-center items-center bg-gray-400 opacity-40">
-      <Loading />
+      <LoadingDot />
     </div>
   );
 }
@@ -9,20 +9,21 @@ export function LoadingPage() {
 export function LoadingSection() {
   return (
     <div className="w-full flex justify-center items-center">
-      <Loading />
+      <LoadingDot />
     </div>
   );
 }
 
-export function Loading() {
+export function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 z-1">
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 rounded-full animate-pulse bg-blue-500"></div>
-        <div className="w-4 h-4 rounded-full animate-pulse bg-green-500"></div>
-        <div className="w-4 h-4 rounded-full animate-pulse bg-yellow-500"></div>
-        <div className="w-4 h-4 rounded-full animate-pulse bg-red-500"></div>
-      </div>
+    <div className="flex justify-center items-center">
+      <div className="animate-spin w-32 h-32 border-4 border-gray-200 border-b-blue-300 rounded-full inline-block box-border "></div>
     </div>
+  );
+}
+
+export function LoadingDot() {
+  return (
+    <div className="animate-pulse rounded-full w-24 h-24 bg-gray-300"></div>
   );
 }

@@ -4,8 +4,8 @@ import { createGuestbook } from "@/services/guestbooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendAlarmEmail } from "@/services/alarm";
-import { LoadingSpinner } from "../Loading";
 import { GuestbookFormData } from "@/adapters/guestbooks/type";
+import { LoadingSpinner } from "../common/Loading";
 
 export default function GuestbookForm({
   refetch,

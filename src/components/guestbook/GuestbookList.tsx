@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import GuestbookCard from "./GuestbookCard";
 import GuestbookForm from "./GuestbookForm";
 import { getGuestbooks } from "@/services/guestbooks";
-import { LoadingSpinner } from "../Loading";
 import { Guestbook } from "@/adapters/guestbooks";
+import { LoadingSpinner } from "../common/Loading";
 
 export default function GuestbookList() {
   const [guestbooks, setGuestbooks] = useState<Guestbook[] | null>(null);

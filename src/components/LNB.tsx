@@ -1,9 +1,9 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import TooltipWrapper from "./TooltipWrapper";
 import { Tag } from "@/adapters/posts";
 import TagChip from "./posts/TagChip";
+import TooltipWrapper from "./common/TooltipWrapper";
 
 type LNBProps = {
   tags: Tag[];
