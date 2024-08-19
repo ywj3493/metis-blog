@@ -1,7 +1,7 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { RiNotionFill } from "react-icons/ri";
-import TooltipWrapper from "../TooltipWrapper";
 import Link from "next/link";
+import TooltipWrapper from "../common/TooltipWrapper";
 
 const LINKS = [
   {

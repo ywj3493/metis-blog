@@ -1,7 +1,7 @@
 import { getNotionPosts } from "@/services/_external/notion";
 import SmallPostCard from "./SmallPostCard";
 import { Post } from "@/adapters/posts";
-import TooltipWrapper from "../TooltipWrapper";
+import TooltipWrapper from "../common/TooltipWrapper";
 
 type PostNavigatorProps = {
   id: string;

@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { MdDarkMode as DarkModeIcon } from "react-icons/md";
 import { MdOutlineDarkMode as LightModeIcon } from "react-icons/md";
-import { LoadingDot } from "./Loading";
+import { LoadingDot } from "./common/Loading";
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);

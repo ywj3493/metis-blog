@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AiFillGithub } from "react-icons/ai";
-import TooltipWrapper from "../TooltipWrapper";
+import TooltipWrapper from "../common/TooltipWrapper";
 
 export default function Hero() {
   return (
