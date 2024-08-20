@@ -35,16 +35,18 @@ export default function LNB({ tags, selectedTags, setSelectedTags }: LNBProps) {
           Tags
         </div>
       </TooltipWrapper>
-      {tags.map(({ id, name, color }) => (
-        <TagChip
-          key={id}
-          id={id}
-          name={name}
-          color={color}
-          notSelected={!selectedTags.has(id)}
-          onClick={handleTagClick}
-        />
-      ))}
+      <div className="grid grid-cols-2 gap-4 text-center ">
+        {tags.map(({ id, name, color }) => (
+          <TagChip
+            key={id}
+            id={id}
+            name={name}
+            color={color}
+            notSelected={!selectedTags.has(id)}
+            onClick={handleTagClick}
+          />
+        ))}
+      </div>
     </div>
   );
 }
