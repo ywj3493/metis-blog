@@ -10,6 +10,9 @@
     "test": "vitest",
     "test:deep": "DEEP_TEST=true vitest --run"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "@vercel/analytics": "^1.3.1",
