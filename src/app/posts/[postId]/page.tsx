@@ -6,6 +6,8 @@ import {
   getNotionPosts,
 } from "@/services/_external";
 
+export const revalidate = 180;
+
 type PostDetailPageProps = {
   params: { postId: string };
 };
