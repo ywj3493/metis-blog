@@ -3,6 +3,8 @@ import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
 import { getNotionAboutPage } from "@/services/_external";
 import { Metadata } from "next";
 
+export const revalidate = 180;
+
 export const metadata: Metadata = {
   title: "about",
   description: "메티 소개글",
