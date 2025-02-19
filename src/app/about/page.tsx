@@ -1,6 +1,6 @@
-import Contact from "@/components/about/Contact";
-import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
-import { getNotionAboutPage } from "@/services/_external";
+import { ClientNotionRenderer } from "@/entities/posts/ui";
+import { getNotionAboutPage } from "@/features/notion/model";
+import { Contact } from "@/features/profile/ui";
 import { Metadata } from "next";
 
 export const revalidate = 180;
