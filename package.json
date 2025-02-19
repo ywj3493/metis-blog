@@ -29,7 +29,7 @@
     "react-notion-x": "^6.16.0",
     "react-query": "^3.39.3",
     "sharp": "^0.33.4",
-    "yup": "^1.4.0"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.5",
