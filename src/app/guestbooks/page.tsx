@@ -1,5 +1,5 @@
-import Contact from "@/components/about/Contact";
-import GuestbookList from "@/components/guestbook/GuestbookList";
+import { GuestbookList } from "@/features/guestbooks/ui";
+import { Contact } from "@/features/profile/ui";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

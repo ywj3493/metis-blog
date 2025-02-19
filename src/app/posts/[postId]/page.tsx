@@ -1,10 +1,10 @@
-import ClientNotionRenderer from "@/components/posts/ClientNotionRenderer";
-import PostNavigator from "@/components/posts/PostNavigator";
+import { ClientNotionRenderer } from "@/entities/posts/ui";
 import {
   getNotionPage,
   getNotionPostMetadata,
   getNotionPosts,
-} from "@/services/_external";
+} from "@/features/notion/model";
+import { PostNavigator } from "@/features/posts/ui";
 
 export const revalidate = 180;
 

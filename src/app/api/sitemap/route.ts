@@ -1,4 +1,4 @@
-import { getNotionPosts } from "@/services/_external";
+import { getNotionPosts } from "@/features/notion/model";
 import { MetadataRoute } from "next";
 
 export async function GET() {
@@ -22,7 +22,7 @@ export async function GET() {
     {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: "yearly",
+      changeFrequency: "daily",
       priority: 0.8,
     },
     {

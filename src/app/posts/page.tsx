@@ -1,8 +1,8 @@
-import FilterablePosts from "@/components/posts/FilterablePosts";
 import {
   getNotionPostDatabaseTags,
   getNotionPosts,
-} from "@/services/_external";
+} from "@/features/notion/model";
+import { FilterablePosts } from "@/features/posts/ui";
 import { Metadata } from "next";
 
 export const revalidate = 180;

@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 // import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
@@ -9,7 +8,8 @@ import "./globals.css";
 import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
-import ThemeProvider from "@/components/ThemeProvider";
+import { Header } from "@/widgets/ui";
+import { ThemeProvider } from "@/entities/theme/hooks";
 
 const inter = Inter({ subsets: ["latin"] });
 
