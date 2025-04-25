@@ -20,7 +20,10 @@ export function Hero() {
 
       <Tooltip message="블로그 repository 주소">
         <Link href="https://github.com/ywj3493/metis-blog">
-          <button className="bg-blue-200 font-bold rounded-xl py-4 px-16 text-gray-800 flex items-center gap-8 text-lg">
+          <button
+            type="button"
+            className="bg-blue-200 font-bold rounded-xl py-4 px-16 text-gray-800 flex items-center gap-8 text-lg"
+          >
             Github <AiFillGithub />
           </button>
         </Link>

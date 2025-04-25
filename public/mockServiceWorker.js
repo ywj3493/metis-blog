@@ -188,7 +188,7 @@ async function getResponse(event, client, requestId) {
     // Remove internal MSW request header so the passthrough request
     // complies with any potential CORS preflight checks on the server.
     // Some servers forbid unknown request headers.
-    delete headers["x-msw-intention"];
+    headers["x-msw-intention"] = undefined;
 
     return fetch(requestClone, { headers });
   }
@@ -250,7 +250,7 @@ function sendToClient(client, message, transferrables = []) {
     const channel = new MessageChannel();
 
     channel.port1.onmessage = (event) => {
-      if (event.data && event.data.error) {
+      if (event.data?.error) {
         return reject(event.data.error);
       }
 

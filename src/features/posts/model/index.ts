@@ -92,11 +92,11 @@ export class Post implements IPost {
       return new Post(data);
     }
     if (isPostDatabaseResponse(data)) {
-      const title = data.properties["제목"].title[0].plain_text;
-      const tags = data.properties["Tags"].multi_select;
+      const title = data.properties.제목.title[0].plain_text;
+      const tags = data.properties.Tags.multi_select;
       const cover = data.cover?.external?.url ?? "";
       const icon = data.icon?.external?.url ?? "/mascot.png";
-      const publishTime = data.properties["날짜"].date.start;
+      const publishTime = data.properties.날짜.date.start;
       return new Post({
         id: data.id,
         title,

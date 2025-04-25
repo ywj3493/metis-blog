@@ -33,7 +33,7 @@ export const testController = [
     async ({ request }) => {
       const newEmployee = await request.json();
 
-      const newEmpNumber = employeeEntity.size + 1 + "";
+      const newEmpNumber = `${employeeEntity.size + 1}`;
 
       employeeEntity.set(newEmpNumber, {
         empNumber: newEmpNumber,
@@ -52,9 +52,8 @@ export const testController = [
       if (employee) {
         employeeEntity.delete(employee.empNumber);
         return HttpResponse.json(employee);
-      } else {
-        return HttpResponse.json(null, { status: 404 });
       }
+      return HttpResponse.json(null, { status: 404 });
     },
   ),
 ];

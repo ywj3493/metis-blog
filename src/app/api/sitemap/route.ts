@@ -49,7 +49,7 @@ export async function GET() {
         return `
           <url>
             <loc>${url}</loc>
-            <lastmod>${formatDate(new Date(lastModified!))}</lastmod>
+            <lastmod>${formatDate(new Date(lastModified as string))}</lastmod>
             <changefreq>${changeFrequency}</changefreq>
             <priority>${priority}</priority>
           </url>
