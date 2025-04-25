@@ -36,7 +36,6 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   return (
     <>
       <ClientNotionRenderer recordMap={pageRecordMap} />
-      {/* @ts-expect-error Server Component */}
       <PostNavigator id={params.postId} />
     </>
   );
