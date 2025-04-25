@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 const generateVerificationFile = () => {
   const verificationCode = process.env.GOOGLE_SITE_VERIFICATION;

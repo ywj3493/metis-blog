@@ -1,7 +1,7 @@
-import { GuestbookFormData } from "@/entities/guestbooks/model/type";
-import { TagDatabaseResponse } from "@/features/posts/model/type";
+import type { GuestbookFormData } from "@/entities/guestbooks/model/type";
+import type { TagDatabaseResponse } from "@/features/posts/model/type";
 import { Client } from "@notionhq/client";
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";
 
 const notionToken = process.env.NOTION_KEY;
@@ -68,7 +68,7 @@ export async function getNotionPostMetadata(id: string) {
   /* @ts-expect-error Notion Type Error */
   const tags = pageResponse.properties["Tags"].multi_select.map(
     /* @ts-expect-error Notion Type Error */
-    (tag) => tag.name
+    (tag) => tag.name,
   );
 
   const content =

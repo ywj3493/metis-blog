@@ -1,4 +1,4 @@
-import { EmailForm } from "../model";
+import type { EmailForm } from "../model";
 
 export async function sendAlarmEmail(form: EmailForm) {
   const response = await fetch("/api/alarm", {

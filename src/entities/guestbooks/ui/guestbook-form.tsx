@@ -1,13 +1,17 @@
 "use client";
 
+import type { GuestbookFormData } from "@/entities/guestbooks/model/type";
+import { sendAlarmEmail } from "@/features/alarm/api";
+import { createGuestbook } from "@/features/guestbooks/api";
+import { LoadingSpinner } from "@/shared/ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { sendAlarmEmail } from "@/features/alarm/api";
-import { LoadingSpinner } from "@/shared/ui";
-import { GuestbookFormData } from "@/entities/guestbooks/model/type";
-import { createGuestbook } from "@/features/guestbooks/api";
 
-export function GuestbookForm({ refetch }: { refetch: () => Promise<any> }) {
+export function GuestbookForm({
+  refetch,
+}: {
+  refetch: () => Promise<unknown>;
+}) {
   const {
     register,
     reset,
@@ -57,11 +61,12 @@ export function GuestbookForm({ refetch }: { refetch: () => Promise<any> }) {
           />
           <span>
             <input
+              id="isPrivate"
               type="checkbox"
               {...register("isPrivate")}
               className="mr-4"
             />
-            <label>비공개</label>
+            <label htmlFor="isPrivate">비공개</label>
           </span>
         </div>
         <textarea

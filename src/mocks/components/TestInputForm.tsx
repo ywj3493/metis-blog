@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { TestEmployee, TestEmployeeRequest } from "../api/test";
+import type { TestEmployee, TestEmployeeRequest } from "../api/test";
 
 interface TestEmployeeItemProps extends TestEmployee {
   onClickDelete: () => void;
@@ -61,7 +61,7 @@ export function TestInputForm() {
     if (!!name && !!age) {
       await postTestEmployee({
         name: name,
-        age: parseInt(age),
+        age: Number.parseInt(age),
       });
     }
     setPostTrigger((prev) => !prev);

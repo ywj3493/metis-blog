@@ -1,7 +1,7 @@
+import { Tooltip } from "@/shared/ui";
+import Link from "next/link";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { RiNotionFill } from "react-icons/ri";
-import Link from "next/link";
-import { Tooltip } from "@/shared/ui";
 
 const LINKS = [
   {

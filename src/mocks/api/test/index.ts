@@ -1,4 +1,4 @@
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 const employeeEntity = new Map<string, TestEmployee>();
 
@@ -43,7 +43,7 @@ export const testController = [
       return HttpResponse.json(employeeEntity.get(newEmpNumber), {
         status: 201,
       });
-    }
+    },
   ),
   http.delete<TestEmployeeParams, never, never, "/employee/:empNumber">(
     "/employee/:empNumber",
@@ -55,6 +55,6 @@ export const testController = [
       } else {
         return HttpResponse.json(null, { status: 404 });
       }
-    }
+    },
   ),
 ];

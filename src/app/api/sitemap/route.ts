@@ -1,5 +1,5 @@
 import { getNotionPosts } from "@/features/notion/model";
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 export async function GET() {
   const baseUrl = process.env.BLOG_URL || "";

@@ -1,6 +1,6 @@
 import { getNotionPosts } from "@/features/notion/model";
-import { PostsGrid } from "./posts-grid";
 import { Post } from "../model";
+import { PostsGrid } from "./posts-grid";
 
 export async function FeaturedPosts() {
   const dataList = await getNotionPosts();

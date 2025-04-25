@@ -1,4 +1,4 @@
-import {
+import type {
   GuestbookDatabaseResponse,
   GuestbookFormData,
 } from "@/entities/guestbooks/model/type";

@@ -74,7 +74,6 @@ module.exports = {
         gray1: "#eoeoe6",
 
         //Primary
-        primary10: "#5e00f5",
         primary50: "#7722ff",
         primary2: "#924eff",
         primary10: "#ad7bff",
@@ -170,7 +169,7 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(function ({ addBase, addComponents, addUtilities, theme }) {
+    plugin(({ addBase, addComponents, addUtilities, theme }) => {
       addBase({});
       addComponents({
         ".flex-center": {
