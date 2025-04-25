@@ -4,14 +4,14 @@ import { Guestbook } from "@/entities/guestbooks/model";
 import { GuestbookCard } from "@/entities/guestbooks/ui";
 import { GuestbookForm } from "@/entities/guestbooks/ui/guestbook-form";
 import { LoadingSpinner } from "@/shared/ui";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getGuestbooks } from "../api";
 
 export function GuestbookList() {
   const [guestbooks, setGuestbooks] = useState<Guestbook[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchGuestbooks = async () => {
+  const fetchGuestbooks = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await getGuestbooks();
@@ -24,11 +24,11 @@ export function GuestbookList() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchGuestbooks();
-  }, []);
+  }, [fetchGuestbooks]);
 
   return (
     <div className="flex flex-col gap-12 items-center">

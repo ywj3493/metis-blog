@@ -20,6 +20,7 @@ function TestEmployeeItem({
       <div className="font-r-16 text-black">{`이름: ${name}`}</div>
       <div className="font-r-16 text-black">{`나이: ${age}`}</div>
       <button
+        type="button"
         className="bg-red-600 text-white p-5 rounded-5"
         onClick={onClickDelete}
       >
@@ -30,13 +31,13 @@ function TestEmployeeItem({
 }
 
 const getTestEmployee = async () => {
-  const { data } = await axios.get<TestEmployee[]>(`/emplyee`);
+  const { data } = await axios.get<TestEmployee[]>("/emplyee");
 
   return data;
 };
 
 const postTestEmployee = async (request: TestEmployeeRequest) => {
-  const { data } = await axios.post<TestEmployeeRequest>(`/employee`, request);
+  const { data } = await axios.post<TestEmployeeRequest>("/employee", request);
 
   return data;
 };
@@ -80,21 +81,20 @@ export function TestInputForm() {
     try {
       fetch();
     } catch (e) {}
-  }, [postTrigger]);
+  }, []);
 
   return (
     <>
       <div className="flex flex-col gap-10">
-        {employees &&
-          employees.map(({ name, age, empNumber }) => (
-            <TestEmployeeItem
-              key={empNumber}
-              name={name}
-              age={age}
-              empNumber={empNumber}
-              onClickDelete={() => handleDelete(empNumber)}
-            />
-          ))}
+        {employees?.map(({ name, age, empNumber }) => (
+          <TestEmployeeItem
+            key={empNumber}
+            name={name}
+            age={age}
+            empNumber={empNumber}
+            onClickDelete={() => handleDelete(empNumber)}
+          />
+        ))}
       </div>
       <div className="flex flex-col gap-20">
         <div className="font-r-16 text-black">Name</div>
@@ -102,6 +102,7 @@ export function TestInputForm() {
         <div className="font-r-16 text-black">Age</div>
         <input ref={ageInputRef} type="number" placeholder="age" />
         <button
+          type="button"
           className="bg-cyan-700 text-white p-5 rounded-5"
           onClick={handlePost}
         >

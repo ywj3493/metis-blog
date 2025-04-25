@@ -63,10 +63,10 @@ export async function getNotionPostMetadata(id: string) {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties["제목"].title[0].plain_text;
+  const title = pageResponse.properties.제목.title[0].plain_text;
 
   /* @ts-expect-error Notion Type Error */
-  const tags = pageResponse.properties["Tags"].multi_select.map(
+  const tags = pageResponse.properties.Tags.multi_select.map(
     /* @ts-expect-error Notion Type Error */
     (tag) => tag.name,
   );
@@ -103,7 +103,7 @@ export async function getNotionPostDatabaseTags() {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const tags = response.properties["Tags"].multi_select.options;
+  const tags = response.properties.Tags.multi_select.options;
 
   return tags as TagDatabaseResponse[];
 }
