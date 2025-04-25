@@ -31,7 +31,7 @@ export function GuestbookList() {
   }, [fetchGuestbooks]);
 
   return (
-    <div className="flex flex-col gap-12 items-center">
+    <div className="flex flex-col items-center gap-12">
       <GuestbookForm refetch={fetchGuestbooks} />
       {isLoading && <LoadingSpinner />}
       {guestbooks?.map((guestbook) => (

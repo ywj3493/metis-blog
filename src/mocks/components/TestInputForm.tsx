@@ -15,13 +15,13 @@ function TestEmployeeItem({
   onClickDelete,
 }: TestEmployeeItemProps) {
   return (
-    <div className="grid grid-cols-4 h-48 rounded-5 border-blue-200 items-center bg-white p-8">
+    <div className="grid h-48 grid-cols-4 items-center rounded-5 border-blue-200 bg-white p-8">
       <div className="font-r-16 text-black">{`사번: ${empNumber}`}</div>
       <div className="font-r-16 text-black">{`이름: ${name}`}</div>
       <div className="font-r-16 text-black">{`나이: ${age}`}</div>
       <button
         type="button"
-        className="bg-red-600 text-white p-5 rounded-5"
+        className="rounded-5 bg-red-600 p-5 text-white"
         onClick={onClickDelete}
       >
         delete
@@ -99,7 +99,7 @@ export function TestInputForm() {
         <input ref={ageInputRef} type="number" placeholder="age" />
         <button
           type="button"
-          className="bg-cyan-700 text-white p-5 rounded-5"
+          className="rounded-5 bg-cyan-700 p-5 text-white"
           onClick={handlePost}
         >
           POST

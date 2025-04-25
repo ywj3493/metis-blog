@@ -11,10 +11,10 @@ export function SmallPostCard({ post }: SmallPostCardProps) {
   const { id, title, icon, tags } = post;
   return (
     <Link href={`/posts/${id}`} className="block text-black">
-      <article className="clickable flex items-center py-10 w-340 shadow-lg rounded-sm hover:-translate-x-1 hover:-translate-y-1">
-        <div className="flex flex-col gap-4 items-center w-full">
+      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-340 items-center rounded-sm py-10 shadow-lg">
+        <div className="flex w-full flex-col items-center gap-4">
           <Image src={icon} alt="icon" width={24} height={24} />
-          <h2 className="px-12 w-full text-center truncate">{title}</h2>
+          <h2 className="w-full truncate px-12 text-center">{title}</h2>
           <div className="flex gap-8 p-4 pb-6">
             {tags.map(({ id, name, color }) => (
               <TagChip key={`_${name}`} id={id} name={name} color={color} />

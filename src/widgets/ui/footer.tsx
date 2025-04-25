@@ -2,6 +2,6 @@
 
 export function Footer() {
   return (
-    <footer className="bg-black text-white text-sm text-center">Footer</footer>
+    <footer className="bg-black text-center text-sm text-white">Footer</footer>
   );
 }

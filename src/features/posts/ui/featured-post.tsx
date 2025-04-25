@@ -6,7 +6,7 @@ export async function FeaturedPosts() {
   const dataList = await getNotionPosts();
   const posts = dataList.map(Post.create);
   return (
-    <section className="p-24 w-full">
+    <section className="w-full p-24">
       <PostsGrid posts={posts} />
     </section>
   );

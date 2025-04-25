@@ -13,17 +13,17 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="aspect-square w-24 h-24">
+    <div className="aspect-square h-24 w-24">
       {mounted ? (
         theme === "light" ? (
           <DarkModeIcon
             onClick={() => setTheme("dark")}
-            className="aspect-square w-full h-full"
+            className="aspect-square h-full w-full"
           />
         ) : (
           <LightModeIcon
             onClick={() => setTheme("light")}
-            className="aspect-square w-full h-full"
+            className="aspect-square h-full w-full"
           />
         )
       ) : (

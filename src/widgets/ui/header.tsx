@@ -24,12 +24,12 @@ const MENUS: Menu[] = [
 
 export function Header() {
   return (
-    <header className="flex justify-between items-center py-16 px-24 box-border">
+    <header className="box-border flex items-center justify-between px-24 py-16">
       <Link className="clickable flex items-center gap-4" href="/">
         <Image src={"/mascot.png"} height={48} width={48} alt={"icon"} />
-        <h1 className="text-2xl font-bold">{"메티의 블로그"}</h1>
+        <h1 className="font-bold text-2xl">{"메티의 블로그"}</h1>
       </Link>
-      <nav className="flex gap-16 clickable">
+      <nav className="clickable flex gap-16">
         {MENUS.map(({ name, url }) => (
           <Link key={name} href={url}>
             {name}

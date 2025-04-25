@@ -37,7 +37,7 @@ export function TagChip({
 
   return (
     <div
-      className={`${dynamicBgColor} ${dynamicTextColor} py-4 px-12 text-12  rounded-4 clickable`}
+      className={`${dynamicBgColor} ${dynamicTextColor} clickable rounded-4 px-12 py-4 text-12`}
       onClick={handleTagClick}
       onKeyDown={handleTagClick}
     >
