@@ -29,12 +29,12 @@ export async function PostNavigator({ id }: PostNavigatorProps) {
     .filter((post) => post.tags.some(({ id }) => tagFilter.has(id)));
 
   return (
-    <div className="pb-40 flex flex-col justify-center items-center">
-      <div className="pb-40 grid sm:grid-cols-1 md:grid-cols-2 gap-30">
-        <div className="w-340 flex items-center text-center justify-center text-gray-400">
+    <div className="flex flex-col items-center justify-center pb-40">
+      <div className="grid gap-30 pb-40 sm:grid-cols-1 md:grid-cols-2">
+        <div className="flex w-340 items-center justify-center text-center text-gray-400">
           {nextPost ? (
-            <div className="flex flex-col text-black items-center">
-              <p className="border-b-2 border-blue-400 border-solid mb-2 w-fit">
+            <div className="flex flex-col items-center text-black">
+              <p className="mb-2 w-fit border-blue-400 border-b-2 border-solid">
                 다음 포스트
               </p>
               <SmallPostCard post={nextPost} />
@@ -43,10 +43,10 @@ export async function PostNavigator({ id }: PostNavigatorProps) {
             "다음 글이 없습니다."
           )}
         </div>
-        <div className="w-340 flex items-center text-center justify-center text-gray-400">
+        <div className="flex w-340 items-center justify-center text-center text-gray-400">
           {prevPost ? (
-            <div className="flex flex-col text-black items-center">
-              <p className="border-b-2 border-blue-400 border-solid mb-2 w-fit">
+            <div className="flex flex-col items-center text-black">
+              <p className="mb-2 w-fit border-blue-400 border-b-2 border-solid">
                 이전 포스트
               </p>
               <SmallPostCard post={prevPost} />
@@ -56,9 +56,9 @@ export async function PostNavigator({ id }: PostNavigatorProps) {
           )}
         </div>
       </div>
-      <div className="mt-20 flex flex-col text-black items-center">
+      <div className="mt-20 flex flex-col items-center text-black">
         <Tooltip message="보고있는 게시물과 같은 태그를 가진 포스트 입니다.">
-          <p className="border-b-2 border-blue-400 border-solid mb-2 w-fit">
+          <p className="mb-2 w-fit border-blue-400 border-b-2 border-solid">
             연관 포스트
           </p>
         </Tooltip>

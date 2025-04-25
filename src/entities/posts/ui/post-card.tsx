@@ -11,8 +11,8 @@ export function PostCard({ post }: PostCardProps) {
   const { id, cover, title, publishTime, icon, tags } = post;
 
   return (
-    <Link href={`/posts/${id}`} className="block mx-auto h-min">
-      <article className="clickable flex flex-col items-center w-320 shadow-lg rounded-sm hover:-translate-x-1 hover:-translate-y-1">
+    <Link href={`/posts/${id}`} className="mx-auto block h-min">
+      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-320 flex-col items-center rounded-sm shadow-lg">
         <div className="relative">
           <Image
             src={cover}
@@ -21,14 +21,14 @@ export function PostCard({ post }: PostCardProps) {
             height={200}
             style={{ width: 320, height: 200 }}
           />
-          <p className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white break-words">
+          <p className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full break-words text-center text-white">
             {title}
           </p>
         </div>
-        <div className="flex flex-col gap-4 items-center w-full">
+        <div className="flex w-full flex-col items-center gap-4">
           <time className="self-end p-4 text-14">{publishTime}</time>
           <Image src={icon} alt="icon" width={24} height={24} />
-          <h2 className="px-12 w-full text-center truncate">{title}</h2>
+          <h2 className="w-full truncate px-12 text-center">{title}</h2>
           <div className="flex gap-8 p-4 pb-6">
             {tags.map(({ id, name, color }) => (
               <TagChip key={`_${name}`} id={id} name={name} color={color} />
@@ -42,13 +42,13 @@ export function PostCard({ post }: PostCardProps) {
 
 export function PostCardSkeleton() {
   return (
-    <div className="skeleton-card space-y-4 p-4 w-320 h-300 bg-gray-100 rounded-lg">
-      <div className="skeleton-image bg-gray-200 rounded-lg w-full h-44 animate-pulse" />
-      <div className="skeleton-text-line bg-gray-200 rounded h-5 w-full animate-pulse" />
-      <div className="skeleton-text-line short bg-gray-200 rounded h-5 w-3/5 animate-pulse" />
+    <div className="skeleton-card h-300 w-320 space-y-4 rounded-lg bg-gray-100 p-4">
+      <div className="skeleton-image h-44 w-full animate-pulse rounded-lg bg-gray-200" />
+      <div className="skeleton-text-line h-5 w-full animate-pulse rounded bg-gray-200" />
+      <div className="skeleton-text-line short h-5 w-3/5 animate-pulse rounded bg-gray-200" />
       <div className="skeleton-tags flex space-x-2">
-        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse" />
-        <div className="skeleton-tag bg-gray-200 rounded h-5 w-12 animate-pulse" />
+        <div className="skeleton-tag h-5 w-12 animate-pulse rounded bg-gray-200" />
+        <div className="skeleton-tag h-5 w-12 animate-pulse rounded bg-gray-200" />
       </div>
     </div>
   );

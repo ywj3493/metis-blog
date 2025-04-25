@@ -11,7 +11,7 @@ export function ErrorSection({ message }: ErrorSectionProps) {
     ? message
     : "알수없는 오류로 인해 표시 할 수 없습니다.";
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="flex w-full items-center justify-center">
       {displayMessage}
     </div>
   );

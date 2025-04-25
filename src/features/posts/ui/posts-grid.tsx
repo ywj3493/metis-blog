@@ -7,7 +7,7 @@ type PostsGridProps = {
 
 export function PostsGrid({ posts }: PostsGridProps) {
   return (
-    <ul className="grid gap-16 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lx:grid-cols-4">
+    <ul className="grid grid-cols-1 lx:grid-cols-4 gap-16 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

@@ -24,9 +24,9 @@ const LINKS = [
 export function Contact() {
   return (
     <article className="flex flex-col items-center">
-      <h2 className="text-3xl font-bold my-2">연락처</h2>
+      <h2 className="my-2 font-bold text-3xl">연락처</h2>
       <p>dbsdndwo12@gmail.com</p>
-      <ul className="flex gap-4 my-8">
+      <ul className="my-8 flex gap-4">
         {LINKS.map((link) => (
           <Tooltip key={link.url} message={link.tooltip}>
             <Link

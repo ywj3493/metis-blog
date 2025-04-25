@@ -34,7 +34,7 @@ export default function RootLayout({
       className={inter.className}
       suppressHydrationWarning={process.env.NODE_ENV === "production"}
     >
-      <body className="flex flex-col w-full max-w-screen-xl mx-auto">
+      <body className="mx-auto flex w-full max-w-screen-xl flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

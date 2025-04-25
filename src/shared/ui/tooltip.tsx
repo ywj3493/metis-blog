@@ -7,14 +7,11 @@ export function Tooltip({
   width?: number;
 }) {
   return (
-    <div className="relative inline-block cursor-pointer tooltip-wrapper">
+    <div className="tooltip-wrapper relative inline-block cursor-pointer">
       {children}
-      <div
-        className="absolute invisible overflow-visible bg-gray-700 text-white text-xs 
-      whitespace-nowrap w-auto rounded py-2 px-8 bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-300 tooltip-text"
-      >
+      <div className="-translate-x-1/2 tooltip-text invisible absolute bottom-full left-1/2 mb-2 w-auto transform overflow-visible whitespace-nowrap rounded bg-gray-700 px-8 py-2 text-white text-xs opacity-0 transition-opacity duration-300">
         {message}
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-700" />
+        <div className="-translate-x-1/2 absolute top-full left-1/2 transform border-4 border-transparent border-t-gray-700" />
       </div>
     </div>
   );
