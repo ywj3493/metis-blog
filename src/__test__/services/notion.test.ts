@@ -13,17 +13,17 @@ describe("Test for build all posts", () => {
   if (process.env.DEEP_TEST) {
     it(
       "should make metadata correctly for all posts",
-      { timeout: Infinity },
+      { timeout: Number.POSITIVE_INFINITY },
       async () => {
         server.close();
         const posts = await getNotionPosts();
         const metadatas = await Promise.all(
-          posts.map((post) => getNotionPostMetadata(post.id))
+          posts.map((post) => getNotionPostMetadata(post.id)),
         );
 
         expect(metadatas).toBeDefined();
         server.listen();
-      }
+      },
     );
   }
 });

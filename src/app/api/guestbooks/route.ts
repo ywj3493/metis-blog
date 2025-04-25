@@ -20,7 +20,7 @@ export async function GET() {
         }),
         {
           status: 200,
-        }
+        },
       );
     })
     .catch((error) => {
@@ -28,7 +28,7 @@ export async function GET() {
         JSON.stringify({ message: "게스트북 가져오기에 실패했습니다.", error }),
         {
           status: 500,
-        }
+        },
       );
     });
 }
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         }),
         {
           status: 200,
-        }
+        },
       );
     })
     .catch((error) => {
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
         JSON.stringify({ message: "게스트북 생성에 실패했습니다.", error }),
         {
           status: 500,
-        }
+        },
       );
     });
 }

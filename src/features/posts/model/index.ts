@@ -1,4 +1,9 @@
-import { IPost, ITag, PostDatabaseResponse, TagDatabaseResponse } from "./type";
+import type {
+  IPost,
+  ITag,
+  PostDatabaseResponse,
+  TagDatabaseResponse,
+} from "./type";
 
 export function isIPost(obj: unknown): obj is IPost {
   if (typeof obj !== "object" || obj === null) {
@@ -19,7 +24,7 @@ export function isIPost(obj: unknown): obj is IPost {
 }
 
 export function isPostDatabaseResponse(
-  obj: unknown
+  obj: unknown,
 ): obj is PostDatabaseResponse {
   if (typeof obj !== "object" || obj === null) {
     return false;
@@ -36,7 +41,7 @@ export function isPostDatabaseResponse(
     return false;
   if (
     !o.properties.제목.title.every(
-      (titleItem) => typeof titleItem.plain_text === "string"
+      (titleItem) => typeof titleItem.plain_text === "string",
     )
   )
     return false;
@@ -50,7 +55,7 @@ export function isPostDatabaseResponse(
       (tag) =>
         typeof tag.id === "string" &&
         typeof tag.name === "string" &&
-        typeof tag.color === "string"
+        typeof tag.color === "string",
     )
   )
     return false;
@@ -117,7 +122,7 @@ export function isITag(obj: unknown): obj is ITag {
 }
 
 export function isTagDatabaseResponse(
-  obj: unknown
+  obj: unknown,
 ): obj is TagDatabaseResponse {
   const o = obj as TagDatabaseResponse;
   return (

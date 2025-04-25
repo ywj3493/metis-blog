@@ -1,7 +1,7 @@
-import Link from "next/link";
-import Image from "next/image";
+import type { Post } from "@/features/posts/model";
 import { TagChip } from "@/shared/ui";
-import { Post } from "@/features/posts/model";
+import Image from "next/image";
+import Link from "next/link";
 
 type SmallPostCardProps = {
   post: Post;

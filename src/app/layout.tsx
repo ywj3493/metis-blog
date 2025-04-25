@@ -1,15 +1,15 @@
-import { Inter } from "next/font/google";
-// import Footer from "@/components/Footer";
-import { Metadata } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+// import Footer from "@/components/Footer";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 import "./globals.css";
 import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
-import { Header } from "@/widgets/ui";
 import { ThemeProvider } from "@/entities/theme/hooks";
+import { Header } from "@/widgets/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 

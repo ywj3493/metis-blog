@@ -1,4 +1,4 @@
-import { IGuestbook, GuestbookDatabaseResponse } from "./type";
+import type { GuestbookDatabaseResponse, IGuestbook } from "./type";
 
 export function isIGuestbook(obj: unknown): obj is IGuestbook {
   if (typeof obj !== "object" || obj === null) {
@@ -17,7 +17,7 @@ export function isIGuestbook(obj: unknown): obj is IGuestbook {
 }
 
 export function isGuestbookDatabaseResponse(
-  obj: unknown
+  obj: unknown,
 ): obj is GuestbookDatabaseResponse {
   if (typeof obj !== "object" || obj === null) {
     return false;
@@ -35,7 +35,7 @@ export function isGuestbookDatabaseResponse(
 
   if (
     !o.properties.작성자.title.every(
-      (titleItem) => typeof titleItem.plain_text === "string"
+      (titleItem) => typeof titleItem.plain_text === "string",
     )
   )
     return false;
@@ -47,7 +47,7 @@ export function isGuestbookDatabaseResponse(
 
   if (
     !o.properties.방명록.rich_text.every(
-      (textItem) => typeof textItem.plain_text === "string"
+      (textItem) => typeof textItem.plain_text === "string",
     )
   )
     return false;
@@ -97,10 +97,10 @@ export class Guestbook implements IGuestbook {
     }
     if (isGuestbookDatabaseResponse(data)) {
       const id = data.id;
-      const name = data.properties["작성자"].title[0].plain_text;
-      const content = data.properties["방명록"].rich_text[0].plain_text;
-      const date = data.properties["남긴날짜"].date.start.split("T")[0];
-      const status = data.properties["상태"].status.name;
+      const name = data.properties.작성자.title[0].plain_text;
+      const content = data.properties.방명록.rich_text[0].plain_text;
+      const date = data.properties.남긴날짜.date.start.split("T")[0];
+      const status = data.properties.상태.status.name;
 
       return new Guestbook({ id, name, content, date, status });
     }

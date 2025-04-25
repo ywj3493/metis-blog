@@ -1,4 +1,4 @@
-import { Guestbook } from "../model";
+import type { Guestbook } from "../model";
 
 type GuestbookCardProps = {
   guestbook: Guestbook;

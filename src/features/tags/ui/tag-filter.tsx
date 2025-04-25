@@ -1,8 +1,8 @@
 "use client";
 
-import { Tag } from "@/features/posts/model";
+import type { Tag } from "@/features/posts/model";
 import { TagChip, Tooltip } from "@/shared/ui";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 type LNBProps = {
   tags: Tag[];

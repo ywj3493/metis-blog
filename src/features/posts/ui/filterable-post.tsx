@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { TagFilter } from "@/features/tags/ui";
 import { EmptyPosts } from "@/entities/posts/ui";
-import { PostsGrid } from "./posts-grid";
-import { TagDatabaseResponse } from "../model/type";
+import { TagFilter } from "@/features/tags/ui";
+import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { useState } from "react";
 import { Post, Tag } from "../model";
+import type { TagDatabaseResponse } from "../model/type";
+import { PostsGrid } from "./posts-grid";
 
 type FilterablePostsProps = {
   tagDataList: TagDatabaseResponse[];
@@ -26,7 +26,7 @@ export function FilterablePosts({
     selectedTags.size === 0
       ? posts
       : posts.filter((post) =>
-          post.tags.some(({ id }) => selectedTags.has(id))
+          post.tags.some(({ id }) => selectedTags.has(id)),
         );
 
   const isFilteredPostsEmpty = filteredPosts.length === 0;

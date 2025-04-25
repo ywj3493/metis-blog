@@ -3,7 +3,7 @@ import {
   getNotionPosts,
 } from "@/features/notion/model";
 import { FilterablePosts } from "@/features/posts/ui";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const revalidate = 180;
 
