@@ -54,8 +54,6 @@ export function TestInputForm() {
 
   const [employees, setEmployees] = useState<TestEmployee[]>([]);
 
-  const [postTrigger, setPostTrigger] = useState(false);
-
   const handlePost = async () => {
     const name = nameInputRef.current?.value;
     const age = ageInputRef.current?.value;
@@ -65,12 +63,10 @@ export function TestInputForm() {
         age: Number.parseInt(age),
       });
     }
-    setPostTrigger((prev) => !prev);
   };
 
   const handleDelete = async (empNumber: string) => {
     await deleteTestEmplyee(empNumber);
-    setPostTrigger((prev) => !prev);
   };
 
   useEffect(() => {
