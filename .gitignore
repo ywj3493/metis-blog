@@ -37,3 +37,6 @@ next-env.d.ts
 
 # google search console
 google*.html
+
+# vscode settings
+.vscode
