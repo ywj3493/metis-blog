@@ -36,6 +36,9 @@ export async function generateMetadata({ params }: PostDetailPageProps) {
     title,
     description: content,
     keywords: tags,
+    alternates: {
+      canonical: `${process.env.BLOG_URL}/posts/${slugify(title)}`,
+    },
   };
 }
 

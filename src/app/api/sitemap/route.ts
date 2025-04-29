@@ -1,3 +1,4 @@
+import { slugify } from "@/entities/posts/utils";
 import { getNotionPosts } from "@/features/notion/model";
 import type { MetadataRoute } from "next";
 
@@ -6,7 +7,8 @@ export async function GET() {
 
   const posts = await getNotionPosts();
   const postUrls: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/posts/${post.id}`,
+    /* @ts-expect-error Notion Type Error */
+    url: `${baseUrl}/posts/${slugify(post.properties.제목.title[0].plain_text)}`,
     lastModified: new Date(post.last_edited_time),
     changeFrequency: "daily",
     priority: 0.8,
