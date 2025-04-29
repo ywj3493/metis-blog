@@ -5,11 +5,7 @@ let cachedSlugMap: Record<string, string> | null = null;
 let lastFetchedAt = 0;
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-const TTL = 1000 * 60 * 5; // 5분
-
-function isBuildTime() {
-  return !process.env.VERCEL && process.env.NODE_ENV === "production";
-}
+const TTL = 1000 * 60 * 3; // 3분, ISR 주기와 통일
 
 export async function getSlugMap() {
   const now = Date.now();
@@ -18,27 +14,26 @@ export async function getSlugMap() {
     return cachedSlugMap;
   }
 
-  if (isBuildTime()) {
-    console.log("🔧 [BUILD MODE] Directly calling Notion API for slugMap...");
-    const posts = await getNotionPosts();
-    cachedSlugMap = posts.reduce(
-      (acc, post) => {
-        acc[post.id] = encodeURIComponent(
-          /* @ts-expect-error Notion Type Error */
-          slugify(post.properties.제목.title[0].plain_text),
-        );
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
-    lastFetchedAt = now;
-    return cachedSlugMap;
-  }
+  const isVercelBuild =
+    process.env.VERCEL === "1" &&
+    process.env.NEXT_PHASE === "phase-production-build";
 
-  console.log("🌐 [RUNTIME] Fetching slugMap from API...");
-  const res = await fetch(`${BASE_URL}/api/slugs`);
-  if (!res.ok) throw new Error("Failed to fetch slug map");
-  cachedSlugMap = await res.json();
+  if (isVercelBuild) {
+    console.log("[BUILD MODE] Using Notion API directly.");
+    const posts = await getNotionPosts(); // fetch-only safe해야 함
+    cachedSlugMap = Object.fromEntries(
+      posts.map((post) => [
+        post.id,
+        /* @ts-expect-error Notion Type Error */
+        encodeURIComponent(slugify(post.properties.제목.title[0].plain_text)),
+      ]),
+    );
+  } else {
+    console.log("[RUNTIME] Fetching slugMap from API...");
+    const res = await fetch(`${BASE_URL}/api/slugs`);
+    if (!res.ok) throw new Error("Failed to fetch slug map");
+    cachedSlugMap = await res.json();
+  }
   lastFetchedAt = now;
   return cachedSlugMap;
 }
