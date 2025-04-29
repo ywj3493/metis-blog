@@ -1,4 +1,8 @@
+// src/app/posts/[postId]/page.tsx
+
+import { getSlugMap } from "@/entities/posts/cache/slug-cache";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
+import { slugify } from "@/entities/posts/utils";
 import {
   getNotionPage,
   getNotionPostMetadata,
@@ -6,14 +10,27 @@ import {
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
 
-export const revalidate = 180;
-
 type PostDetailPageProps = {
-  params: { postId: string };
+  params: { postId: string }; // postId 처럼 보이는 slug 또는 id
 };
 
+export const revalidate = 180;
+
+export async function generateStaticParams() {
+  const posts = await getNotionPosts();
+
+  return posts.map((post) => {
+    /* @ts-expect-error Notion Type Error */
+    const slug = slugify(post.properties.제목.title[0].plain_text);
+
+    return { postId: slug };
+  });
+}
+
 export async function generateMetadata({ params }: PostDetailPageProps) {
-  const { title, content, tags } = await getNotionPostMetadata(params.postId);
+  const postId = await resolvePostId(params.postId);
+
+  const { title, content, tags } = await getNotionPostMetadata(postId);
 
   return {
     title,
@@ -22,21 +39,39 @@ export async function generateMetadata({ params }: PostDetailPageProps) {
   };
 }
 
-export async function generateStaticParams() {
-  const posts = await getNotionPosts();
-
-  return posts.map((post) => ({
-    postId: post.id,
-  }));
-}
-
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
-  const pageRecordMap = await getNotionPage(params.postId);
+  const postId = await resolvePostId(params.postId);
+
+  const pageRecordMap = await getNotionPage(postId);
 
   return (
     <>
       <ClientNotionRenderer recordMap={pageRecordMap} />
-      <PostNavigator id={params.postId} />
+      <PostNavigator id={postId} />
     </>
   );
+}
+
+async function resolvePostId(slugOrId: string) {
+  const slugMap = await getSlugMap();
+
+  if (!slugMap) {
+    throw new Error("Slug map not found");
+  }
+
+  if (slugMap[slugOrId]) {
+    // slugOrId is a slug
+    return slugOrId;
+  }
+
+  const postId = Object.keys(slugMap).find((id) => slugMap[id] === slugOrId);
+
+  if (!postId) {
+    console.error(
+      `Post not found for given slug or id. Slug: ${slugOrId}, Id: ${postId}, SlugMap: ${JSON.stringify(slugMap)}`,
+    );
+    throw new Error("Post not found for given slug or id.");
+  }
+
+  return postId;
 }
