@@ -2,15 +2,16 @@ import type { Post } from "@/features/posts/model";
 import { TagChip } from "@/shared/ui";
 import Image from "next/image";
 import Link from "next/link";
+import { slugify } from "../utils";
 
 type SmallPostCardProps = {
   post: Post;
 };
 
 export function SmallPostCard({ post }: SmallPostCardProps) {
-  const { id, title, icon, tags } = post;
+  const { title, icon, tags } = post;
   return (
-    <Link href={`/posts/${id}`} className="block text-black">
+    <Link href={`/posts/${slugify(title)}`} className="block text-black">
       <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-340 items-center rounded-sm py-10 shadow-lg">
         <div className="flex w-full flex-col items-center gap-4">
           <Image src={icon} alt="icon" width={24} height={24} />
