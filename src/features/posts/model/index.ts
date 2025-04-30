@@ -1,3 +1,4 @@
+import { slugify } from "@/entities/posts/utils";
 import type {
   IPost,
   ITag,
@@ -65,6 +66,7 @@ export function isPostDatabaseResponse(
   )
     return false;
   if (typeof o.properties.날짜.date.start !== "string") return false;
+  if (typeof o.last_edited_time !== "string") return false;
 
   return true;
 }
@@ -72,18 +74,22 @@ export function isPostDatabaseResponse(
 export class Post implements IPost {
   public id;
   public title;
+  public slugifiedTitle;
   public tags;
   public cover;
   public icon;
   public publishTime;
+  public lastEditedTime;
 
   protected constructor(post: IPost) {
     this.id = post.id;
     this.title = post.title;
+    this.slugifiedTitle = post.slugifiedTitle;
     this.tags = post.tags.map(Tag.create);
     this.cover = post.cover;
     this.icon = post.icon;
     this.publishTime = post.publishTime;
+    this.lastEditedTime = post.lastEditedTime;
   }
 
   public static create(data: unknown) {
@@ -97,13 +103,16 @@ export class Post implements IPost {
       const cover = data.cover?.external?.url ?? "";
       const icon = data.icon?.external?.url ?? "/mascot.png";
       const publishTime = data.properties.날짜.date.start;
+      const lastEditedTime = data.last_edited_time;
       return new Post({
         id: data.id,
         title,
+        slugifiedTitle: slugify(title),
         tags,
         cover,
         icon,
         publishTime,
+        lastEditedTime,
       });
     }
     throw Error("Post 객체 생성 오류");

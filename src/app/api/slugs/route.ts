@@ -1,16 +1,13 @@
-import { slugify } from "@/entities/posts/utils";
 import { getNotionPosts } from "@/features/notion/model";
+import { Post } from "@/features/posts/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   const posts = await getNotionPosts();
 
-  const slugMap = posts.reduce(
-    (acc, post) => {
-      acc[post.id] = encodeURIComponent(
-        /* @ts-expect-error Notion Type Error */
-        slugify(post.properties.제목.title[0].plain_text),
-      );
+  const slugMap = posts.map(Post.create).reduce(
+    (acc, { id, slugifiedTitle }) => {
+      acc[id] = encodeURIComponent(slugifiedTitle); // Encode the slugified title
       return acc;
     },
     {} as Record<string, string>,

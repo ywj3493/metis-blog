@@ -8,6 +8,7 @@ import {
   getNotionPostMetadata,
   getNotionPosts,
 } from "@/features/notion/model";
+import { Post } from "@/features/posts/model";
 import { PostNavigator } from "@/features/posts/ui";
 
 type PostDetailPageProps = {
@@ -19,12 +20,9 @@ export const revalidate = 180;
 export async function generateStaticParams() {
   const posts = await getNotionPosts();
 
-  return posts.map((post) => {
-    /* @ts-expect-error Notion Type Error */
-    const slug = slugify(post.properties.제목.title[0].plain_text);
-
-    return { postId: slug };
-  });
+  return posts.map(Post.create).map(({ slugifiedTitle }) => ({
+    postId: slugifiedTitle,
+  }));
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps) {
