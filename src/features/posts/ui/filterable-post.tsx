@@ -1,11 +1,11 @@
 "use client";
 
+import { Post, Tag } from "@/entities/posts/model";
+import type { TagDatabaseResponse } from "@/entities/posts/model/type";
 import { EmptyPosts } from "@/entities/posts/ui";
 import { TagFilter } from "@/features/tags/ui";
 import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { useState } from "react";
-import { Post, Tag } from "../model";
-import type { TagDatabaseResponse } from "../model/type";
 import { PostsGrid } from "./posts-grid";
 
 type FilterablePostsProps = {

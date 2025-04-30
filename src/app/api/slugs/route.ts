@@ -1,5 +1,5 @@
+import { Post } from "@/entities/posts/model";
 import { getNotionPosts } from "@/features/notion/model";
-import { Post } from "@/features/posts/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {

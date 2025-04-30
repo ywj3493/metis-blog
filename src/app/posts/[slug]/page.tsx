@@ -1,3 +1,4 @@
+import { Post } from "@/entities/posts/model";
 import { getSlugMap } from "@/entities/posts/cache/slug-cache";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
 import {
@@ -5,7 +6,6 @@ import {
   getNotionPostMetadata,
   getNotionPosts,
 } from "@/features/notion/model";
-import { Post } from "@/features/posts/model";
 import { PostNavigator } from "@/features/posts/ui";
 import { slug } from "github-slugger";
 
