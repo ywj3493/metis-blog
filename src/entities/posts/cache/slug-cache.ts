@@ -20,11 +20,14 @@ export async function getSlugMap() {
 
   if (isVercelBuild) {
     console.log("[BUILD MODE] Using Notion API directly.");
-    const posts = await getNotionPosts(); // fetch-only safe해야 함
-    cachedSlugMap = Object.fromEntries(
-      posts
-        .map(Post.create)
-        .map(({ id, slugifiedTitle }) => [id, slugifiedTitle]),
+    const posts = (await getNotionPosts()).map(Post.create);
+
+    cachedSlugMap = posts.reduce(
+      (acc, { id, slugifiedTitle }) => {
+        acc[slugifiedTitle] = id;
+        return acc;
+      },
+      {} as Record<string, string>,
     );
   } else {
     console.log("[RUNTIME] Fetching slugMap from API...");
