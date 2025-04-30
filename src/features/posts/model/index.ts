@@ -1,4 +1,4 @@
-import { slugify } from "@/entities/posts/utils";
+import { slug } from "github-slugger";
 import type {
   IPost,
   ITag,
@@ -107,7 +107,7 @@ export class Post implements IPost {
       return new Post({
         id: data.id,
         title,
-        slugifiedTitle: slugify(title),
+        slugifiedTitle: slug(title),
         tags,
         cover,
         icon,

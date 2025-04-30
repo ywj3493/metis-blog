@@ -5,15 +5,15 @@ import type { MetadataRoute } from "next";
 export async function GET() {
   const baseUrl = process.env.BLOG_URL || "";
 
-  const posts = await getNotionPosts();
-  const postUrls: MetadataRoute.Sitemap = posts
-    .map(Post.create)
-    .map(({ slugifiedTitle, lastEditedTime }) => ({
+  const posts = (await getNotionPosts()).map(Post.create);
+  const postUrls: MetadataRoute.Sitemap = posts.map(
+    ({ slugifiedTitle, lastEditedTime }) => ({
       url: `${baseUrl}/posts/${slugifiedTitle}`,
       lastModified: new Date(lastEditedTime),
       changeFrequency: "daily",
       priority: 0.8,
-    }));
+    }),
+  );
 
   const sitemapList = [
     {

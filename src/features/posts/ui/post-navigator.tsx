@@ -8,9 +8,8 @@ type PostNavigatorProps = {
 };
 
 export async function PostNavigator({ id }: PostNavigatorProps) {
-  const postDataList = await getNotionPosts();
+  const posts = (await getNotionPosts()).map(Post.create);
 
-  const posts = postDataList.map(Post.create);
   const currentPost = posts.find((post) => id === post.id);
   const currentIndex = posts.findIndex((post) => id === post.id);
 
