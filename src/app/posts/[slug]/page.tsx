@@ -1,5 +1,5 @@
-import { Post } from "@/entities/posts/model";
 import { getSlugMap } from "@/entities/posts/cache/slug-cache";
+import { Post } from "@/entities/posts/model";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
 import {
   getNotionPage,
