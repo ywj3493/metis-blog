@@ -1,5 +1,5 @@
-import { slugify } from "@/entities/posts/utils";
 import { getNotionPosts } from "@/features/notion/model";
+import { Post } from "@/features/posts/model";
 
 let cachedSlugMap: Record<string, string> | null = null;
 let lastFetchedAt = 0;
@@ -22,11 +22,9 @@ export async function getSlugMap() {
     console.log("[BUILD MODE] Using Notion API directly.");
     const posts = await getNotionPosts(); // fetch-only safe해야 함
     cachedSlugMap = Object.fromEntries(
-      posts.map((post) => [
-        post.id,
-        /* @ts-expect-error Notion Type Error */
-        encodeURIComponent(slugify(post.properties.제목.title[0].plain_text)),
-      ]),
+      posts
+        .map(Post.create)
+        .map(({ id, slugifiedTitle }) => [id, slugifiedTitle]),
     );
   } else {
     console.log("[RUNTIME] Fetching slugMap from API...");

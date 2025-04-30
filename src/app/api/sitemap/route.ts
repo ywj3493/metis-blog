@@ -1,18 +1,19 @@
-import { slugify } from "@/entities/posts/utils";
 import { getNotionPosts } from "@/features/notion/model";
+import { Post } from "@/features/posts/model";
 import type { MetadataRoute } from "next";
 
 export async function GET() {
   const baseUrl = process.env.BLOG_URL || "";
 
   const posts = await getNotionPosts();
-  const postUrls: MetadataRoute.Sitemap = posts.map((post) => ({
-    /* @ts-expect-error Notion Type Error */
-    url: `${baseUrl}/posts/${slugify(post.properties.제목.title[0].plain_text)}`,
-    lastModified: new Date(post.last_edited_time),
-    changeFrequency: "daily",
-    priority: 0.8,
-  }));
+  const postUrls: MetadataRoute.Sitemap = posts
+    .map(Post.create)
+    .map(({ slugifiedTitle, lastEditedTime }) => ({
+      url: `${baseUrl}/posts/${slugifiedTitle}`,
+      lastModified: new Date(lastEditedTime),
+      changeFrequency: "daily",
+      priority: 0.8,
+    }));
 
   const sitemapList = [
     {

@@ -8,10 +8,12 @@ export interface ITag {
 export interface IPost {
   id: string;
   title: string;
+  slugifiedTitle: string;
   tags: ITag[];
   cover: string;
   icon: string;
   publishTime: string;
+  lastEditedTime: string;
 }
 
 export interface PostDatabaseResponse {
@@ -41,6 +43,7 @@ export interface PostDatabaseResponse {
       url?: string;
     };
   };
+  last_edited_time: string;
 }
 
 export interface TagDatabaseResponse {
