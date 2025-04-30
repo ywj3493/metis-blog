@@ -1,6 +1,6 @@
 "use client";
 
-import type { Tag } from "@/features/posts/model";
+import type { Tag } from "@/entities/posts/model";
 import { TagChip, Tooltip } from "@/shared/ui";
 import type { Dispatch, SetStateAction } from "react";
 

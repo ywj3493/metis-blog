@@ -1,5 +1,5 @@
 import type { GuestbookFormData } from "@/entities/guestbooks/model/type";
-import type { TagDatabaseResponse } from "@/features/posts/model/type";
+import type { TagDatabaseResponse } from "@/entities/posts/model/type";
 import { Client } from "@notionhq/client";
 import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";

@@ -1,15 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-function isNotionPageId(id: string): boolean {
-  const uuidWithHyphens =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const uuidWithoutHyphens = /^[0-9a-f]{32}$/i;
-  return uuidWithHyphens.test(id) || uuidWithoutHyphens.test(id);
-}
+import { isNotionPageId } from "./entities/posts/utils";
 
 export async function middleware(request: NextRequest) {
-  console.log("[Middleware] Running...");
   const { pathname } = request.nextUrl;
   const match = pathname.match(/^\/posts\/([^/]+)/);
   if (!match) return NextResponse.next();

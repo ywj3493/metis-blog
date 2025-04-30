@@ -1,4 +1,4 @@
-import type { Post } from "@/features/posts/model";
+import type { Post } from "@/entities/posts/model";
 import { TagChip } from "@/shared/ui";
 import Image from "next/image";
 import Link from "next/link";
