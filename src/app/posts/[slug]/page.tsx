@@ -9,6 +9,7 @@ import {
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
 import { slug } from "github-slugger";
+import { permanentRedirect } from "next/navigation";
 
 type PostDetailPageProps = {
   params: { slug: string }; // postId 처럼 보이는 slug 또는 id
@@ -45,6 +46,11 @@ export async function generateMetadata({ params }: PostDetailPageProps) {
 }
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
+  if (isNotionPageId(params.slug)) {
+    const postId = params.slug;
+
+    return permanentRedirect(`/posts/${slug(postId)}`);
+  }
   const postId = await slugToPostId(params.slug);
 
   const pageRecordMap = await getNotionPage(postId);
