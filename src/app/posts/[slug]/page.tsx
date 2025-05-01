@@ -1,6 +1,7 @@
 import { getSlugMap } from "@/entities/posts/cache/slug-cache";
 import { Post } from "@/entities/posts/model";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
+import { isNotionPageId } from "@/entities/posts/utils";
 import {
   getNotionPage,
   getNotionPostMetadata,
@@ -18,9 +19,14 @@ export const revalidate = 180;
 export async function generateStaticParams() {
   const posts = (await getNotionPosts()).map(Post.create);
 
-  return posts.map(({ slugifiedTitle }) => ({
-    slug: slugifiedTitle,
-  }));
+  return posts.flatMap(({ id, slugifiedTitle }) => [
+    {
+      slug: slugifiedTitle,
+    },
+    {
+      slug: id,
+    },
+  ]);
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps) {
@@ -52,6 +58,10 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 }
 
 async function slugToPostId(slugOrId: string) {
+  if (isNotionPageId(slugOrId)) {
+    return slugOrId;
+  }
+
   const slugMap = await getSlugMap();
 
   if (!slugMap) {
