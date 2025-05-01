@@ -48,8 +48,9 @@ export async function generateMetadata({ params }: PostDetailPageProps) {
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
   if (isNotionPageId(params.slug)) {
     const postId = params.slug;
+    const { title } = await getNotionPostMetadata(postId);
 
-    return permanentRedirect(`/posts/${slug(postId)}`);
+    return permanentRedirect(`/posts/${slug(title)}`);
   }
   const postId = await slugToPostId(params.slug);
 
