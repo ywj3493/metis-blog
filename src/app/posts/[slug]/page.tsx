@@ -50,7 +50,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     const postId = params.slug;
     const { title } = await getNotionPostMetadata(postId);
 
-    return permanentRedirect(`/posts/${slug(title)}`);
+    return permanentRedirect(`/posts/${encodeURIComponent(slug(title))}`);
   }
   const postId = await slugToPostId(params.slug);
 
