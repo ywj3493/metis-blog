@@ -18,7 +18,7 @@ const MENUS: Menu[] = [
   },
   {
     url: "/posts",
-    name: "게시글",
+    name: "포스트",
   },
 ];
 
