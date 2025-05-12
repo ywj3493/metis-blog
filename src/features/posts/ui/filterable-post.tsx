@@ -32,7 +32,7 @@ export function FilterablePosts({
   const isFilteredPostsEmpty = filteredPosts.length === 0;
 
   return (
-    <div className="my-24 flex w-full justify-center">
+    <div className="my-8 px-4 flex w-full justify-center gap-4">
       <TagFilter
         tags={tags}
         selectedTags={selectedTags}

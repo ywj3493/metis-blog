@@ -9,8 +9,8 @@ import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
 import { ThemeProvider } from "@/entities/theme/hooks";
-import { Header } from "@/widgets/ui";
 import { TooltipProvider } from "@/shared/ui/tooltip";
+import { Header } from "@/widgets/ui";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",

@@ -16,5 +16,9 @@ export default async function PostListPage() {
   const dataList = await getNotionPosts();
   const tagDataList = await getNotionPostDatabaseTags();
 
-  return <FilterablePosts tagDataList={tagDataList} dataList={dataList} />;
+  return (
+    <section>
+      <FilterablePosts tagDataList={tagDataList} dataList={dataList} />
+    </section>
+  );
 }

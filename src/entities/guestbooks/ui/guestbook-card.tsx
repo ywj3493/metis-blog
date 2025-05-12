@@ -9,14 +9,12 @@ export function GuestbookCard({ guestbook }: GuestbookCardProps) {
 
   if (!isPublic) {
     return (
-      <div className="flex w-320 rounded-8 border-1 p-8">
-        비공개 방명록 입니다.
-      </div>
+      <div className="flex w-80 rounded border p-2">비공개 방명록 입니다.</div>
     );
   }
 
   return (
-    <div className="flex w-320 flex-col rounded-8 border-1 p-8">
+    <div className="flex w-80 flex-col rounded border p-2">
       <div className="flex justify-between">
         <h1>{name}</h1>
         <div className="text-sm">{date}</div>

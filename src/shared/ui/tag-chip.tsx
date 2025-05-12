@@ -2,21 +2,18 @@
 
 import { useTheme } from "next-themes";
 
-type TagChipProps = {
+import { cn } from "@/shared/lib/utils";
+import { Button } from "./button";
+
+export interface TagChipProps {
   id: string;
   name: string;
   color: string;
   notSelected?: boolean;
   onClick?: (id: string) => void;
-};
+}
 
-export function TagChip({
-  id,
-  name,
-  color,
-  notSelected,
-  onClick,
-}: TagChipProps) {
+const TagChip = ({ id, name, color, notSelected, onClick }: TagChipProps) => {
   const { theme } = useTheme();
 
   const defaultBg = theme === "dark" ? "black" : "white";
@@ -36,12 +33,17 @@ export function TagChip({
   };
 
   return (
-    <div
-      className={`${dynamicBgColor} ${dynamicTextColor} clickable rounded-4 px-12 py-4 text-12`}
+    <Button
+      className={cn(
+        `${dynamicBgColor} ${dynamicTextColor} clickable rounded px-3 text-xs hover:bg-opacity-80 hover:${dynamicBgColor}`,
+      )}
       onClick={handleTagClick}
       onKeyDown={handleTagClick}
     >
       {name}
-    </div>
+    </Button>
   );
-}
+};
+TagChip.displayName = "TagChip";
+
+export { TagChip };

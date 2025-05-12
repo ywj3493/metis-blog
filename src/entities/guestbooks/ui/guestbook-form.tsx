@@ -50,7 +50,7 @@ export function GuestbookForm({
       <h2 className="font-bold text-xl">방명록을 남겨주세요.</h2>
       <form
         onSubmit={handleSubmit(handleBuildForm)}
-        className="flex w-320 flex-col gap-12 rounded-8 border-1 p-8 "
+        className="flex w-80 flex-col gap-3 rounded border p-2"
       >
         <div className="flex justify-between">
           <input
@@ -64,7 +64,7 @@ export function GuestbookForm({
               id="isPrivate"
               type="checkbox"
               {...register("isPrivate")}
-              className="mr-4"
+              className="mr-1"
             />
             <label htmlFor="isPrivate">비공개</label>
           </span>
@@ -79,7 +79,7 @@ export function GuestbookForm({
         ) : (
           <button
             type="submit"
-            className="rounded-4 bg-blue-200 p-2 text-center text-white disabled:cursor-not-allowed disabled:bg-gray-300"
+            className="rounded bg-blue-200 p-0.5 text-center text-white disabled:cursor-not-allowed disabled:bg-gray-300"
             disabled={!isValid}
           >
             전송

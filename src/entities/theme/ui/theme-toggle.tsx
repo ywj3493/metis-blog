@@ -13,7 +13,7 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="aspect-square h-24 w-24">
+    <div className="aspect-square h-6 w-6">
       {mounted ? (
         theme === "light" ? (
           <DarkModeIcon

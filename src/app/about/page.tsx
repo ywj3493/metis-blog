@@ -14,7 +14,7 @@ export default async function AboutPage() {
   const pageRecordMap = await getNotionAboutPage();
 
   return (
-    <section className="flex flex-col items-center gap-16">
+    <section className="flex flex-col items-center gap-4">
       <ClientNotionRenderer recordMap={pageRecordMap} />
       <Contact />
     </section>

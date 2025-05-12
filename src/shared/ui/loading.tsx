@@ -17,11 +17,11 @@ export function LoadingSection() {
 export function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center">
-      <div className="box-border inline-block h-32 w-32 animate-spin rounded-full border-4 border-gray-200 border-b-blue-300 " />
+      <div className="box-border inline-block h-8 w-8 animate-spin rounded-full border border-gray-200 border-b-blue-300 " />
     </div>
   );
 }
 
 export function LoadingDot() {
-  return <div className="h-24 w-24 animate-pulse rounded-full bg-gray-300" />;
+  return <div className="h-3 w-3 animate-pulse rounded-full bg-gray-300" />;
 }

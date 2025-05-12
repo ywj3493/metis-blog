@@ -12,7 +12,7 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <Link href={`/posts/${slugifiedTitle}`} className="mx-auto block h-min">
-      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-320 flex-col items-center rounded-sm shadow-lg">
+      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col items-center rounded-sm shadow-lg">
         <div className="relative">
           <Image
             src={cover}
@@ -25,11 +25,11 @@ export function PostCard({ post }: PostCardProps) {
             {title}
           </p>
         </div>
-        <div className="flex w-full flex-col items-center gap-4">
-          <time className="self-end p-4 text-14">{publishTime}</time>
+        <div className="flex w-full flex-col items-center gap-1">
+          <time className="self-end p-1 text-sm">{publishTime}</time>
           <Image src={icon} alt="icon" width={24} height={24} />
-          <h2 className="w-full truncate px-12 text-center">{title}</h2>
-          <div className="flex gap-8 p-4 pb-6">
+          <h2 className="w-full truncate px-3 text-center">{title}</h2>
+          <div className="flex gap-2 p-1 pb-1.5">
             {tags.map(({ id, name, color }) => (
               <TagChip key={`_${name}`} id={id} name={name} color={color} />
             ))}
