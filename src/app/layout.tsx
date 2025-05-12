@@ -2,7 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 // import Footer from "@/components/Footer";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 import "./globals.css";
 import "react-notion-x/src/styles.css";
@@ -10,8 +10,13 @@ import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
 import { ThemeProvider } from "@/entities/theme/hooks";
 import { Header } from "@/widgets/ui";
+import { TooltipProvider } from "@/shared/ui/tooltip";
 
-const inter = Inter({ subsets: ["latin"] });
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  variable: "--font-pretendard",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -30,20 +35,23 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={inter.className}
+      lang="ko"
       suppressHydrationWarning={process.env.NODE_ENV === "production"}
     >
-      <body className="mx-auto flex w-full max-w-screen-xl flex-col">
+      <body
+        className={`${pretendard.variable} mx-auto flex w-full max-w-screen-xl flex-col`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="grow">{children}</main>
-          {/* <Footer /> */}
+          <TooltipProvider>
+            <Header />
+            <main className="grow">{children}</main>
+            {/* <Footer /> */}
+          </TooltipProvider>
         </ThemeProvider>
         <SpeedInsights />
         <Analytics />
