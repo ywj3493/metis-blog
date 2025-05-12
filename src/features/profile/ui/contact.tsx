@@ -1,4 +1,4 @@
-import { Tooltip } from "@/shared/ui";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 import Link from "next/link";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { RiNotionFill } from "react-icons/ri";
@@ -24,19 +24,24 @@ const LINKS = [
 export function Contact() {
   return (
     <article className="flex flex-col items-center">
-      <h2 className="my-2 font-bold text-3xl">연락처</h2>
+      <h2 className="my-0.5 font-bold text-3xl">연락처</h2>
       <p>dbsdndwo12@gmail.com</p>
-      <ul className="my-8 flex gap-4">
+      <ul className="my-2 flex gap-1">
         {LINKS.map((link) => (
-          <Tooltip key={link.url} message={link.tooltip}>
-            <Link
-              href={link.url}
-              target="_blank"
-              rel="noreferer"
-              className="text-5xl hover:text-blue-500"
-            >
-              {link.icon}
-            </Link>
+          <Tooltip key={link.url}>
+            <TooltipTrigger>
+              <Link
+                href={link.url}
+                target="_blank"
+                rel="noreferer"
+                className="text-5xl hover:text-blue-500"
+              >
+                {link.icon}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{link.tooltip}</p>
+            </TooltipContent>
           </Tooltip>
         ))}
       </ul>
