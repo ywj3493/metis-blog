@@ -22,6 +22,10 @@ export function FilterablePosts({
   const tags = tagDataList.map(Tag.create);
   const posts = dataList.map(Post.create);
 
+  const activeTags = tags.filter((tag) =>
+    posts.some((post) => post.tags.some(({ id }) => id === tag.id)),
+  );
+
   const filteredPosts =
     selectedTags.size === 0
       ? posts
@@ -34,7 +38,7 @@ export function FilterablePosts({
   return (
     <div className="my-8 flex w-full justify-center gap-4 px-4">
       <TagFilter
-        tags={tags}
+        tags={activeTags}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
