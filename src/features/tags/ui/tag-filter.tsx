@@ -71,7 +71,7 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
           ))}
         </div>
         {showScrollHint && (
-          <div className="absolute bottom-2 right-2 text-gray-400 text-xl animate-bounce">
+          <div className="absolute right-2 bottom-2 animate-bounce text-gray-400 text-xl">
             ▼
           </div>
         )}
