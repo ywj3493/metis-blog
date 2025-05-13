@@ -15,7 +15,7 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showScrollHint, setShowScrollHint] = useState(false);
 
-  const handleTagClick = (id: string) => {
+  const selectTags = (id: string) => {
     setSelectedTags((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -66,7 +66,7 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
               name={name}
               color={color}
               notSelected={!selectedTags.has(id)}
-              onClick={handleTagClick}
+              onClick={selectTags}
             />
           ))}
         </div>

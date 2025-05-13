@@ -28,7 +28,7 @@ const TagChip = ({ id, name, color, notSelected, onClick }: TagChipProps) => {
 
   const dynamicTextColor = notSelected ? `text-${defaultText}` : "text-black";
 
-  const handleTagClick = () => {
+  const tagClick = () => {
     onClick?.(id);
   };
 
@@ -37,8 +37,7 @@ const TagChip = ({ id, name, color, notSelected, onClick }: TagChipProps) => {
       className={cn(
         `${dynamicBgColor} ${dynamicTextColor} clickable rounded px-3 text-xs hover:bg-opacity-80 hover:${dynamicBgColor}`,
       )}
-      onClick={handleTagClick}
-      onKeyDown={handleTagClick}
+      onClick={tagClick}
     >
       {name}
     </Button>

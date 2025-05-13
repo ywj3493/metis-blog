@@ -9,7 +9,6 @@ import {
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
 import { slug } from "github-slugger";
-import { permanentRedirect } from "next/navigation";
 
 type PostDetailPageProps = {
   params: { slug: string }; // postId 처럼 보이는 slug 또는 id
@@ -20,14 +19,9 @@ export const revalidate = 180;
 export async function generateStaticParams() {
   const posts = (await getNotionPosts()).map(Post.create);
 
-  return posts.flatMap(({ id, slugifiedTitle }) => [
-    {
-      slug: slugifiedTitle,
-    },
-    {
-      slug: id,
-    },
-  ]);
+  return posts.map(({ slugifiedTitle }) => ({
+    slug: slugifiedTitle,
+  }));
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps) {
@@ -46,12 +40,6 @@ export async function generateMetadata({ params }: PostDetailPageProps) {
 }
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
-  if (isNotionPageId(params.slug)) {
-    const postId = params.slug;
-    const { title } = await getNotionPostMetadata(postId);
-
-    return permanentRedirect(`/posts/${encodeURIComponent(slug(title))}`);
-  }
   const postId = await slugToPostId(params.slug);
 
   const pageRecordMap = await getNotionPage(postId);

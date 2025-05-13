@@ -27,7 +27,7 @@ export function GuestbookForm({
 
   const [isPostLoading, setIsPostLoading] = useState(false);
 
-  const handleBuildForm = ({ name, content, isPrivate }: GuestbookFormData) => {
+  const buildForm = ({ name, content, isPrivate }: GuestbookFormData) => {
     setIsPostLoading(true);
     createGuestbook({ name, content, isPrivate })
       .then(() => {
@@ -49,7 +49,7 @@ export function GuestbookForm({
     <>
       <h2 className="font-bold text-xl">방명록을 남겨주세요.</h2>
       <form
-        onSubmit={handleSubmit(handleBuildForm)}
+        onSubmit={handleSubmit(buildForm)}
         className="flex w-80 flex-col gap-3 rounded border p-2"
       >
         <div className="flex justify-between">
