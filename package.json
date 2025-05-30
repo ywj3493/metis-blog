@@ -42,6 +42,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",
+    "eslint": "catalog:lint",
+    "eslint-config-next": "catalog:lint",
     "@testing-library/jest-dom": "catalog:test",
     "@testing-library/react": "catalog:test",
     "@testing-library/user-event": "catalog:test",
