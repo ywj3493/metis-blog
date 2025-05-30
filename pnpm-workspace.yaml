@@ -10,23 +10,24 @@ catalogs:
     "class-variance-authority": "^0.7.1"
     "tailwind-merge": "^3.2.0"
     "tailwindcss-animate": "^1.0.7"
-  "notion":
-    "@notionhq/client": "^2.3.0"
-    "react-notion-x": "^6.16.0"
-    "notion-client": "^6.16.0"
-  "frontend":
+  "core":
     "react": "^18"
     "react-dom": "^18"
     "next": "14.2.25"
     "sharp": "^0.33.4" # next.js 에서 이미지 최적화에 사용하는 라이브러리
-  "external":
-    "github-slugger": "^2.0.0"
-    "next-themes": "^0.3.0"
-    "nodemailer": "^6.9.13"
+  "frontend":
     "react-hook-form": "^7.51.5"
     "react-query": "^3.39.3"
-    "zod": "^3.24.2"
+    "next-themes": "^0.3.0"
+    "react-notion-x": "^6.16.0"
     "react-icons": "^5.2.1"
+  "backend":
+    "nodemailer": "^6.9.13"
+    "@notionhq/client": "^2.3.0"
+  "shared":
+    "notion-client": "^6.16.0"
+    "github-slugger": "^2.0.0"
+    "zod": "^3.24.2"
   "monitoring":
     "@vercel/analytics": "^1.3.1"
     "@vercel/speed-insights": "^1.0.12"
