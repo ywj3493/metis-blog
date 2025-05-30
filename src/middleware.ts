@@ -59,7 +59,6 @@ const idMapHelper = Object.fromEntries(
   ]),
 );
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const slugOrId = pathname.split("/posts/")[1];
@@ -74,6 +73,9 @@ export function middleware(request: NextRequest) {
     if (slugifiedTitle) {
       const url = request.nextUrl.clone();
       url.pathname = `/posts/${slugifiedTitle}`;
+      if (slugifiedTitle.includes("타입챌린지 스터디")) {
+        url.pathname = "posts/타입챌린지-스터디-풀이-모음";
+      }
       return NextResponse.redirect(url, 301);
     }
   }
