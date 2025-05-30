@@ -73,11 +73,15 @@ export function middleware(request: NextRequest) {
     if (slugifiedTitle) {
       const url = request.nextUrl.clone();
       url.pathname = `/posts/${slugifiedTitle}`;
-      if (slugifiedTitle.includes("타입챌린지 스터디")) {
-        url.pathname = "posts/타입챌린지-스터디-풀이-모음";
-      }
       return NextResponse.redirect(url, 301);
     }
+  }
+
+  // 타입챌린지 스터디 통합 임시 리디렉션
+  if (slugOrId.includes(encodeURIComponent("주차-타입챌린지-스터디"))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/posts/타입챌린지-스터디-풀이-모음";
+    return NextResponse.redirect(url, 301);
   }
 
   return NextResponse.next();
