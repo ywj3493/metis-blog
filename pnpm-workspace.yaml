@@ -33,6 +33,8 @@ catalogs:
     "@vercel/speed-insights": "^1.0.12"
   "lint":
     "@biomejs/biome": "1.9.4"
+    "eslint": "^8"
+    "eslint-config-next": "14.2.2"
   "test":
     "@testing-library/jest-dom": "^6.4.5"
     "@testing-library/react": "^15.0.7"
