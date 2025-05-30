@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import type { TestEmployee, TestEmployeeRequest } from "../api/test";
 
@@ -31,19 +30,30 @@ function TestEmployeeItem({
 }
 
 const getTestEmployee = async () => {
-  const { data } = await axios.get<TestEmployee[]>("/emplyee");
+  const res = await fetch("/emplyee");
+  const data = await res.json();
 
   return data;
 };
 
 const postTestEmployee = async (request: TestEmployeeRequest) => {
-  const { data } = await axios.post<TestEmployeeRequest>("/employee", request);
+  const res = await fetch("/employee", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request),
+  });
+  const data = await res.json();
 
   return data;
 };
 
-const deleteTestEmplyee = async (empNumber: string) => {
-  const { data } = await axios.delete(`/employee/${empNumber}`);
+const deleteTestEmployee = async (empNumber: string) => {
+  const res = await fetch(`/employee/${empNumber}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
 
   return data;
 };
@@ -66,7 +76,7 @@ export function TestInputForm() {
   };
 
   const handleDelete = async (empNumber: string) => {
-    await deleteTestEmplyee(empNumber);
+    await deleteTestEmployee(empNumber);
   };
 
   useEffect(() => {
