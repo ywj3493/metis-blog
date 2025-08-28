@@ -30,6 +30,8 @@
     "nodemailer": "catalog:backend",
     "notion-client": "catalog:shared",
     "openai": "^5.16.0",
+    "pino": "^9.9.0",
+    "pino-pretty": "^13.1.1",
     "react": "catalog:core",
     "react-dom": "catalog:core",
     "react-hook-form": "catalog:frontend",
