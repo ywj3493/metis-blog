@@ -14,6 +14,7 @@ export interface IPost {
   icon: string;
   publishTime: string;
   lastEditedTime: string;
+  aiSummary?: string;
 }
 
 export interface PostDatabaseResponse {

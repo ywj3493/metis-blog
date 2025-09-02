@@ -8,33 +8,75 @@ type PostCardProps = {
 };
 
 export function PostCard({ post }: PostCardProps) {
-  const { cover, title, slugifiedTitle, publishTime, icon, tags } = post;
+  const { cover, title, slugifiedTitle, publishTime, icon, tags, aiSummary } =
+    post;
 
   return (
     <Link href={`/posts/${slugifiedTitle}`} className="mx-auto block h-min">
-      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col items-center rounded-sm shadow-lg">
+      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col rounded-sm shadow-lg bg-white dark:bg-gray-800 overflow-hidden">
+        {/* 이미지와 오버레이 메타데이터 섹션 */}
         <div className="relative">
           <Image
             src={cover}
             alt="cover"
             width={320}
             height={200}
-            style={{ width: 320, height: 200 }}
+            style={{ width: "100%", height: 200 }}
+            className="object-cover"
           />
-          <p className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full break-words text-center text-white">
-            {title}
-          </p>
-        </div>
-        <div className="flex w-full flex-col items-center gap-1">
-          <time className="self-end p-1 text-sm">{publishTime}</time>
-          <Image src={icon} alt="icon" width={24} height={24} />
-          <h2 className="w-full truncate px-3 text-center">{title}</h2>
-          <div className="flex gap-2 p-1 pb-1.5">
-            {tags.map(({ id, name, color }) => (
-              <TagChip key={`_${name}`} id={id} name={name} color={color} />
-            ))}
+
+          {/* 배경 그라디언트 오버레이 */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+
+          {/* 상단 메타데이터 오버레이 */}
+          <div className="absolute top-0 left-0 right-0 p-4 z-20">
+            <div className="flex items-center gap-2 mb-2">
+              {icon && (
+                <Image
+                  src={icon}
+                  alt="icon"
+                  width={20}
+                  height={20}
+                  className="rounded"
+                />
+              )}
+              <time className="text-sm text-white/90">{publishTime}</time>
+            </div>
+
+            <div className="flex flex-wrap gap-1">
+              {tags.map(({ id, name, color }) => (
+                <TagChip key={`_${name}`} id={id} name={name} color={color} />
+              ))}
+            </div>
+          </div>
+
+          {/* 하단 제목 오버레이 */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+            <h2
+              className="text-lg font-semibold text-white mb-0 overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                lineHeight: "1.5em",
+                maxHeight: "3em",
+              }}
+            >
+              {title}
+            </h2>
           </div>
         </div>
+
+        {/* AI 요약 섹션 */}
+        {aiSummary && (
+          <div className="p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                💡AI 요약: {aiSummary}
+              </p>
+            </div>
+          </div>
+        )}
       </article>
     </Link>
   );
