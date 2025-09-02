@@ -80,6 +80,7 @@ export class Post implements IPost {
   public icon;
   public publishTime;
   public lastEditedTime;
+  public aiSummary?;
 
   protected constructor(post: IPost) {
     this.id = post.id;
@@ -90,6 +91,7 @@ export class Post implements IPost {
     this.icon = post.icon;
     this.publishTime = post.publishTime;
     this.lastEditedTime = post.lastEditedTime;
+    this.aiSummary = post.aiSummary;
   }
 
   public static create(data: unknown) {
@@ -113,6 +115,8 @@ export class Post implements IPost {
         icon,
         publishTime,
         lastEditedTime,
+        aiSummary:
+          "이 포스트는 개발과 기술에 관한 유용한 정보를 담고 있습니다. 실무에 적용할 수 있는 팁과 노하우가 포함되어 있어 개발자들에게 도움이 될 것입니다.", // 임시 더미 요약
       });
     }
     throw Error("Post 객체 생성 오류");
