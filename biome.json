@@ -20,6 +20,9 @@
       "recommended": true,
       "nursery": {
         "useSortedClasses": "info"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off"
       }
     }
   },

@@ -34,7 +34,6 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
     setShowScrollHint(!atBottom);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: prevent infinite rerender
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
