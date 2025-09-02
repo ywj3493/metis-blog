@@ -3,6 +3,8 @@ import type { TagDatabaseResponse } from "@/entities/posts/model/type";
 import { Client } from "@notionhq/client";
 import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "notion-client";
+import { nextServerCache } from "@/shared/lib/cache";
+import { Post } from "@/entities/posts/model";
 
 const notionToken = process.env.NOTION_KEY;
 const notionAboutPageID = process.env.NOTION_ABOUT_PAGE_ID;
@@ -25,7 +27,7 @@ const notionApi = new NotionAPI({
  *
  * @returns
  */
-export async function getNotionPosts() {
+async function _getNotionPosts() {
   if (!notionPostDatabaseId) {
     throw Error("notionPostDatabaseId is not settled.");
   }
@@ -54,7 +56,7 @@ export async function getNotionPosts() {
  * @param id 페이지 아이디
  * @returns
  */
-export async function getNotionPostMetadata(id: string) {
+async function _getNotionPostMetadata(id: string) {
   const pageResponse = await notion.pages.retrieve({
     page_id: id,
   });
@@ -90,11 +92,43 @@ export async function getNotionPostMetadata(id: string) {
 }
 
 /**
+ * 블로그 포스트 본문 내용(텍스트) 가져오기 - 요약용
+ *
+ * @param id string 페이지 아이디
+ * @returns
+ */
+async function _getNotionPostContentForSummary(id: string) {
+  const pageResponse = await notion.pages.retrieve({
+    page_id: id,
+  });
+  const contentResponse = await notion.blocks.children.list({
+    block_id: id,
+  });
+
+  /* @ts-expect-error Notion Type Error */
+  const title = pageResponse.properties.제목.title[0].plain_text;
+
+  const content = contentResponse.results
+    /* @ts-expect-error Notion Type Error */
+    .filter((block) => block.type === "paragraph")
+    .map((block) =>
+      /* @ts-expect-error Notion Type Error */
+      block.paragraph.rich_text
+        /* @ts-expect-error Notion Type Error */
+        .map((text) => text.plain_text)
+        .join(""),
+    )
+    .join("");
+
+  return { title, content };
+}
+
+/**
  * 블로그 포스트 데이터베이스 태그 정보 가져오기
  *
  * @returns
  */
-export async function getNotionPostDatabaseTags() {
+async function _getNotionPostDatabaseTags() {
   if (!notionPostDatabaseId) {
     throw Error("notionPostDatabaseId is not settled.");
   }
@@ -114,7 +148,7 @@ export async function getNotionPostDatabaseTags() {
  * @param id 페이지 아이디
  * @returns
  */
-export async function getNotionPage(id: string) {
+async function _getNotionPage(id: string) {
   const response = await notionApi.getPage(id);
 
   return response;
@@ -126,7 +160,7 @@ export async function getNotionPage(id: string) {
  * @param id 페이지 아이디
  * @returns
  */
-export async function getNotionAboutPage() {
+async function _getNotionAboutPage() {
   if (!notionAboutPageID) {
     throw Error("notionAboutPageID is not settled.");
   }
@@ -142,7 +176,7 @@ export async function getNotionAboutPage() {
  * @param content 방명록 내용
  * @param status 방명록 공개 여부
  */
-export async function postNotionGuestbook({
+async function _postNotionGuestbook({
   name,
   content,
   isPrivate,
@@ -201,7 +235,7 @@ export async function postNotionGuestbook({
  *
  * @returns
  */
-export async function getNotionGuestbooks() {
+async function _getNotionGuestbooks() {
   if (!notionGuestbookDatabaseId) {
     throw Error("notionGuestbookDatabaseId is not settled.");
   }
@@ -217,3 +251,36 @@ export async function getNotionGuestbooks() {
 
   return response.results as DatabaseObjectResponse[];
 }
+
+/**
+ * 슬러그 맵 가져오기
+ *
+ * @returns
+ */
+const _getSlugMap = async () => {
+  const posts = (await getNotionPosts()).map(Post.create);
+
+  const slugMap = posts.reduce(
+    (acc, { id, slugifiedTitle }) => {
+      acc[slugifiedTitle] = id;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  return slugMap;
+};
+
+// 로깅이 적용된 함수들을 export
+export const getNotionPosts = nextServerCache(_getNotionPosts, ["posts"]);
+export const getNotionPostMetadata = _getNotionPostMetadata;
+export const getNotionPostDatabaseTags = nextServerCache(
+  _getNotionPostDatabaseTags,
+  ["tags"],
+);
+export const getNotionPage = _getNotionPage;
+export const getNotionAboutPage = _getNotionAboutPage;
+export const postNotionGuestbook = _postNotionGuestbook;
+export const getNotionGuestbooks = _getNotionGuestbooks;
+export const getNotionPostContentForSummary = _getNotionPostContentForSummary;
+export const getSlugMap = _getSlugMap;
