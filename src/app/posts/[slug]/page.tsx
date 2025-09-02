@@ -1,4 +1,3 @@
-import { getSlugMap } from "@/entities/posts/cache/slug-cache";
 import { Post } from "@/entities/posts/model";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
 import { isNotionPageId } from "@/entities/posts/utils";
@@ -6,16 +5,19 @@ import {
   getNotionPage,
   getNotionPostMetadata,
   getNotionPosts,
+  getSlugMap,
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
+import { CACHE_CONFIG } from "@/shared/config";
 import { slug } from "github-slugger";
 
 type PostDetailPageProps = {
   params: { slug: string }; // postId 처럼 보이는 slug 또는 id
 };
 
-export const revalidate = 180;
+export const revalidate = CACHE_CONFIG.ISR_REVALIDATE_TIME;
 
+// 모든 페이지에 대해 한번만 호출됨
 export async function generateStaticParams() {
   const posts = (await getNotionPosts()).map(Post.create);
 

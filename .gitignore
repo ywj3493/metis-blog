@@ -40,3 +40,6 @@ google*.html
 
 # vscode settings
 .vscode
+
+# logs
+*.log
