@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { CACHE_CONFIG } from "../config";
+import { CACHE_CONFIG } from "../config/variables";
 
 export const nextServerCache = <
   T extends (...args: unknown[]) => Promise<unknown>,

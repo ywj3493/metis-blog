@@ -8,7 +8,7 @@ import {
   getSlugMap,
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
-import { CACHE_CONFIG } from "@/shared/config";
+import { CACHE_CONFIG } from "@/shared/config/variables";
 import { slug } from "github-slugger";
 
 type PostDetailPageProps = {
