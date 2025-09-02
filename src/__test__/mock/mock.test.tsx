@@ -1,7 +1,7 @@
+import { TestInputForm } from "@/mocks/components/TestInputForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import { TestInputForm } from "@/mocks/components/TestInputForm";
 
 describe("MockingTest in client", () => {
   it("should render correctly", async () => {
