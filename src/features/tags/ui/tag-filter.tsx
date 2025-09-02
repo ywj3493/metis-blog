@@ -1,9 +1,9 @@
 "use client";
 
-import type { Tag } from "@/entities/posts/model";
-import { TagChip, Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef, useState } from "react";
+import type { Tag } from "@/entities/posts/model";
+import { TagChip, Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 
 type LNBProps = {
   tags: Tag[];

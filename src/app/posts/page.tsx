@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
 import {
   getNotionPostDatabaseTags,
   getNotionPosts,
 } from "@/features/notion/model";
 import { FilterablePosts } from "@/features/posts/ui";
-import type { Metadata } from "next";
 
 export const revalidate = 180;
 

@@ -1,8 +1,8 @@
+import { z } from "zod";
 import {
   getNotionGuestbooks,
   postNotionGuestbook,
 } from "@/features/notion/model";
-import { z } from "zod";
 
 const bodySchema = z.object({
   name: z.string({ required_error: "이름은 필수입니다." }),

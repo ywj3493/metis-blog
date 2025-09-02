@@ -1,7 +1,7 @@
+import type { Metadata } from "next";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
 import { getNotionAboutPage } from "@/features/notion/model";
 import { Contact } from "@/features/profile/ui";
-import type { Metadata } from "next";
 
 export const revalidate = 180;
 
