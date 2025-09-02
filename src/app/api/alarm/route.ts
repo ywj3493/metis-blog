@@ -1,5 +1,5 @@
-import { sendEamil } from "@/features/alarm/model";
 import { z } from "zod";
+import { sendEamil } from "@/features/alarm/model";
 
 const bodySchema = z.object({
   from: z.string(),

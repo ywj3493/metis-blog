@@ -16,5 +16,5 @@ export function MSWStarter({ children }: { children: React.ReactNode }) {
     }
   }, [enableMSW]);
 
-  return enableMSW ? <>{children}</> : null;
+  return enableMSW ? { children } : null;
 }

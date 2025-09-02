@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { GuestbookList } from "@/features/guestbooks/ui";
 import { Contact } from "@/features/profile/ui";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "contact",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function GuestbooksPage() {
   return (
-    <section className="flex flex-col items-center ">
+    <section className="flex flex-col items-center">
       <Contact />
       <GuestbookList />
     </section>

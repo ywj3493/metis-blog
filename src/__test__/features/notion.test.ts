@@ -1,6 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { getNotionPostMetadata, getNotionPosts } from "@/features/notion/model";
 import { server } from "@/mocks/server";
-import { describe, expect, it } from "vitest";
 
 describe("Test for build all posts", () => {
   it("should load env variables", () => {

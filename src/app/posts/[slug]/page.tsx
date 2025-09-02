@@ -1,3 +1,4 @@
+import { slug } from "github-slugger";
 import { Post } from "@/entities/posts/model";
 import { ClientNotionRenderer } from "@/entities/posts/ui";
 import { isNotionPageId } from "@/entities/posts/utils";
@@ -9,7 +10,6 @@ import {
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
 import { CACHE_CONFIG } from "@/shared/config/variables";
-import { slug } from "github-slugger";
 
 type PostDetailPageProps = {
   params: { slug: string }; // postId 처럼 보이는 slug 또는 id

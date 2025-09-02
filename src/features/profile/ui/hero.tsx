@@ -1,7 +1,7 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 import Image from "next/image";
 import Link from "next/link";
 import { AiFillGithub } from "react-icons/ai";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 
 export function Hero() {
   return (

@@ -1,7 +1,7 @@
-import type { Post } from "@/entities/posts/model";
-import { TagChip } from "@/shared/ui";
 import Image from "next/image";
 import Link from "next/link";
+import type { Post } from "@/entities/posts/model";
+import { TagChip } from "@/shared/ui";
 
 type PostCardProps = {
   post: Post;

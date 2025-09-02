@@ -70,7 +70,7 @@ export function TestInputForm() {
     if (!!name && !!age) {
       await postTestEmployee({
         name: name,
-        age: Number.parseInt(age),
+        age: Number.parseInt(age, 10),
       });
     }
   };
@@ -86,7 +86,7 @@ export function TestInputForm() {
     };
     try {
       fetch();
-    } catch (e) {}
+    } catch (_e) {}
   }, []);
 
   return (
