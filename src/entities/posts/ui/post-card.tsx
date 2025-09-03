@@ -83,7 +83,7 @@ export function PostCard({ post }: PostCardProps) {
           {aiSummarized && aiSummary ? (
             // AI 요약이 있는 경우 (서버 컴포넌트에서 렌더링)
             <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
-              <p className="line-clamp-3 text-gray-700 text-sm leading-relaxed dark:text-gray-300">
+              <p className="line-clamp-5 text-gray-700 text-sm leading-relaxed dark:text-gray-300">
                 💡 {aiSummary}
               </p>
             </div>
