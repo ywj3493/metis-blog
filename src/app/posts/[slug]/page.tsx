@@ -1,13 +1,13 @@
 import { slug } from "github-slugger";
-import { Post } from "@/entities/posts/model";
-import { ClientNotionRenderer } from "@/entities/posts/ui";
-import { isNotionPageId } from "@/entities/posts/utils";
 import {
   getNotionPage,
   getNotionPostMetadata,
   getNotionPosts,
   getSlugMap,
-} from "@/features/notion/model";
+} from "@/entities/notion/model";
+import { Post } from "@/entities/posts/model";
+import { ClientNotionRenderer } from "@/entities/posts/ui";
+import { isNotionPageId } from "@/entities/posts/utils";
 import { PostNavigator } from "@/features/posts/ui";
 import { CACHE_CONFIG } from "@/shared/config";
 

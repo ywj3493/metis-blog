@@ -34,14 +34,14 @@ async function _getNotionPosts() {
   const response = await notion.databases.query({
     database_id: notionPostDatabaseId,
     filter: {
-      property: "status",
+      property: "상태",
       status: {
         equals: "공개",
       },
     },
     sorts: [
       {
-        property: "publish_date",
+        property: "날짜",
         direction: "descending",
       },
     ],
@@ -65,10 +65,10 @@ async function _getNotionPostMetadata(id: string) {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties.title.title[0].plain_text;
+  const title = pageResponse.properties.제목.title[0].plain_text;
 
   /* @ts-expect-error Notion Type Error */
-  const tags = pageResponse.properties.tags.multi_select.map(
+  const tags = pageResponse.properties.Tags.multi_select.map(
     /* @ts-expect-error Notion Type Error */
     (tag) => tag.name,
   );
@@ -106,7 +106,7 @@ async function _getNotionPostContentForSummary(id: string) {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties.title.title[0].plain_text;
+  const title = pageResponse.properties.제목.title[0].plain_text;
 
   const content = contentResponse.results
     /* @ts-expect-error Notion Type Error */

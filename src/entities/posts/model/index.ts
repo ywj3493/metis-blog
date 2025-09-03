@@ -36,23 +36,23 @@ export function isPostDatabaseResponse(
   if (typeof o.id !== "string") return false;
   if (typeof o.properties !== "object" || o.properties === null) return false;
   if (
-    typeof o.properties.title !== "object" ||
-    !Array.isArray(o.properties.title.title)
+    typeof o.properties.제목 !== "object" ||
+    !Array.isArray(o.properties.제목.title)
   )
     return false;
   if (
-    !o.properties.title.title.every(
+    !o.properties.제목.title.every(
       (titleItem) => typeof titleItem.plain_text === "string",
     )
   )
     return false;
   if (
-    typeof o.properties.tags !== "object" ||
-    !Array.isArray(o.properties.tags.multi_select)
+    typeof o.properties.Tags !== "object" ||
+    !Array.isArray(o.properties.Tags.multi_select)
   )
     return false;
   if (
-    !o.properties.tags.multi_select.every(
+    !o.properties.Tags.multi_select.every(
       (tag) =>
         typeof tag.id === "string" &&
         typeof tag.name === "string" &&
@@ -61,11 +61,11 @@ export function isPostDatabaseResponse(
   )
     return false;
   if (
-    typeof o.properties.publish_date !== "object" ||
-    typeof o.properties.publish_date.date !== "object"
+    typeof o.properties.날짜 !== "object" ||
+    typeof o.properties.날짜.date !== "object"
   )
     return false;
-  if (typeof o.properties.publish_date.date.start !== "string") return false;
+  if (typeof o.properties.날짜.date.start !== "string") return false;
   if (typeof o.last_edited_time !== "string") return false;
 
   if (
@@ -106,11 +106,11 @@ export class Post implements IPost {
       return new Post(data);
     }
     if (isPostDatabaseResponse(data)) {
-      const title = data.properties.title.title[0].plain_text;
-      const tags = data.properties.tags.multi_select;
+      const title = data.properties.제목.title[0].plain_text;
+      const tags = data.properties.Tags.multi_select;
       const cover = data.cover?.external?.url ?? "";
       const icon = data.icon?.external?.url ?? "/mascot.png";
-      const publishTime = data.properties.publish_date.date.start;
+      const publishTime = data.properties.날짜.date.start;
       const lastEditedTime = data.last_edited_time;
       const aiSummary =
         data.properties.summary?.rich_text[0]?.plain_text ??

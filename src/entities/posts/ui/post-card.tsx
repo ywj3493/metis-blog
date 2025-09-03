@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "@/entities/posts/model";
-import { AISummaryButton } from "@/features/posts/ui";
+// import 때문에 next 서버 쪽 모듈들이 흘러들어옴
+import { AISummaryButton } from "@/features/posts/ui/ai-summary-button";
 import { TagChip } from "@/shared/ui";
 
 type PostCardProps = {
@@ -10,6 +11,7 @@ type PostCardProps = {
 
 export function PostCard({ post }: PostCardProps) {
   const {
+    id,
     cover,
     title,
     slugifiedTitle,
@@ -87,7 +89,7 @@ export function PostCard({ post }: PostCardProps) {
             </div>
           ) : (
             // AI 요약이 없는 경우 (클라이언트 컴포넌트로 위임)
-            <AISummaryButton postId={post.id} />
+            <AISummaryButton postId={id} />
           )}
         </div>
       </article>
