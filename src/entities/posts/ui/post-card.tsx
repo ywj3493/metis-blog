@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "@/entities/posts/model";
+import { AISummaryButton } from "@/features/posts/ui";
 import { TagChip } from "@/shared/ui";
 
 type PostCardProps = {
@@ -8,12 +9,20 @@ type PostCardProps = {
 };
 
 export function PostCard({ post }: PostCardProps) {
-  const { cover, title, slugifiedTitle, publishTime, icon, tags, aiSummary } =
-    post;
+  const {
+    cover,
+    title,
+    slugifiedTitle,
+    publishTime,
+    icon,
+    tags,
+    aiSummary,
+    aiSummarized,
+  } = post;
 
   return (
     <Link href={`/posts/${slugifiedTitle}`} className="mx-auto block h-min">
-      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col rounded-sm shadow-lg bg-white dark:bg-gray-800 overflow-hidden">
+      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col overflow-hidden rounded-sm bg-white shadow-lg dark:bg-gray-800">
         {/* 이미지와 오버레이 메타데이터 섹션 */}
         <div className="relative">
           <Image
@@ -26,11 +35,11 @@ export function PostCard({ post }: PostCardProps) {
           />
 
           {/* 배경 그라디언트 오버레이 */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
           {/* 상단 메타데이터 오버레이 */}
-          <div className="absolute top-0 left-0 right-0 p-4 z-20">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="absolute top-0 right-0 left-0 z-20 p-4">
+            <div className="mb-2 flex items-center gap-2">
               {icon && (
                 <Image
                   src={icon}
@@ -51,9 +60,9 @@ export function PostCard({ post }: PostCardProps) {
           </div>
 
           {/* 하단 제목 오버레이 */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+          <div className="absolute right-0 bottom-0 left-0 z-20 p-4">
             <h2
-              className="text-lg font-semibold text-white mb-0 overflow-hidden"
+              className="mb-0 overflow-hidden font-semibold text-lg text-white"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
@@ -68,15 +77,19 @@ export function PostCard({ post }: PostCardProps) {
         </div>
 
         {/* AI 요약 섹션 */}
-        {aiSummary && (
-          <div className="p-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                💡AI 요약: {aiSummary}
+        <div className="p-4">
+          {aiSummarized && aiSummary ? (
+            // AI 요약이 있는 경우 (서버 컴포넌트에서 렌더링)
+            <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+              <p className="text-gray-700 text-sm leading-relaxed dark:text-gray-300">
+                💡 {aiSummary}
               </p>
             </div>
-          </div>
-        )}
+          ) : (
+            // AI 요약이 없는 경우 (클라이언트 컴포넌트로 위임)
+            <AISummaryButton postId={post.id} />
+          )}
+        </div>
       </article>
     </Link>
   );

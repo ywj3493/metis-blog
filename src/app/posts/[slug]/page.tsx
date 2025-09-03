@@ -9,7 +9,7 @@ import {
   getSlugMap,
 } from "@/features/notion/model";
 import { PostNavigator } from "@/features/posts/ui";
-import { CACHE_CONFIG } from "@/shared/config/variables";
+import { CACHE_CONFIG } from "@/shared/config";
 
 type PostDetailPageProps = {
   params: { slug: string }; // postId 처럼 보이는 slug 또는 id

@@ -36,23 +36,23 @@ export function isPostDatabaseResponse(
   if (typeof o.id !== "string") return false;
   if (typeof o.properties !== "object" || o.properties === null) return false;
   if (
-    typeof o.properties.제목 !== "object" ||
-    !Array.isArray(o.properties.제목.title)
+    typeof o.properties.title !== "object" ||
+    !Array.isArray(o.properties.title.title)
   )
     return false;
   if (
-    !o.properties.제목.title.every(
+    !o.properties.title.title.every(
       (titleItem) => typeof titleItem.plain_text === "string",
     )
   )
     return false;
   if (
-    typeof o.properties.Tags !== "object" ||
-    !Array.isArray(o.properties.Tags.multi_select)
+    typeof o.properties.tags !== "object" ||
+    !Array.isArray(o.properties.tags.multi_select)
   )
     return false;
   if (
-    !o.properties.Tags.multi_select.every(
+    !o.properties.tags.multi_select.every(
       (tag) =>
         typeof tag.id === "string" &&
         typeof tag.name === "string" &&
@@ -61,12 +61,18 @@ export function isPostDatabaseResponse(
   )
     return false;
   if (
-    typeof o.properties.날짜 !== "object" ||
-    typeof o.properties.날짜.date !== "object"
+    typeof o.properties.publish_date !== "object" ||
+    typeof o.properties.publish_date.date !== "object"
   )
     return false;
-  if (typeof o.properties.날짜.date.start !== "string") return false;
+  if (typeof o.properties.publish_date.date.start !== "string") return false;
   if (typeof o.last_edited_time !== "string") return false;
+
+  if (
+    typeof o.properties.summary !== "object" ||
+    !Array.isArray(o.properties.summary.rich_text)
+  )
+    return false;
 
   return true;
 }
@@ -80,7 +86,7 @@ export class Post implements IPost {
   public icon;
   public publishTime;
   public lastEditedTime;
-  public aiSummary?;
+  public aiSummary;
 
   protected constructor(post: IPost) {
     this.id = post.id;
@@ -100,12 +106,15 @@ export class Post implements IPost {
       return new Post(data);
     }
     if (isPostDatabaseResponse(data)) {
-      const title = data.properties.제목.title[0].plain_text;
-      const tags = data.properties.Tags.multi_select;
+      const title = data.properties.title.title[0].plain_text;
+      const tags = data.properties.tags.multi_select;
       const cover = data.cover?.external?.url ?? "";
       const icon = data.icon?.external?.url ?? "/mascot.png";
-      const publishTime = data.properties.날짜.date.start;
+      const publishTime = data.properties.publish_date.date.start;
       const lastEditedTime = data.last_edited_time;
+      const aiSummary =
+        data.properties.summary?.rich_text[0]?.plain_text ??
+        "아직 AI 요약이 완료되지 않았습니다. 잠시 기다려 주세요.";
       return new Post({
         id: data.id,
         title,
@@ -115,11 +124,17 @@ export class Post implements IPost {
         icon,
         publishTime,
         lastEditedTime,
-        aiSummary:
-          "이 포스트는 개발과 기술에 관한 유용한 정보를 담고 있습니다. 실무에 적용할 수 있는 팁과 노하우가 포함되어 있어 개발자들에게 도움이 될 것입니다.", // 임시 더미 요약
+        aiSummary,
       });
     }
     throw Error("Post 객체 생성 오류");
+  }
+
+  get aiSummarized() {
+    return (
+      this.aiSummary !==
+      "아직 AI 요약이 완료되지 않았습니다. 잠시 기다려 주세요."
+    );
   }
 }
 

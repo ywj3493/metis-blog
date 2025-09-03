@@ -14,24 +14,29 @@ export interface IPost {
   icon: string;
   publishTime: string;
   lastEditedTime: string;
-  aiSummary?: string;
+  aiSummary: string;
 }
 
 export interface PostDatabaseResponse {
   id: string;
   properties: {
-    제목: {
+    title: {
       title: {
         plain_text: string;
       }[];
     };
-    Tags: {
+    tags: {
       multi_select: ITag[];
     };
-    날짜: {
+    publish_date: {
       date: {
         start: string;
       };
+    };
+    summary?: {
+      rich_text: {
+        plain_text: string;
+      }[];
     };
   };
   cover: {
