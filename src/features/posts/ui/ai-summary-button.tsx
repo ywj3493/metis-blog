@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { updateAISummaryAction } from "@/features/posts/actions";
 import { Button } from "@/shared/ui/button";
+import { updatePostSummary } from "../api";
 
 type AISummaryButtonProps = {
   postId: string;
@@ -23,7 +23,7 @@ export function AISummaryButton({ postId }: AISummaryButtonProps) {
     setError(null);
 
     try {
-      const result = await updateAISummaryAction(postId);
+      const result = await updatePostSummary(postId);
 
       if (result?.success) {
         setSummary(result.summary);

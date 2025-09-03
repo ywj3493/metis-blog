@@ -20,15 +20,15 @@ export interface IPost {
 export interface PostDatabaseResponse {
   id: string;
   properties: {
-    title: {
+    제목: {
       title: {
         plain_text: string;
       }[];
     };
-    tags: {
+    Tags: {
       multi_select: ITag[];
     };
-    publish_date: {
+    날짜: {
       date: {
         start: string;
       };

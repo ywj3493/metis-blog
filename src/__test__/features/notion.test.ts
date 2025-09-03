@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getNotionPostMetadata, getNotionPosts } from "@/features/notion/model";
+import { getNotionPostMetadata, getNotionPosts } from "@/entities/notion/model";
 import { server } from "@/mocks/server";
 
 describe("Test for build all posts", () => {

@@ -1,6 +1,6 @@
+import { getNotionPosts } from "@/entities/notion/model";
 import { Post } from "@/entities/posts/model";
 import { SmallPostCard } from "@/entities/posts/ui";
-import { getNotionPosts } from "@/features/notion/model";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 type PostNavigatorProps = {
