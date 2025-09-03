@@ -120,7 +120,15 @@ async function _getNotionPostContentForSummary(id: string) {
     )
     .join("");
 
-  return { title, content };
+  /* @ts-expect-error Notion Type Error */
+  const summary = pageResponse.properties.summary.rich_text
+    /* @ts-expect-error Notion Type Error */
+    .map((text) => text.plain_text)
+    .join("");
+
+  const isSummarized = summary.length > 0;
+
+  return { title, content, isSummarized };
 }
 
 /**

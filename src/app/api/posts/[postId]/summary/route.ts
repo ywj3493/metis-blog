@@ -14,7 +14,12 @@ export async function PATCH(
 
   try {
     // 1. 포스트 내용 가져오기
-    const { title, content } = await getNotionPostContentForSummary(postId);
+    const { title, content, isSummarized } =
+      await getNotionPostContentForSummary(postId);
+
+    if (isSummarized) {
+      throw new Error("이미 요약이 생성된 포스트입니다.");
+    }
 
     // 2. AI 요약 생성
     const newSummary = await getAISummary(title, content);
