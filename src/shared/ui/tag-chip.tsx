@@ -35,7 +35,7 @@ const TagChip = ({ id, name, color, notSelected, onClick }: TagChipProps) => {
   return (
     <Button
       className={cn(
-        `${dynamicBgColor} ${dynamicTextColor} clickable rounded-full px-2 py-0.5 text-xs min-h-0 h-auto hover:bg-opacity-80 hover:${dynamicBgColor}`,
+        `${dynamicBgColor} ${dynamicTextColor} clickable h-auto min-h-0 rounded-full px-2 py-0.5 text-xs hover:bg-opacity-80 hover:${dynamicBgColor}`,
       )}
       onClick={tagClick}
     >

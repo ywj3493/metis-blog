@@ -14,7 +14,7 @@ function safeSlice(text: string, tokenLikeLimit = 8000) {
 const system = {
   role: "system",
   content:
-    "블로그 글의 요점을 정리함. 부가적인 설명 금지. 단 한문장으로만 정리. 200자 이내로 작성.",
+    "블로그 글의 요점을 정리함. 부가적인 설명 금지. 단 한문장으로만 정리. 100자 이내로 작성.",
 };
 
 async function _getAISummary(postTitle: string, plainText: string) {

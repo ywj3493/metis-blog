@@ -34,14 +34,14 @@ async function _getNotionPosts() {
   const response = await notion.databases.query({
     database_id: notionPostDatabaseId,
     filter: {
-      property: "상태",
+      property: "status",
       status: {
         equals: "공개",
       },
     },
     sorts: [
       {
-        property: "날짜",
+        property: "publish_date",
         direction: "descending",
       },
     ],
@@ -65,10 +65,10 @@ async function _getNotionPostMetadata(id: string) {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties.제목.title[0].plain_text;
+  const title = pageResponse.properties.title.title[0].plain_text;
 
   /* @ts-expect-error Notion Type Error */
-  const tags = pageResponse.properties.Tags.multi_select.map(
+  const tags = pageResponse.properties.tags.multi_select.map(
     /* @ts-expect-error Notion Type Error */
     (tag) => tag.name,
   );
@@ -106,7 +106,7 @@ async function _getNotionPostContentForSummary(id: string) {
   });
 
   /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties.제목.title[0].plain_text;
+  const title = pageResponse.properties.title.title[0].plain_text;
 
   const content = contentResponse.results
     /* @ts-expect-error Notion Type Error */
@@ -271,6 +271,29 @@ const _getSlugMap = async () => {
   return slugMap;
 };
 
+/**
+ * Notion Database 에 컬럼 업데이트 하기
+ *
+ */
+const _patchNotionPostSummary = async (postId: string, aiSummary: string) => {
+  const response = await notion.pages.update({
+    page_id: postId,
+    properties: {
+      summary: {
+        rich_text: [
+          {
+            text: {
+              content: aiSummary,
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  return response;
+};
+
 // 로깅이 적용된 함수들을 export
 export const getNotionPosts = nextServerCache(_getNotionPosts, ["posts"]);
 export const getNotionPostMetadata = _getNotionPostMetadata;
@@ -284,3 +307,4 @@ export const postNotionGuestbook = _postNotionGuestbook;
 export const getNotionGuestbooks = _getNotionGuestbooks;
 export const getNotionPostContentForSummary = _getNotionPostContentForSummary;
 export const getSlugMap = _getSlugMap;
+export const patchNotionPostSummary = _patchNotionPostSummary;
