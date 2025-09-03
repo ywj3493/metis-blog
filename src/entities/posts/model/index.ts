@@ -112,9 +112,7 @@ export class Post implements IPost {
       const icon = data.icon?.external?.url ?? "/mascot.png";
       const publishTime = data.properties.날짜.date.start;
       const lastEditedTime = data.last_edited_time;
-      const aiSummary =
-        data.properties.summary?.rich_text[0]?.plain_text ??
-        "아직 AI 요약이 완료되지 않았습니다. 잠시 기다려 주세요.";
+      const aiSummary = data.properties.summary?.rich_text[0]?.plain_text ?? "";
       return new Post({
         id: data.id,
         title,
@@ -131,10 +129,7 @@ export class Post implements IPost {
   }
 
   get aiSummarized() {
-    return (
-      this.aiSummary !==
-      "아직 AI 요약이 완료되지 않았습니다. 잠시 기다려 주세요."
-    );
+    return this.aiSummary !== "";
   }
 }
 

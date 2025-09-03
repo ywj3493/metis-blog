@@ -14,7 +14,7 @@ function safeSlice(text: string, tokenLikeLimit = 8000) {
 const system = {
   role: "system",
   content:
-    "블로그 글의 요점을 정리함. 부가적인 설명 금지. 단 한문장으로만 정리. 100자 이내로 작성.",
+    "블로그 글이 어떤 내용을 담고 있는지 2문장 이내로 간단히 알려주는 역할. 과장/추측 금지. 부가설명 금지. 마크다운 표현 금지.",
 };
 
 async function _getAISummary(postTitle: string, plainText: string) {
@@ -40,12 +40,6 @@ async function _getAISummaryLocal(postTitle: string, plain_text: string) {
     role: "user",
     content: [`제목: ${postTitle}`, "본문:", content].join("\n"),
   };
-
-  console.log({
-    messages: [system, user],
-    stream: false,
-    ...modelConfig.local,
-  });
 
   const response = await fetch(`${process.env.LOCAL_AI_ENDPOINT}/api/chat`, {
     method: "POST",
