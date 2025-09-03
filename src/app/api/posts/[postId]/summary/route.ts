@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import {
   getNotionPostContentForSummary,
@@ -29,6 +29,8 @@ export async function PATCH(
 
     // 4. 캐시 무효화 (API Route에서 직접 호출)
     revalidateTag("posts");
+    revalidatePath("/posts");
+    revalidatePath("/");
 
     const result = {
       success: true,
