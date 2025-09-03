@@ -24,14 +24,24 @@ const MENUS: Menu[] = [
 
 export function Header() {
   return (
-    <header className="box-border flex items-center justify-between px-6 py-4">
+    <header className="box-border flex items-center justify-between px-4 py-4">
       <Link className="clickable flex items-center gap-1" href="/">
-        <Image src={"/mascot.png"} height={48} width={48} alt={"icon"} />
-        <h1 className="font-bold text-2xl">{"메티의 블로그"}</h1>
+        <Image
+          src={"/mascot.png"}
+          height={48}
+          width={48}
+          alt={"icon"}
+          className="h-12 w-12"
+        />
+        <h1 className="font-bold sm:text-2xl">{"메티의 블로그"}</h1>
       </Link>
       <nav className="clickable flex gap-4">
         {MENUS.map(({ name, url }) => (
-          <Link key={name} href={url}>
+          <Link
+            key={name}
+            href={url}
+            className="transition-opacity hover:opacity-70"
+          >
             {name}
           </Link>
         ))}
