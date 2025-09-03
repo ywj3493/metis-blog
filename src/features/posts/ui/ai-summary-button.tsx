@@ -28,7 +28,7 @@ export function AISummaryButton({ postId }: AISummaryButtonProps) {
       if (result?.success) {
         setSummary(result.summary);
       } else {
-        setError("AI 요약 생성에 실패했습니다.");
+        setError(result?.error || "AI 요약 생성에 실패했습니다.");
       }
     } catch (error) {
       setError(
@@ -45,7 +45,7 @@ export function AISummaryButton({ postId }: AISummaryButtonProps) {
   if (summary) {
     return (
       <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
-        <p className="text-gray-700 text-sm leading-relaxed dark:text-gray-300">
+        <p className="line-clamp-3 text-gray-700 text-sm leading-relaxed dark:text-gray-300">
           💡 {summary}
         </p>
       </div>
