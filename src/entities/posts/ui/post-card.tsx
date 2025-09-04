@@ -4,6 +4,7 @@ import type { Post } from "@/entities/posts/model";
 // import 때문에 next 서버 쪽 모듈들이 흘러들어옴
 import { AISummaryButton } from "@/features/posts/ui/ai-summary-button";
 import { TagChip } from "@/shared/ui";
+import { AISummaryCard } from "./ai-summary-card";
 
 type PostCardProps = {
   post: Post;
@@ -81,12 +82,7 @@ export function PostCard({ post }: PostCardProps) {
         {/* AI 요약 섹션 */}
         <div className="p-4">
           {aiSummarized && aiSummary ? (
-            // AI 요약이 있는 경우 (서버 컴포넌트에서 렌더링)
-            <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
-              <p className="line-clamp-5 text-gray-700 text-sm leading-relaxed dark:text-gray-300">
-                💡 {aiSummary}
-              </p>
-            </div>
+            <AISummaryCard summary={aiSummary} />
           ) : (
             // AI 요약이 없는 경우 (클라이언트 컴포넌트로 위임)
             <AISummaryButton postId={id} />
