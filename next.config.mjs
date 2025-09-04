@@ -40,6 +40,16 @@ const nextConfig = {
       },
     ];
   },
+  // title 변경 으로 인한 임시 리다이렉트
+  async redirects() {
+    return [
+      {
+        source: "/posts/b2b-커머스-앱-프론트엔드-1인-개발-회고",
+        destination: "/posts/b2b-커머스-앱-프론트엔드-1인-개발-후기",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
