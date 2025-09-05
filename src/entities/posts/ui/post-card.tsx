@@ -32,8 +32,8 @@ export function PostCard({ post }: PostCardProps) {
             src={cover}
             alt="cover"
             width={320}
-            height={200}
-            style={{ width: "100%", height: 200 }}
+            height={160}
+            style={{ width: "100%", height: 160 }}
             className="object-cover"
           />
 
