@@ -1,6 +1,6 @@
 # Site 도메인 유즈케이스 (프론트엔드)
 
-이 문서는 Site 도메인의 프론트엔드 유즈케이스를 설명합니다. 테마 관리, 소개 페이지 보기, SEO 관련 기능을 다룹니다.
+이 문서는 Site 도메인의 프론트엔드 유즈케이스를 설명합니다. 테마 관리, 소개 페이지 보기, 히어로 섹션 표시를 다룹니다.
 
 ## UC-F-030: 테마 토글
 
@@ -195,97 +195,6 @@ export default async function AboutPage() {
 
 ---
 
-## UC-F-032: 사이트맵 생성
-
-### 개요
-
-| 속성 | 값 |
-|------|-----|
-| 주요 액터 | 검색 엔진 봇 |
-| 트리거 | 봇이 /api/sitemap 요청 |
-| 전제조건 | 블로그가 배포됨 |
-| 사후조건 | 유효한 XML 사이트맵 반환 |
-
-### 메인 플로우
-
-1. **봇**이 `/api/sitemap` 요청
-2. **시스템**이 GET 요청 처리
-3. **시스템**이 모든 게시된 포스트 조회
-4. **시스템**이 정적 페이지 항목 생성
-5. **시스템**이 슬러그로 포스트 항목 생성
-6. **시스템**이 모든 항목 결합
-7. **시스템**이 XML로 포맷
-8. **시스템**이 올바른 헤더와 함께 사이트맵 반환
-9. **봇**이 사이트맵 수신 및 파싱
-
-### 대안 플로우
-
-**AF-1: 게시된 포스트 없음**
-1. 3단계에서 포스트가 반환되지 않음
-2. 시스템이 정적 페이지만 생성
-3. 6단계부터 계속
-
-**AF-2: Notion API 오류**
-1. 3단계에서 포스트 조회 실패
-2. 시스템이 500 오류 반환
-3. 봇이 나중에 재시도
-
-### 사이트맵 생성 흐름
-
-```mermaid
-sequenceDiagram
-    participant B as Search Bot
-    participant A as /api/sitemap
-    participant R as Repository
-    participant N as Notion API
-
-    B->>A: GET /api/sitemap
-    A->>R: getNotionPosts()
-    R->>N: databases.query()
-    N-->>R: Published posts
-    R-->>A: Post[]
-
-    A->>A: Map posts to URLs
-    A->>A: Add static URLs
-    A->>A: Format as XML
-
-    A-->>B: 200 application/xml
-```
-
-### URL 생성
-
-```typescript
-// 사이트맵 API 라우트
-export async function GET() {
-  const baseUrl = process.env.BLOG_URL || "";
-  const posts = (await getNotionPosts()).map(Post.create);
-
-  // 동적 포스트 URL
-  const postUrls = posts.map(({ slugifiedTitle, lastEditedTime }) => ({
-    url: `${baseUrl}/posts/${slugifiedTitle}`,
-    lastModified: new Date(lastEditedTime),
-    changeFrequency: "daily",
-    priority: 0.8,
-  }));
-
-  // 정적 URL
-  const staticUrls = [
-    { url: baseUrl, priority: 1, changeFrequency: "daily" },
-    { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: "daily" },
-    { url: `${baseUrl}/posts`, priority: 0.8, changeFrequency: "daily" },
-    { url: `${baseUrl}/guestbooks`, priority: 0.8, changeFrequency: "always" },
-  ];
-
-  // 결합 및 포맷
-  const sitemap = formatAsXml([...staticUrls, ...postUrls]);
-  return new Response(sitemap, {
-    headers: { "Content-Type": "application/xml" },
-  });
-}
-```
-
----
-
 ## UC-F-033: 히어로 섹션 보기
 
 ### 개요
@@ -364,7 +273,6 @@ export function Hero() {
 |----------|---------|-------------|----------|
 | UC-F-030 | localStorage 사용 불가 | (조용히) | 세션 전용 테마 |
 | UC-F-031 | Notion API 오류 | "콘텐츠를 불러올 수 없습니다" | 재시도 버튼 |
-| UC-F-032 | 포스트 조회 오류 | 500 응답 | 봇 재시도 |
 | UC-F-033 | 이미지 로드 오류 | alt 텍스트 표시 | 브라우저 새로고침 |
 
 ---
@@ -375,7 +283,6 @@ export function Hero() {
 |----------|-----------|
 | UC-F-030 | 키보드 조작 가능 (Enter/Space), 포커스 표시 |
 | UC-F-031 | 시맨틱 헤딩, 이미지 alt 텍스트 |
-| UC-F-032 | 해당 없음 (머신 소비) |
 | UC-F-033 | 이미지 alt 텍스트, 버튼 툴팁 |
 
 ---
@@ -386,5 +293,4 @@ export function Hero() {
 |-----|-------|
 | 테마 전환 | CSS 전환, 레이아웃 시프트 없음 |
 | 소개 페이지 | ISR 캐싱, 스트리밍 |
-| 사이트맵 | 엣지 함수, 캐시된 포스트 |
 | 히어로 이미지 | 우선순위 로딩, 최적화된 포맷 |

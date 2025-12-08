@@ -1,6 +1,6 @@
 # Site Domain Use Cases (Frontend)
 
-This document describes the frontend use cases for the Site domain, covering theme management, about page viewing, and SEO-related functionality.
+This document describes the frontend use cases for the Site domain, covering theme management, about page viewing, and hero section display.
 
 ## UC-F-030: Toggle Theme
 
@@ -195,97 +195,6 @@ export default async function AboutPage() {
 
 ---
 
-## UC-F-032: Generate Sitemap
-
-### Overview
-
-| Property | Value |
-|----------|-------|
-| Primary Actor | Search Engine Bot |
-| Trigger | Bot requests /api/sitemap |
-| Precondition | Blog is deployed |
-| Postcondition | Valid XML sitemap returned |
-
-### Main Flow
-
-1. **Bot** requests `/api/sitemap`
-2. **System** handles GET request
-3. **System** fetches all published posts
-4. **System** generates static page entries
-5. **System** generates post entries with slugs
-6. **System** combines all entries
-7. **System** formats as XML
-8. **System** returns sitemap with correct headers
-9. **Bot** receives and parses sitemap
-
-### Alternative Flows
-
-**AF-1: No Published Posts**
-1. At step 3, no posts returned
-2. System generates only static pages
-3. Continue from step 6
-
-**AF-2: Notion API Error**
-1. At step 3, post fetch fails
-2. System returns 500 error
-3. Bot will retry later
-
-### Sitemap Generation Flow
-
-```mermaid
-sequenceDiagram
-    participant B as Search Bot
-    participant A as /api/sitemap
-    participant R as Repository
-    participant N as Notion API
-
-    B->>A: GET /api/sitemap
-    A->>R: getNotionPosts()
-    R->>N: databases.query()
-    N-->>R: Published posts
-    R-->>A: Post[]
-
-    A->>A: Map posts to URLs
-    A->>A: Add static URLs
-    A->>A: Format as XML
-
-    A-->>B: 200 application/xml
-```
-
-### URL Generation
-
-```typescript
-// Sitemap API route
-export async function GET() {
-  const baseUrl = process.env.BLOG_URL || "";
-  const posts = (await getNotionPosts()).map(Post.create);
-
-  // Dynamic post URLs
-  const postUrls = posts.map(({ slugifiedTitle, lastEditedTime }) => ({
-    url: `${baseUrl}/posts/${slugifiedTitle}`,
-    lastModified: new Date(lastEditedTime),
-    changeFrequency: "daily",
-    priority: 0.8,
-  }));
-
-  // Static URLs
-  const staticUrls = [
-    { url: baseUrl, priority: 1, changeFrequency: "daily" },
-    { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: "daily" },
-    { url: `${baseUrl}/posts`, priority: 0.8, changeFrequency: "daily" },
-    { url: `${baseUrl}/guestbooks`, priority: 0.8, changeFrequency: "always" },
-  ];
-
-  // Combine and format
-  const sitemap = formatAsXml([...staticUrls, ...postUrls]);
-  return new Response(sitemap, {
-    headers: { "Content-Type": "application/xml" },
-  });
-}
-```
-
----
-
 ## UC-F-033: View Hero Section
 
 ### Overview
@@ -364,7 +273,6 @@ export function Hero() {
 |----------|-----------|--------------|-----------------|
 | UC-F-030 | localStorage unavailable | (silent) | Session-only theme |
 | UC-F-031 | Notion API error | "콘텐츠를 불러올 수 없습니다" | Retry button |
-| UC-F-032 | Post fetch error | 500 response | Bot retries |
 | UC-F-033 | Image load error | Alt text displayed | Browser refresh |
 
 ---
@@ -375,7 +283,6 @@ export function Hero() {
 |----------|----------------------|
 | UC-F-030 | Keyboard operable (Enter/Space), focus visible |
 | UC-F-031 | Semantic headings, alt text for images |
-| UC-F-032 | N/A (machine consumption) |
 | UC-F-033 | Image alt text, tooltip for button |
 
 ---
@@ -386,5 +293,4 @@ export function Hero() {
 |--------|-------------|
 | Theme Switch | CSS transitions, no layout shift |
 | About Page | ISR caching, streaming |
-| Sitemap | Edge function, cached posts |
 | Hero Image | Priority loading, optimized format |

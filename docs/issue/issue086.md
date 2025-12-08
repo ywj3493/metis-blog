@@ -38,7 +38,7 @@ docs/specifications/
 ├── posts/           # 포스트 + AI 요약 + 태그 (API 있음)
 ├── guestbook/       # 방명록 (API 있음)
 ├── alarm/           # 이메일 알림 (API 있음)
-└── site/            # 테마 + 프로필 + SEO (API 없음)
+└── site/            # 테마 + 프로필 + SEO + Sitemap (API 있음)
 ```
 
 ### 문서 구조 (도메인별)
@@ -95,11 +95,13 @@ docs/specifications/
 - [x] `docs/specifications/site/requirements/requirements.md` - FR-SITE-001 ~ FR-SITE-006
 - [x] `docs/specifications/site/requirements/user-stories.md` - 4 user journeys
 - [x] `docs/specifications/site/design/information-architecture.md`
-- [x] `docs/specifications/site/design/use-case.md` - UC-F-030 ~ UC-F-033
-- [x] 한글 번역 (4 files)
+- [x] `docs/specifications/site/design/use-case.md` - UC-F-030, UC-F-031, UC-F-033
+- [x] `docs/specifications/site/workflows/sequence-diagram.md` - Sitemap 시퀀스 다이어그램
+- [x] `docs/specifications/site/workflows/use-case.md` - UC-API-030 (Sitemap 생성)
+- [x] 한글 번역 (6 files)
 
 ### Documentation Updates
-- [x] 44개 파일 생성 (영문 22개 + 한글 22개)
+- [x] 48개 파일 생성 (영문 24개 + 한글 24개)
 - [ ] docs/README.md 업데이트 (새 문서 링크 추가) - 선택
 
 ## 6. Validation Plan
@@ -115,8 +117,8 @@ docs/specifications/
 | posts | 2 | 3 | 2 | 7 | 7 |
 | guestbook | 2 | 2 | 2 | 6 | 6 |
 | alarm | 2 | 1 | 2 | 5 | 5 |
-| site | 2 | 2 | 0 | 4 | 4 |
-| **Total** | **8** | **8** | **6** | **22** | **22** |
+| site | 2 | 2 | 2 | 6 | 6 |
+| **Total** | **8** | **8** | **8** | **24** | **24** |
 
 ## 7. Rollout & Follow-up
 
@@ -134,3 +136,4 @@ docs/specifications/
 | 2024-12-08 | Initial draft & plan created | Claude |
 | 2024-12-08 | Phase 1-4 완료, 44개 파일 생성 | Claude |
 | 2024-12-08 | 커밋 완료 (bc18ddc) | Claude |
+| 2024-12-08 | Site 도메인 구조 개선: SEO/Sitemap을 workflows/로 이동, IA에서 비기능적 요구사항 제거 | Claude |
