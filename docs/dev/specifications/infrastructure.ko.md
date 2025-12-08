@@ -11,6 +11,7 @@
 ### 설치 단계
 
 1. **의존성 설치**:
+
    ```bash
    pnpm install
    ```
@@ -20,9 +21,11 @@
    - 필수 환경 변수 입력 (환경 변수 섹션 참조)
 
 3. **개발 서버 시작**:
+
    ```bash
    pnpm dev
    ```
+
    - `http://localhost:3000`에서 실행
    - 핫 리로드 활성화
    - 환경: `NODE_ENV=development`
@@ -52,7 +55,7 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxx
 LOCAL_AI_ENDPOINT=http://localhost:11434
 ```
 
-#### 이메일 알림
+#### 이메일 (Gmail SMTP)
 
 ```bash
 AUTH_USER=your-email@gmail.com           # Gmail 주소
@@ -141,10 +144,12 @@ pnpm build
 
 **배포 흐름**:
 
-1. `main` 브랜치에 푸시
-2. Vercel이 자동으로 변경 감지
-3. `pnpm build` 실행
-4. 프로덕션 URL에 배포
+```mermaid
+flowchart LR
+    A[main에 푸시] --> B[Vercel 변경 감지]
+    B --> C[pnpm build]
+    C --> D[프로덕션 배포]
+```
 
 **환경 설정**:
 
@@ -179,17 +184,23 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 
 **클라이언트 라이브러리**:
 
-1. **공식 클라이언트** (`@notionhq/client`):
-   - API: Notion REST API v1
-   - 인증: `NOTION_KEY` (통합 토큰)
-   - 용도: 데이터베이스 쿼리, 속성 업데이트
-   - 위치: `src/entities/notion/api/server-side.ts`
+```mermaid
+flowchart TD
+    subgraph "공식 클라이언트"
+        A1["@notionhq/client"] --> A2[Notion REST API v1]
+        A2 --> A3[데이터베이스 쿼리]
+        A2 --> A4[속성 업데이트]
+    end
+    subgraph "비공식 클라이언트"
+        B1["notion-client + react-notion-x"] --> B2[Notion 내부 API]
+        B2 --> B3[리치 콘텐츠 렌더링]
+    end
+```
 
-2. **비공식 클라이언트** (`notion-client` + `react-notion-x`):
-   - API: Notion의 내부 API
-   - 인증: `NOTION_TOKEN_V2` (브라우저 쿠키)
-   - 용도: 리치 콘텐츠 렌더링
-   - 위치: `src/entities/notion/api/react-notion-x.ts`
+| 클라이언트 | 패키지 | 인증 | 용도 | 위치 |
+|--------|---------|---------------|-------|----------|
+| 공식 | `@notionhq/client` | `NOTION_KEY` | 데이터베이스 쿼리, 속성 업데이트 | `src/entities/notion/api/server-side.ts` |
+| 비공식 | `notion-client` + `react-notion-x` | `NOTION_TOKEN_V2` | 리치 콘텐츠 렌더링 | `src/entities/notion/api/react-notion-x.ts` |
 
 **데이터베이스 구조**:
 
@@ -274,6 +285,18 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 
 **전략**: 다층 캐싱
 
+```mermaid
+flowchart TD
+    A[요청] --> B[Next.js ISR 레이어]
+    B --> C[서버 사이드 캐시 레이어]
+    C --> D[메모리 캐시 레이어]
+    D --> E[데이터 소스]
+
+    B -.->|"시간 기반 재검증"| B
+    C -.->|"unstable_cache 래퍼"| C
+    D -.->|"TTL 기반 저장"| D
+```
+
 **레이어**:
 
 1. **Next.js ISR**: 시간 기반 재검증이 포함된 정적 생성
@@ -342,19 +365,22 @@ revalidatePath('/posts');
 
 **트리거**: `main` 브랜치로 푸시
 
-**프로세스**:
+```mermaid
+flowchart LR
+    subgraph "CI/CD 파이프라인"
+        A[GitHub 푸시] --> B[Vercel 통합]
+        B --> C[pnpm install]
+        C --> D[pnpm build]
+        D --> E[배포]
+        E --> F[엣지 캐시 무효화]
+    end
 
-1. GitHub 통합을 통해 변경 감지
-2. pnpm으로 의존성 설치
-3. `pnpm build` 실행
-4. 프로덕션에 배포
-5. 필요시 엣지 캐싱 무효화 실행
-
-**Preview 배포**:
-
-- Pull Request에 대해 자동
-- 각 PR에 고유 URL
-- PR 머지/닫힘 후 삭제
+    subgraph "Preview 배포"
+        G[Pull Request] --> H[자동 Preview]
+        H --> I[고유 URL]
+        I --> J[머지/닫힘 시 삭제]
+    end
+```
 
 ## 보안 고려사항
 

@@ -11,6 +11,7 @@
 ### Installation Steps
 
 1. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
@@ -20,9 +21,11 @@
    - Fill in required environment variables (see Environment Variables section)
 
 3. **Start development server**:
+
    ```bash
    pnpm dev
    ```
+
    - Runs on `http://localhost:3000`
    - Hot reload enabled
    - Environment: `NODE_ENV=development`
@@ -32,6 +35,7 @@
 Create `.env.local` in the project root with the following variables:
 
 #### Notion Integration
+
 ```bash
 NOTION_KEY=secret_xxxxxxxxxxxxx           # Notion integration token
 NOTION_TOKEN_V2=xxxxxxxxxxxxxxxxxx        # Browser cookie for unofficial client
@@ -42,6 +46,7 @@ NOTION_USER_ID=xxxxxxxx                  # Your Notion user ID
 ```
 
 #### AI Integration
+
 ```bash
 # Production: OpenAI
 OPENAI_API_KEY=sk-xxxxxxxxxxxxx
@@ -50,13 +55,15 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxx
 LOCAL_AI_ENDPOINT=http://localhost:11434
 ```
 
-#### Email Notifications
+#### Email (Gmail SMTP)
+
 ```bash
 AUTH_USER=your-email@gmail.com           # Gmail address
 AUTH_PASS=xxxx xxxx xxxx xxxx            # Gmail app password (not regular password)
 ```
 
 #### Deployment & SEO
+
 ```bash
 BLOG_URL=https://yourdomain.com          # Production URL
 GOOGLE_SITE_VERIFICATION=xxxxxxxx        # Google Search Console verification
@@ -64,6 +71,7 @@ VERCEL_TOKEN=xxxxxxxx                    # For API access (if needed)
 ```
 
 **Security Notes**:
+
 - Never commit `.env.local` to version control
 - Use `.env.local` for local development only
 - Store production secrets in Vercel project settings
@@ -102,6 +110,7 @@ pnpm test:deep        # Extended tests with real Notion API calls
 ### Pre-Push Checklist
 
 Before pushing to remote:
+
 1. Run `pnpm lint` - ensure no ESLint errors
 2. Run `pnpm biome:write` - format code consistently
 3. Run `pnpm test` - verify tests pass
@@ -116,12 +125,14 @@ pnpm build
 ```
 
 **Build Output**:
+
 - Optimized for Vercel deployment
 - Static pages pre-rendered where possible
 - API routes bundled as serverless functions
 - Image optimization via `sharp` dependency
 
 **Build Optimizations**:
+
 - SWC minification enabled (see `next.config.mjs`)
 - Tree shaking for unused code
 - Code splitting by route
@@ -132,12 +143,16 @@ pnpm build
 **Platform**: Vercel (optimized for Next.js)
 
 **Deployment Flow**:
-1. Push to `main` branch
-2. Vercel automatically detects changes
-3. Runs `pnpm build`
-4. Deploys to production URL
+
+```mermaid
+flowchart LR
+    A[Push to main] --> B[Vercel detects changes]
+    B --> C[pnpm build]
+    C --> D[Deploy to production]
+```
 
 **Environment Configuration**:
+
 - Set environment variables in Vercel project settings
 - Use Vercel dashboard for secret management
 - Configure custom domain if applicable
@@ -157,6 +172,7 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 ```
 
 **Revalidation Strategy**:
+
 - Time-based: Automatic refresh after configured interval
 - On-demand: `revalidateTag()` and `revalidatePath()` for immediate updates
 
@@ -167,19 +183,27 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 **Integration Type**: Headless CMS
 
 **Client Libraries**:
-1. **Official Client** (`@notionhq/client`):
-   - API: Notion REST API v1
-   - Authentication: `NOTION_KEY` (integration token)
-   - Usage: Database queries, property updates
-   - Location: `src/entities/notion/api/server-side.ts`
 
-2. **Unofficial Client** (`notion-client` + `react-notion-x`):
-   - API: Notion's internal API
-   - Authentication: `NOTION_TOKEN_V2` (browser cookie)
-   - Usage: Rich content rendering
-   - Location: `src/entities/notion/api/react-notion-x.ts`
+```mermaid
+flowchart TD
+    subgraph "Official Client"
+        A1["@notionhq/client"] --> A2[Notion REST API v1]
+        A2 --> A3[Database queries]
+        A2 --> A4[Property updates]
+    end
+    subgraph "Unofficial Client"
+        B1["notion-client + react-notion-x"] --> B2[Notion Internal API]
+        B2 --> B3[Rich content rendering]
+    end
+```
+
+| Client | Package | Authentication | Usage | Location |
+|--------|---------|---------------|-------|----------|
+| Official | `@notionhq/client` | `NOTION_KEY` | Database queries, property updates | `src/entities/notion/api/server-side.ts` |
+| Unofficial | `notion-client` + `react-notion-x` | `NOTION_TOKEN_V2` | Rich content rendering | `src/entities/notion/api/react-notion-x.ts` |
 
 **Database Structure**:
+
 - **Posts Database**: Contains blog posts with Korean property names
   - "제목" (Title)
   - "날짜" (Date)
@@ -191,6 +215,7 @@ MEMORY_CACHE_TTL: 300000 milliseconds
   - Name, email, message, visibility (public/private)
 
 **API Call Tracking**:
+
 - `NotionAPILogger` singleton logs statistics
 - Development: Writes to `logs/notion-api.log`
 - Production: Lightweight logging to avoid data leakage
@@ -198,6 +223,7 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 ### OpenAI / Local LLM
 
 **Environment-Based Selection**:
+
 - **Production** (`NODE_ENV=production`): OpenAI API
   - Endpoint: `https://api.openai.com/v1`
   - Authentication: `OPENAI_API_KEY`
@@ -217,11 +243,13 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 **Provider**: Gmail SMTP
 
 **Configuration**:
+
 - SMTP Host: `smtp.gmail.com`
 - Port: 465 (SSL) or 587 (TLS)
 - Authentication: App password (not regular Gmail password)
 
 **Setup Gmail App Password**:
+
 1. Enable 2-factor authentication on Gmail
 2. Go to Google Account > Security > App Passwords
 3. Generate new app password for "Mail"
@@ -238,23 +266,39 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 **Framework**: Pino logger with pretty-printing
 
 **Configuration**:
+
 - Development: Pretty-printed console output
 - Production: JSON-formatted logs
 
 **Utilities**:
+
 - `withPinoLogger`: Wrapper for instrumenting functions
 - `NotionAPILogger`: Tracks Notion API call statistics
 
 **Location**: `src/shared/lib/logger.ts`
 
 **Log Files**:
+
 - `logs/notion-api.log`: Notion API call tracking (development only)
 
 ### Caching
 
 **Strategy**: Multi-layer caching
 
+```mermaid
+flowchart TD
+    A[Request] --> B[Next.js ISR Layer]
+    B --> C[Server-side Cache Layer]
+    C --> D[Memory Cache Layer]
+    D --> E[Data Source]
+
+    B -.->|"Time-based revalidation"| B
+    C -.->|"unstable_cache wrapper"| C
+    D -.->|"TTL-based storage"| D
+```
+
 **Layers**:
+
 1. **Next.js ISR**: Static generation with time-based revalidation
 2. **Server-side cache**: `unstable_cache` wrapper for data fetching
 3. **Memory cache**: TTL-based in-memory storage (aligned with ISR)
@@ -262,10 +306,12 @@ MEMORY_CACHE_TTL: 300000 milliseconds
 **Cache Wrapper**: `nextServerCache` in `src/shared/lib/cache.ts`
 
 **Cache Tags**:
+
 - `posts`: All post-related queries
 - Custom tags for specific queries
 
 **Cache Invalidation**:
+
 ```typescript
 import { revalidateTag, revalidatePath } from 'next/cache';
 
@@ -281,12 +327,14 @@ revalidatePath('/posts');
 ### Monitoring
 
 **Production Monitoring**:
+
 - **Vercel Analytics**: Traffic and user behavior
 - **Vercel Speed Insights**: Core Web Vitals tracking
 
 **Implementation**: Enabled in root layout (`src/app/layout.tsx`)
 
 **Metrics Tracked**:
+
 - Page views
 - User sessions
 - Performance metrics (LCP, FID, CLS)
@@ -317,17 +365,22 @@ revalidatePath('/posts');
 
 **Trigger**: Push to `main` branch
 
-**Process**:
-1. Detect changes via GitHub integration
-2. Install dependencies with pnpm
-3. Run `pnpm build`
-4. Deploy to production
-5. Run edge caching invalidation if needed
+```mermaid
+flowchart LR
+    subgraph "CI/CD Pipeline"
+        A[GitHub Push] --> B[Vercel Integration]
+        B --> C[pnpm install]
+        C --> D[pnpm build]
+        D --> E[Deploy]
+        E --> F[Edge Cache Invalidation]
+    end
 
-**Preview Deployments**:
-- Automatic for pull requests
-- Unique URL for each PR
-- Deleted after PR merge/close
+    subgraph "Preview Deployments"
+        G[Pull Request] --> H[Auto Preview]
+        H --> I[Unique URL]
+        I --> J[Delete on Merge/Close]
+    end
+```
 
 ## Security Considerations
 
