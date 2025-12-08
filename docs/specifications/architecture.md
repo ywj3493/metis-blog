@@ -6,8 +6,9 @@
 
 **Layer Hierarchy** (import direction →):
 
-```
-app/ → widgets/ → features/ → entities/ → shared/
+```mermaid
+flowchart LR
+    app --> widgets --> features --> entities --> shared
 ```
 
 **Golden Rule**: NEVER import upward (e.g., entities/ cannot import features/)
@@ -102,17 +103,35 @@ FSD organizes code into horizontal layers and vertical slices. Each layer has sp
 
 ## Import Rules and Boundaries
 
-### Allowed Imports (Top to Bottom)
+### Import Rules Diagram
 
-```text
-app/      → widgets/ → features/ → entities/ → shared/
-widgets/            → features/ → entities/ → shared/
-features/                      → entities/ → shared/
-entities/                                  → shared/
-shared/   → (nothing)
+```mermaid
+flowchart TD
+    subgraph "Allowed Imports ✅"
+        A1[app/] --> W1[widgets/]
+        A1 --> F1[features/]
+        A1 --> E1[entities/]
+        A1 --> S1[shared/]
+        W1 --> F1
+        W1 --> E1
+        W1 --> S1
+        F1 --> E1
+        F1 --> S1
+        E1 --> S1
+    end
 ```
 
-### Prohibited Imports (Bottom to Top)
+```mermaid
+flowchart TD
+    subgraph "Prohibited Imports ❌"
+        S2[shared/] -.->|NEVER| E2[entities/]
+        E2 -.->|NEVER| F2[features/]
+        F2 -.->|NEVER| W2[widgets/]
+        W2 -.->|NEVER| A2[app/]
+    end
+```
+
+**Rules**:
 
 - **Never** import upward (e.g., `entities/` cannot import from `features/`)
 - **Never** skip layers for convenience
@@ -122,37 +141,46 @@ shared/   → (nothing)
 
 ### Notion to Domain Models
 
-```text
-Notion API Response (DatabaseObjectResponse)
-  ↓ Type Guard Validation (isPostDatabaseResponse)
-  ↓ Factory Method (Post.create())
-  ↓ Domain Model Instance (Post, Tag)
-  ↓ Feature UI Components
-  ↓ Page Routes
+```mermaid
+flowchart TD
+    A[Notion API Response] --> B{Type Guard Validation}
+    B -->|isPostDatabaseResponse| C[Factory Method]
+    C -->|Post.create| D[Domain Model Instance]
+    D --> E[Feature UI Components]
+    E --> F[Page Routes]
 ```
 
 ### AI Summary Generation Flow
 
-```text
-User clicks summary button
-  ↓ features/posts/ai-summary-button.tsx
-  ↓ API route: app/api/posts/[postId]/summary/route.ts
-  ↓ entities/openai/ (LLM selection based on NODE_ENV)
-  ↓ entities/notion/ (update summary property)
-  ↓ Cache invalidation (revalidateTag, revalidatePath)
-  ↓ UI refresh with new summary
+```mermaid
+sequenceDiagram
+    participant User
+    participant Feature as features/posts/ai-summary-button
+    participant API as app/api/posts/[postId]/summary
+    participant LLM as entities/openai/
+    participant Notion as entities/notion/
+    participant Cache as Next.js Cache
+
+    User->>Feature: Click summary button
+    Feature->>API: POST request
+    API->>LLM: Generate summary (NODE_ENV based)
+    LLM-->>API: Summary text
+    API->>Notion: Update "요약" property
+    API->>Cache: revalidateTag, revalidatePath
+    API-->>Feature: Response
+    Feature-->>User: Display summary
 ```
 
 ### Caching Strategy
 
-All server-side data fetching flows through the `nextServerCache` wrapper:
-
-```text
-Request → nextServerCache wrapper
-         ↓ Check Next.js cache (unstable_cache)
-         ↓ Execute fetcher function if cache miss
-         ↓ Store result with tag and revalidation time
-         ↓ Return cached or fresh data
+```mermaid
+flowchart TD
+    A[Request] --> B[nextServerCache wrapper]
+    B --> C{Cache hit?}
+    C -->|Yes| D[Return cached data]
+    C -->|No| E[Execute fetcher function]
+    E --> F[Store with tag & revalidation time]
+    F --> G[Return fresh data]
 ```
 
 ## Domain Model Design
@@ -260,22 +288,3 @@ When adding new behavior, follow this decision tree:
    - Example: New page, REST endpoint
 
 **Key Rule**: Always add at the correct layer. Never bypass FSD principles for convenience.
-
-## Scalability Considerations
-
-### Current Scale
-- Personal blog with moderate traffic
-- ~100 posts expected
-- Single content editor (Notion)
-
-### Future Considerations
-- **Multi-author support**: Extend `entities/posts/` with author entity
-- **Search**: Add `features/search/` with client-side or Algolia integration
-- **Comments**: New `entities/comments/` + `features/comments/`
-- **Analytics dashboard**: New `app/dashboard/` route with protected auth
-
-### Performance Patterns
-- ISR for static content
-- Client-side filtering for tags (no backend required)
-- Edge caching via Vercel
-- Image optimization through Next.js Image component

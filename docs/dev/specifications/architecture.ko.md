@@ -1,5 +1,37 @@
 # 아키텍처 명세서
 
+## TL;DR (빠른 참조)
+
+**아키텍처**: 엄격한 레이어 경계를 가진 Feature-Sliced Design (FSD)
+
+**레이어 계층** (import 방향 →):
+
+```mermaid
+flowchart LR
+    app --> widgets --> features --> entities --> shared
+```
+
+**황금률**: 절대 상향 import 금지 (예: entities/는 features/를 import할 수 없음)
+
+**주요 레이어**:
+
+- `app/` - 라우트, 레이아웃, API 엔드포인트 (모든 것을 import 가능)
+- `widgets/` - 복합 레이아웃 (Header, Footer)
+- `features/` - 사용자 기능 (필터링, 방명록, AI 요약)
+- `entities/` - 도메인 모델 (Post, Tag, Notion 클라이언트)
+- `shared/` - 유틸리티 (캐시, 로거, UI 원시 요소)
+
+**일반적인 패턴**:
+
+- `static create()` 팩토리 메서드를 가진 protected 생성자
+- 런타임 검증을 위한 타입 가드 (`isPostDatabaseResponse()`)
+- 서버 사이드 캐싱 래퍼 (`nextServerCache`)
+- 환경 기반 설정 (`config/index.ts`)
+
+**참조**: 아래의 전체 레이어 세부사항 및 예시
+
+---
+
 ## 개요
 
 이 프로젝트는 Notion에서 콘텐츠를 가져와 AI 기반 기능을 추가하고 개인 블로그 경험을 제공하는 Next.js App Router 애플리케이션입니다. 코드베이스는 **Feature-Sliced Design (FSD)**를 따라 도메인 로직, UI 구성, 공유 유틸리티를 명확하게 분리합니다.
@@ -13,6 +45,7 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 ### 레이어 책임
 
 #### 1. `src/app/` - 애플리케이션 레이어
+
 - **목적**: App Router 라우트, 레이아웃, API 라우트
 - **책임**: 구성만 - features와 widgets를 연결
 - **내용**:
@@ -22,12 +55,14 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 - **Import 규칙**: 모든 하위 레이어에서 import 가능
 
 #### 2. `src/widgets/` - 위젯 레이어
+
 - **목적**: 화면 전반에서 재사용되는 대형 레이아웃 블록
 - **책임**: 여러 features를 결합하는 복합 UI 컴포넌트
 - **내용**: Header, Footer 및 기타 고수준 레이아웃 컴포넌트
 - **Import 규칙**: `features/`, `entities/`, `shared/`에서 import 가능
 
 #### 3. `src/features/` - Features 레이어
+
 - **목적**: 특정 작업을 해결하는 사용자 대면 기능
 - **책임**: entities를 결합하는 작업 지향 로직
 - **내용**:
@@ -40,6 +75,7 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 - **핵심 원칙**: Features는 entities를 조율하지만 핵심 도메인 로직을 포함하지 않음
 
 #### 4. `src/entities/` - Entities 레이어
+
 - **목적**: 도메인 모델, 데이터 매퍼, entity별 UI
 - **책임**: 특정 entities에 연결된 순수 도메인 로직 및 저수준 컴포넌트
 - **내용**:
@@ -52,6 +88,7 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 - **핵심 원칙**: Entities는 자체 포함되며 features와 독립적임
 
 #### 5. `src/shared/` - Shared 레이어
+
 - **목적**: 교차 절단 유틸리티, 설정, 원시 요소
 - **책임**: 비즈니스 로직이 없는 재사용 가능한 코드
 - **내용**:
@@ -62,6 +99,7 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 - **핵심 원칙**: 모든 컨텍스트에서 범용적이고 재사용 가능해야 함
 
 #### 6. `src/mocks/` & `src/__test__/` - 테스팅 인프라
+
 - **목적**: MSW 핸들러, 테스트 컴포넌트, Vitest 스위트
 - **책임**: 프로덕션 코드에 영향을 주지 않는 테스팅 지원
 - **내용**:
@@ -71,17 +109,35 @@ FSD는 코드를 수평 레이어와 수직 슬라이스로 구성합니다. 각
 
 ## Import 규칙 및 경계
 
-### 허용된 Import (상위에서 하위로)
+### Import 규칙 다이어그램
 
-```text
-app/      → widgets/ → features/ → entities/ → shared/
-widgets/            → features/ → entities/ → shared/
-features/                      → entities/ → shared/
-entities/                                  → shared/
-shared/   → (없음)
+```mermaid
+flowchart TD
+    subgraph "허용된 Import ✅"
+        A1[app/] --> W1[widgets/]
+        A1 --> F1[features/]
+        A1 --> E1[entities/]
+        A1 --> S1[shared/]
+        W1 --> F1
+        W1 --> E1
+        W1 --> S1
+        F1 --> E1
+        F1 --> S1
+        E1 --> S1
+    end
 ```
 
-### 금지된 Import (하위에서 상위로)
+```mermaid
+flowchart TD
+    subgraph "금지된 Import ❌"
+        S2[shared/] -.->|절대 금지| E2[entities/]
+        E2 -.->|절대 금지| F2[features/]
+        F2 -.->|절대 금지| W2[widgets/]
+        W2 -.->|절대 금지| A2[app/]
+    end
+```
+
+**규칙**:
 
 - **절대** 상향 import 금지 (예: `entities/`에서 `features/` import 불가)
 - **절대** 편의를 위해 레이어 건너뛰기 금지
@@ -91,37 +147,46 @@ shared/   → (없음)
 
 ### Notion에서 도메인 모델로
 
-```text
-Notion API 응답 (DatabaseObjectResponse)
-  ↓ 타입 가드 검증 (isPostDatabaseResponse)
-  ↓ 팩토리 메서드 (Post.create())
-  ↓ 도메인 모델 인스턴스 (Post, Tag)
-  ↓ Feature UI 컴포넌트
-  ↓ 페이지 라우트
+```mermaid
+flowchart TD
+    A[Notion API 응답] --> B{타입 가드 검증}
+    B -->|isPostDatabaseResponse| C[팩토리 메서드]
+    C -->|Post.create| D[도메인 모델 인스턴스]
+    D --> E[Feature UI 컴포넌트]
+    E --> F[페이지 라우트]
 ```
 
 ### AI 요약 생성 플로우
 
-```text
-사용자가 요약 버튼 클릭
-  ↓ features/posts/ai-summary-button.tsx
-  ↓ API 라우트: app/api/posts/[postId]/summary/route.ts
-  ↓ entities/openai/ (NODE_ENV 기반 LLM 선택)
-  ↓ entities/notion/ (요약 속성 업데이트)
-  ↓ 캐시 무효화 (revalidateTag, revalidatePath)
-  ↓ 새 요약으로 UI 새로고침
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant Feature as features/posts/ai-summary-button
+    participant API as app/api/posts/[postId]/summary
+    participant LLM as entities/openai/
+    participant Notion as entities/notion/
+    participant Cache as Next.js Cache
+
+    User->>Feature: 요약 버튼 클릭
+    Feature->>API: POST 요청
+    API->>LLM: 요약 생성 (NODE_ENV 기반)
+    LLM-->>API: 요약 텍스트
+    API->>Notion: "요약" 속성 업데이트
+    API->>Cache: revalidateTag, revalidatePath
+    API-->>Feature: 응답
+    Feature-->>User: 요약 표시
 ```
 
 ### 캐싱 전략
 
-모든 서버 사이드 데이터 가져오기는 `nextServerCache` 래퍼를 통과합니다:
-
-```text
-요청 → nextServerCache 래퍼
-       ↓ Next.js 캐시 확인 (unstable_cache)
-       ↓ 캐시 미스 시 fetcher 함수 실행
-       ↓ 태그 및 재검증 시간과 함께 결과 저장
-       ↓ 캐시된 데이터 또는 새 데이터 반환
+```mermaid
+flowchart TD
+    A[요청] --> B[nextServerCache 래퍼]
+    B --> C{캐시 히트?}
+    C -->|예| D[캐시된 데이터 반환]
+    C -->|아니오| E[fetcher 함수 실행]
+    E --> F[태그 및 재검증 시간과 함께 저장]
+    F --> G[새 데이터 반환]
 ```
 
 ## 도메인 모델 설계
@@ -149,6 +214,7 @@ export class Post {
 ```
 
 **이점**:
+
 - 중앙 집중식 검증 로직
 - 불변 인스턴스
 - 타입 안전 생성
@@ -169,6 +235,7 @@ export class Post {
 **결정**: 공식 및 비공식 Notion 클라이언트 모두 사용
 
 **근거**:
+
 - 공식 클라이언트 (`@notionhq/client`): 쿼리/업데이트를 위한 신뢰할 수 있는 API
 - 비공식 클라이언트 (`notion-client`): 풍부한 렌더링 기능
 
@@ -179,11 +246,13 @@ export class Post {
 **결정**: Incremental Static Regeneration과 함께 Next.js App Router 사용
 
 **근거**:
+
 - 독자를 위한 빠른 페이지 로드
 - 전체 리빌드 없이 신선한 콘텐츠
 - SEO 최적화
 
 **설정**:
+
 - 개발: 30초 재검증
 - 프로덕션: 5분 재검증
 
@@ -192,6 +261,7 @@ export class Post {
 **결정**: 프로덕션에서는 OpenAI, 개발에서는 로컬 LLM
 
 **근거**:
+
 - 비용 최적화 (개발 중 API 요금 회피)
 - 로컬 테스팅을 위한 프라이버시
 - 프로덕션 품질 유지
@@ -203,6 +273,7 @@ export class Post {
 **결정**: 통합 설정을 가진 단일 캐시 래퍼
 
 **근거**:
+
 - 애플리케이션 전반에 걸친 일관된 캐시 동작
 - 재검증 시간 조정 용이
 - 단순화된 캐시 무효화
@@ -229,22 +300,3 @@ export class Post {
    - 예: 새 페이지, REST 엔드포인트
 
 **핵심 규칙**: 항상 올바른 레이어에 추가하세요. 편의를 위해 FSD 원칙을 우회하지 마세요.
-
-## 확장성 고려사항
-
-### 현재 규모
-- 중간 규모 트래픽을 가진 개인 블로그
-- 약 100개의 포스트 예상
-- 단일 콘텐츠 편집자 (Notion)
-
-### 향후 고려사항
-- **다중 작성자 지원**: author entity로 `entities/posts/` 확장
-- **검색**: 클라이언트 사이드 또는 Algolia 통합으로 `features/search/` 추가
-- **댓글**: 새로운 `entities/comments/` + `features/comments/`
-- **분석 대시보드**: 보호된 인증으로 새로운 `app/dashboard/` 라우트
-
-### 성능 패턴
-- 정적 콘텐츠를 위한 ISR
-- 태그에 대한 클라이언트 사이드 필터링 (백엔드 불필요)
-- Vercel을 통한 엣지 캐싱
-- Next.js Image 컴포넌트를 통한 이미지 최적화
