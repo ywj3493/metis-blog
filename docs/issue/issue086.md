@@ -84,12 +84,11 @@ docs/specifications/
 - [x] 한글 번역 (6 files)
 
 ### Phase 3: Alarm Domain ✅
-- [x] `docs/specifications/alarm/requirements/requirements.md` - FR-ALARM-001 ~ FR-ALARM-003
+- [x] `docs/specifications/alarm/requirements/requirements.md` - FR-ALARM-001 ~ FR-ALARM-002
 - [x] `docs/specifications/alarm/requirements/user-stories.md` - 3 user journeys
-- [x] `docs/specifications/alarm/design/information-architecture.md`
 - [x] `docs/specifications/alarm/workflows/sequence-diagram.md` - 5 diagrams
 - [x] `docs/specifications/alarm/workflows/use-case.md` - UC-API-020
-- [x] 한글 번역 (5 files)
+- [x] 한글 번역 (4 files)
 
 ### Phase 4: Site Domain ✅
 - [x] `docs/specifications/site/requirements/requirements.md` - FR-SITE-001 ~ FR-SITE-006
@@ -101,7 +100,8 @@ docs/specifications/
 - [x] 한글 번역 (6 files)
 
 ### Documentation Updates
-- [x] 48개 파일 생성 (영문 24개 + 한글 24개)
+
+- [x] 46개 파일 생성 (영문 23개 + 한글 23개)
 - [ ] docs/README.md 업데이트 (새 문서 링크 추가) - 선택
 
 ## 6. Validation Plan
@@ -112,13 +112,14 @@ docs/specifications/
 - [x] 코드 예시가 실제 구현과 일치하는지 확인
 
 ### File Count Verification
+
 | Domain | requirements/ | design/ | workflows/ | Total (EN) | Total (KO) |
 |--------|--------------|---------|------------|------------|------------|
 | posts | 2 | 3 | 2 | 7 | 7 |
 | guestbook | 2 | 2 | 2 | 6 | 6 |
-| alarm | 2 | 1 | 2 | 5 | 5 |
+| alarm | 2 | 0 | 2 | 4 | 4 |
 | site | 2 | 2 | 2 | 6 | 6 |
-| **Total** | **8** | **8** | **8** | **24** | **24** |
+| **Total** | **8** | **7** | **8** | **23** | **23** |
 
 ## 7. Rollout & Follow-up
 
@@ -131,9 +132,11 @@ docs/specifications/
 - [ ] 향후 기능 개발 시 해당 도메인 문서 참조 및 업데이트
 
 ## 8. Status Log
+
 | Date | Update | Owner |
 | --- | --- | --- |
 | 2024-12-08 | Initial draft & plan created | Claude |
 | 2024-12-08 | Phase 1-4 완료, 44개 파일 생성 | Claude |
 | 2024-12-08 | 커밋 완료 (bc18ddc) | Claude |
 | 2024-12-08 | Site 도메인 구조 개선: SEO/Sitemap을 workflows/로 이동, IA에서 비기능적 요구사항 제거 | Claude |
+| 2024-12-08 | Alarm 도메인 구조 개선: IA 삭제, Contact Form 관련 내용 제거, Sequence Diagram 프론트엔드 제거 | Claude |

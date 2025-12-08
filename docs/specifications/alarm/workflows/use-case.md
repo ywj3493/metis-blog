@@ -15,7 +15,7 @@ This document describes the backend API use cases for the Alarm domain.
 
 ### Purpose
 
-Send an email notification to the blog owner for various events (guestbook submissions, contact messages, etc.).
+Send an email notification to the blog owner for various events (e.g., guestbook submissions).
 
 ### Request
 
@@ -165,26 +165,6 @@ if (guestbookResponse.ok) {
     }),
   }); // Don't await - fire and forget
 }
-```
-
-### Pattern 2: Contact Form Notification (Future)
-
-**Caller**: `ContactForm` component (not yet implemented)
-
-**Trigger**: After contact form submission
-
-**Example**:
-```typescript
-// Future implementation
-fetch('/api/alarm', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    from: contactData.email,
-    subject: `연락 문의: ${contactData.subject}`,
-    message: contactData.message,
-  }),
-});
 ```
 
 ---

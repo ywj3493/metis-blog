@@ -8,7 +8,7 @@ This document describes end-to-end user journeys for the Alarm domain, focusing 
 Primary recipient of notifications who wants to be informed of visitor interactions without constantly checking the Notion dashboard.
 
 ### Visitor
-Anonymous user who triggers notifications through blog interactions (guestbook, contact form).
+Anonymous user who triggers notifications through guestbook interactions.
 
 ---
 

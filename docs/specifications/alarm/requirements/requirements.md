@@ -57,19 +57,6 @@ The Alarm domain is a background service that sends email notifications to the b
 
 ---
 
-### FR-ALARM-003: Contact Form Notification (Future)
-
-**Description**: Notify the blog owner when a contact form message is submitted.
-
-**Status**: Not implemented (future enhancement)
-
-**Acceptance Criteria**:
-- Trigger notification on contact form submission
-- Include sender email, subject, and message
-- Support reply-to header for easy response
-
----
-
 ## Data Model
 
 ### EmailForm Type
