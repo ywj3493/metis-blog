@@ -10,7 +10,7 @@ Process a notification request and deliver email via Gmail SMTP.
 
 ### Actors
 
-- **Client**: Calling feature (GuestbookForm, ContactForm)
+- **Client**: Calling feature (e.g., Guestbook API)
 - **API Route**: `/api/alarm`
 - **Service**: Email service (`sendEmail`)
 - **Nodemailer**: SMTP client library
@@ -100,14 +100,11 @@ Content-Type: application/json
 
 ### Overview
 
-Complete flow from guestbook submission to owner notification.
+Backend flow from guestbook API to owner notification (triggered after successful guestbook submission).
 
 ### Actors
 
-- **Visitor**: User submitting guestbook
-- **GuestbookForm**: UI component
-- **Guestbook API**: `/api/guestbooks`
-- **Notion**: External database
+- **Guestbook API**: `/api/guestbooks` (caller)
 - **Alarm API**: `/api/alarm`
 - **Gmail**: SMTP server
 - **Owner**: Email recipient
@@ -117,49 +114,39 @@ Complete flow from guestbook submission to owner notification.
 ```mermaid
 sequenceDiagram
     autonumber
-    participant V as Visitor
-    participant F as GuestbookForm
     participant GA as /api/guestbooks
-    participant N as Notion
     participant AA as /api/alarm
     participant S as Gmail SMTP
     participant O as Owner
 
-    V->>F: Fill form (name, content, isPrivate)
-    V->>F: Click Submit
+    Note over GA: After successful Notion entry creation
 
-    F->>GA: POST { name, content, isPrivate }
-    GA->>N: pages.create()
-    N-->>GA: Created
-    GA-->>F: 200 Success
+    GA->>AA: POST { from, subject, message }
+    Note right of GA: Fire-and-forget call
 
-    F-->>V: Show success toast
-    F->>F: Reset form
+    AA->>AA: Validate request (Zod)
+    AA->>AA: Compose email
 
-    par List Refresh
-        F->>F: refetchGuestbooks()
-    and Notification (fire-and-forget)
-        F->>AA: POST { from, subject, message }
-        Note right of F: Non-blocking call
-        AA->>S: sendMail()
-        S-->>AA: Sent
-        AA-->>F: (ignored response)
-        S->>O: Email delivery
-        Note right of O: Receives notification<br/>in inbox
-    end
+    AA->>S: sendMail()
+    S-->>AA: 250 OK
+
+    AA-->>GA: 200 Success (ignored)
+
+    S->>O: Email delivery
+    Note right of O: Receives notification<br/>in inbox
 ```
 
 ### Notification Payload
 
 ```typescript
-// Constructed in GuestbookForm
+// Constructed by Guestbook API
 {
   from: "guestbook@blog.com",
-  subject: `새로운 방명록: ${formData.name}`,
+  subject: `새로운 방명록: ${authorName}`,
   message: `
-    이름: ${formData.name}
-    내용: ${formData.content}
-    공개여부: ${formData.isPrivate ? "비공개" : "공개"}
+    이름: ${authorName}
+    내용: ${content}
+    공개여부: ${isPrivate ? "비공개" : "공개"}
   `
 }
 ```

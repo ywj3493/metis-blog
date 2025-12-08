@@ -10,7 +10,7 @@
 
 ### 액터
 
-- **Client**: 호출 기능 (GuestbookForm, ContactForm)
+- **Client**: 호출 기능 (예: Guestbook API)
 - **API Route**: `/api/alarm`
 - **Service**: 이메일 서비스 (`sendEmail`)
 - **Nodemailer**: SMTP 클라이언트 라이브러리
@@ -100,14 +100,11 @@ Content-Type: application/json
 
 ### 개요
 
-방명록 제출부터 소유자 알림까지의 전체 흐름입니다.
+방명록 API에서 소유자 알림까지의 백엔드 흐름입니다 (성공적인 방명록 제출 후 트리거됨).
 
 ### 액터
 
-- **Visitor**: 방명록 제출 사용자
-- **GuestbookForm**: UI 컴포넌트
-- **Guestbook API**: `/api/guestbooks`
-- **Notion**: 외부 데이터베이스
+- **Guestbook API**: `/api/guestbooks` (호출자)
 - **Alarm API**: `/api/alarm`
 - **Gmail**: SMTP 서버
 - **Owner**: 이메일 수신자
@@ -117,49 +114,39 @@ Content-Type: application/json
 ```mermaid
 sequenceDiagram
     autonumber
-    participant V as Visitor
-    participant F as GuestbookForm
     participant GA as /api/guestbooks
-    participant N as Notion
     participant AA as /api/alarm
     participant S as Gmail SMTP
     participant O as Owner
 
-    V->>F: Fill form (name, content, isPrivate)
-    V->>F: Click Submit
+    Note over GA: Notion 항목 생성 성공 후
 
-    F->>GA: POST { name, content, isPrivate }
-    GA->>N: pages.create()
-    N-->>GA: Created
-    GA-->>F: 200 Success
+    GA->>AA: POST { from, subject, message }
+    Note right of GA: Fire-and-forget 호출
 
-    F-->>V: Show success toast
-    F->>F: Reset form
+    AA->>AA: 요청 검증 (Zod)
+    AA->>AA: 이메일 구성
 
-    par List Refresh
-        F->>F: refetchGuestbooks()
-    and Notification (fire-and-forget)
-        F->>AA: POST { from, subject, message }
-        Note right of F: Non-blocking call
-        AA->>S: sendMail()
-        S-->>AA: Sent
-        AA-->>F: (ignored response)
-        S->>O: Email delivery
-        Note right of O: Receives notification<br/>in inbox
-    end
+    AA->>S: sendMail()
+    S-->>AA: 250 OK
+
+    AA-->>GA: 200 Success (무시됨)
+
+    S->>O: 이메일 전송
+    Note right of O: 받은 편지함에<br/>알림 수신
 ```
 
 ### 알림 페이로드
 
 ```typescript
-// GuestbookForm에서 구성
+// Guestbook API에서 구성
 {
   from: "guestbook@blog.com",
-  subject: `새로운 방명록: ${formData.name}`,
+  subject: `새로운 방명록: ${authorName}`,
   message: `
-    이름: ${formData.name}
-    내용: ${formData.content}
-    공개여부: ${formData.isPrivate ? "비공개" : "공개"}
+    이름: ${authorName}
+    내용: ${content}
+    공개여부: ${isPrivate ? "비공개" : "공개"}
   `
 }
 ```

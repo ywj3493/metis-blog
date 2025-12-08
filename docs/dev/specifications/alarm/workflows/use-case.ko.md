@@ -15,7 +15,7 @@
 
 ### 목적
 
-다양한 이벤트(방명록 제출, 연락 메시지 등)에 대해 블로그 소유자에게 이메일 알림을 전송합니다.
+다양한 이벤트(예: 방명록 제출)에 대해 블로그 소유자에게 이메일 알림을 전송합니다.
 
 ### 요청
 
@@ -165,26 +165,6 @@ if (guestbookResponse.ok) {
     }),
   }); // await 하지 않음 - fire and forget
 }
-```
-
-### 패턴 2: 연락처 폼 알림 (향후)
-
-**호출자**: `ContactForm` 컴포넌트 (아직 미구현)
-
-**트리거**: 연락처 폼 제출 후
-
-**예시**:
-```typescript
-// 향후 구현
-fetch('/api/alarm', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    from: contactData.email,
-    subject: `연락 문의: ${contactData.subject}`,
-    message: contactData.message,
-  }),
-});
 ```
 
 ---
