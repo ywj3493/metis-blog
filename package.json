@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "biome:write": "biome check --write ./src",
+    "biome:write": "biome check --write .",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
