@@ -159,14 +159,15 @@ docs/099-add-api-reference
 **Purpose**: Production-ready code
 
 **Protection Rules**:
+
 - Requires pull request for changes (no direct commits)
-- CI checks must pass (Biome formatting)
-- Deployed automatically to production (Vercel)
+- CI checks must pass (Biome, ESLint, Vitest, Next.js build)
 
 **Deployment**:
-- Every merge to `main` triggers production deployment
-- Vercel builds and deploys automatically
-- Monitor deployment for errors
+
+- Merging to `main` does NOT trigger production deployment
+- Production deployment requires pushing a semver tag (`v*`)
+- See [Release & Deployment Workflow](#release--deployment-workflow) for details
 
 ## Pull Request Workflow
 
@@ -336,7 +337,11 @@ git branch -d feat/087-add-search  # Delete local branch
 ### Required Status Checks
 
 Before merging to `main`:
+
 - [ ] Biome CI check passes (GitHub Actions)
+- [ ] ESLint passes (GitHub Actions)
+- [ ] Vitest tests pass (GitHub Actions)
+- [ ] Next.js build succeeds (GitHub Actions)
 - [ ] All commits follow commit convention
 - [ ] PR description includes issue reference
 
@@ -344,15 +349,55 @@ Before merging to `main`:
 
 Current workflows:
 
-**`pull_request.yml`**:
-- Trigger: PR to `main`
-- Steps: Install deps, run Biome formatting check
-- Purpose: Ensure code quality
+**`pull_request.yml`** (CI):
 
-**`cleanup.yml`**:
-- Trigger: PR merged or closed
-- Steps: Delete associated Vercel preview deployment
-- Purpose: Clean up resources
+- Trigger: PR to `main`
+- Jobs (parallel):
+  - **Code Quality**: Biome formatting check
+  - **Lint, Test & Build**: ESLint, Vitest, Next.js build
+- Purpose: Comprehensive code quality gate
+
+**`deploy.yml`** (Deploy to Production):
+
+- Trigger: Push of semver tag (`v*`)
+- Steps: Vercel CLI pull → build → deploy
+- Purpose: Tag-based production deployment
+
+## Release & Deployment Workflow
+
+### Creating a Release
+
+After PRs are merged to `main` and you're ready to deploy:
+
+1. **Ensure main is up to date**:
+
+   ```bash
+   git checkout main
+   git pull
+   ```
+
+2. **Determine version number** (semver):
+   - `MAJOR`: Breaking changes or significant redesign
+   - `MINOR`: New features, significant improvements
+   - `PATCH`: Bug fixes, small improvements
+
+3. **Create and push tag**:
+
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+4. **Monitor deployment**:
+   - Check GitHub Actions "Deploy to Production" workflow
+   - Verify deployment on Vercel dashboard
+   - Test production site
+
+### Version Numbering
+
+- Start at `v1.0.0` for the initial tagged release
+- Follow semantic versioning: `v<MAJOR>.<MINOR>.<PATCH>`
+- Tags are immutable - do not delete and recreate tags
 
 ## Hotfix Workflow
 
@@ -364,7 +409,8 @@ For urgent production fixes:
 2. Implement minimal fix
 3. Create PR with "HOTFIX" label
 4. Fast-track review and merge
-5. Document in issue document afterwards
+5. Tag immediately: `git tag v1.0.1 && git push origin v1.0.1`
+6. Document in issue document afterwards
 
 ### Option 2: Direct Fix (Emergency Only)
 
@@ -373,7 +419,8 @@ For critical production issues:
 1. Fix directly in `main` (with justification)
 2. Document fix immediately in issue document
 3. Note deviation from normal workflow
-4. Create follow-up PR with tests
+4. Tag and deploy: `git tag v1.0.1 && git push origin v1.0.1`
+5. Create follow-up PR with tests
 
 **Use sparingly**: Only for truly critical issues (site down, security vulnerability)
 
@@ -389,8 +436,8 @@ Delete branches after:
 ### Automatic Cleanup
 
 GitHub settings:
+
 - Enable "Automatically delete head branches" after PR merge
-- Vercel preview deployments cleaned up via GitHub Action
 
 ### Manual Cleanup
 
