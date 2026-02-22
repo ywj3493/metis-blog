@@ -346,41 +346,63 @@ revalidatePath('/posts');
 
 **Workflows**:
 
-1. **Pull Request Check** (`.github/workflows/pull_request.yml`):
+1. **CI** (`.github/workflows/pull_request.yml`):
    - Trigger: PR to `main` branch
-   - Steps:
-     - Install dependencies
-     - Run Biome formatter check
-   - Purpose: Code quality gate
+   - Jobs (parallel):
+     - **Code Quality**: Biome formatting check
+     - **Lint, Test & Build**: ESLint, Vitest, Next.js build
+   - Purpose: Comprehensive code quality gate
 
-2. **Cleanup Preview Deployments** (`.github/workflows/cleanup.yml`):
-   - Trigger: PR merged or closed
-   - Steps:
-     - Delete associated Vercel preview deployment
-   - Purpose: Resource cleanup
+2. **Deploy to Production** (`.github/workflows/deploy.yml`):
+   - Trigger: Push of semver tag (`v*`)
+   - Steps: Vercel CLI pull → build → deploy
+   - Purpose: Tag-based production deployment
+   - Required secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
 
-### Continuous Deployment
+### Tag-Based Deployment
 
-**Platform**: Vercel
+**Platform**: Vercel (via CLI, not Git Integration)
 
-**Trigger**: Push to `main` branch
+**Trigger**: Push of semver tag (`v*`)
+
+**Vercel Dashboard Configuration**:
+
+- **Ignored Build Step**: `exit 0` (skips all Git-triggered automatic builds)
+- Production deployment is managed exclusively through GitHub Actions + Vercel CLI
 
 ```mermaid
 flowchart LR
-    subgraph "CI/CD Pipeline"
-        A[GitHub Push] --> B[Vercel Integration]
-        B --> C[pnpm install]
-        C --> D[pnpm build]
-        D --> E[Deploy]
-        E --> F[Edge Cache Invalidation]
+    subgraph "CI Pipeline (PR to main)"
+        A[Pull Request] --> B[Biome Check]
+        A --> C[ESLint + Test + Build]
+        B --> D[Merge Allowed]
+        C --> D
     end
 
-    subgraph "Preview Deployments"
-        G[Pull Request] --> H[Auto Preview]
-        H --> I[Unique URL]
-        I --> J[Delete on Merge/Close]
+    subgraph "Production Deploy (Tag Push)"
+        E["Push tag v*"] --> F[GitHub Actions]
+        F --> G[vercel pull]
+        G --> H[vercel build --prod]
+        H --> I[vercel deploy --prebuilt --prod]
     end
 ```
+
+### Release Workflow
+
+```bash
+# After PR merged to main
+git checkout main
+git pull
+git tag v1.0.0
+git push origin v1.0.0
+# GitHub Actions will automatically deploy to production
+```
+
+**Version Numbering** (semver):
+
+- `MAJOR`: Breaking changes or significant redesign
+- `MINOR`: New features, significant improvements
+- `PATCH`: Bug fixes, small improvements
 
 ## Security Considerations
 
@@ -390,6 +412,14 @@ flowchart LR
 - Use Vercel environment variables for production
 - Rotate API keys periodically
 - Use Gmail app passwords (not regular passwords)
+
+**GitHub Actions Secrets**:
+
+| Secret              | Purpose                    | How to obtain                                        |
+| ------------------- | -------------------------- | ---------------------------------------------------- |
+| `VERCEL_TOKEN`      | Vercel API authentication  | Vercel Dashboard → Account Settings → Tokens         |
+| `VERCEL_ORG_ID`     | Vercel organization ID     | Run `npx vercel link`, check `.vercel/project.json`  |
+| `VERCEL_PROJECT_ID` | Vercel project ID          | Run `npx vercel link`, check `.vercel/project.json`  |
 
 ### API Security
 
