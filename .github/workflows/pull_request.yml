@@ -14,7 +14,7 @@ jobs:
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: latest
+          version: 2.4.2
       - name: Run Biome
         run: biome ci .
 
@@ -45,3 +45,10 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          NOTION_POST_DATABASE_ID: ${{ secrets.NOTION_POST_DATABASE_ID }}
+          NOTION_TOKEN_V2: ${{ secrets.NOTION_TOKEN_V2 }}
+          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
+          NOTION_GUESTBOOK_DATABASE_ID: ${{ secrets.NOTION_GUESTBOOK_DATABASE_ID }}
+          NOTION_ABOUT_PAGE_ID: ${{ secrets.NOTION_ABOUT_PAGE_ID }}
