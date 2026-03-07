@@ -1,7 +1,14 @@
 import OpenAI from "openai";
 import { modelConfig } from "../config";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+let _client: OpenAI | null = null;
+
+function getClient() {
+  if (!_client) {
+    _client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return _client;
+}
 
 function safeSlice(text: string, tokenLikeLimit = 8000) {
   const words = text.split(/\s+/);
@@ -18,7 +25,7 @@ async function _getAISummary(postTitle: string, plainText: string) {
   const content = safeSlice(plainText, 8000);
   const prompt = [`제목: ${postTitle}`, "본문:", content].join("\n");
 
-  const res = await client.chat.completions.create({
+  const res = await getClient().chat.completions.create({
     model: "gpt-4o-mini",
     temperature: 0.2,
     messages: [
