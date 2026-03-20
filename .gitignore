@@ -43,3 +43,6 @@ google*.html
 
 # logs
 *.log
+
+# agents
+.claude
