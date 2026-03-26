@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Post } from "@/entities/posts/model";
+import type { Post } from "@/entities/post/model";
 import { TagChip } from "@/shared/ui";
 
 type SmallPostCardProps = {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GuestbookList } from "@/features/guestbooks/ui";
+import { GuestbookList } from "@/features/guestbook/ui";
 import { Contact } from "@/features/profile/ui";
 
 export const metadata: Metadata = {

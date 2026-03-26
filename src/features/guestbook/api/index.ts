@@ -1,7 +1,7 @@
 import type {
   GuestbookDatabaseResponse,
   GuestbookFormData,
-} from "@/entities/guestbooks/model/type";
+} from "@/entities/guestbook/model/type";
 
 export async function createGuestbook(guestForm: GuestbookFormData) {
   const response = await fetch("/api/guestbooks", {

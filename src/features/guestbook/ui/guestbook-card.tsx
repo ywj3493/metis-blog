@@ -1,4 +1,4 @@
-import type { Guestbook } from "../model";
+import type { Guestbook } from "@/entities/guestbook/model";
 
 type GuestbookCardProps = {
   guestbook: Guestbook;

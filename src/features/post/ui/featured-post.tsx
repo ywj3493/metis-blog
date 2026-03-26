@@ -1,5 +1,5 @@
-import { getNotionPosts } from "@/entities/notion/model";
-import { Post } from "@/entities/posts/model";
+import { getNotionPosts } from "@/entities/post/api";
+import { Post } from "@/entities/post/model";
 import { PostsGrid } from "./posts-grid";
 
 export async function FeaturedPosts() {

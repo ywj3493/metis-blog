@@ -1,5 +1,5 @@
-import type { Post } from "@/entities/posts/model";
-import { PostCard } from "@/entities/posts/ui";
+import type { Post } from "@/entities/post/model";
+import { PostCard } from "./post-card";
 
 type PostsGridProps = {
   posts: Post[];
