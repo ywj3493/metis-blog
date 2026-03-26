@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggle } from "@/entities/theme/ui";
+import { ThemeToggle } from "@/features/theme/ui";
 
 type Menu = {
   url: string;

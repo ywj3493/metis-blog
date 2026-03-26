@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { sendEamil } from "@/features/alarm/model";
+import { sendEamil } from "@/entities/alarm/model";
 
 const bodySchema = z.object({
   from: z.string(),

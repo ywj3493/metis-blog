@@ -2,7 +2,7 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { Tag } from "@/entities/posts/model";
+import type { Tag } from "@/entities/post/model";
 import { TagChip, Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui";
 
 type LNBProps = {

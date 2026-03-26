@@ -4,11 +4,10 @@ import {
   getNotionPostMetadata,
   getNotionPosts,
   getSlugMap,
-} from "@/entities/notion/model";
-import { Post } from "@/entities/posts/model";
-import { ClientNotionRenderer } from "@/entities/posts/ui";
-import { isNotionPageId } from "@/entities/posts/utils";
-import { PostNavigator } from "@/features/posts/ui";
+} from "@/entities/post/api";
+import { Post } from "@/entities/post/model";
+import { isNotionPageId } from "@/entities/post/utils";
+import { ClientNotionRenderer, PostNavigator } from "@/features/post/ui";
 import { CACHE_CONFIG } from "@/shared/config";
 
 type PostDetailPageProps = {

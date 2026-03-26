@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { GuestbookFormData } from "@/entities/guestbooks/model/type";
-import { sendAlarmEmail } from "@/features/alarm/api";
-import { createGuestbook } from "@/features/guestbooks/api";
+import { sendAlarmEmail } from "@/entities/alarm/api";
+import type { GuestbookFormData } from "@/entities/guestbook/model/type";
 import { LoadingSpinner } from "@/shared/ui";
+import { createGuestbook } from "../api";
 
 export function GuestbookForm({
   refetch,

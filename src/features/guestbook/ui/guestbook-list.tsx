@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Guestbook } from "@/entities/guestbooks/model";
-import { GuestbookCard } from "@/entities/guestbooks/ui";
-import { GuestbookForm } from "@/entities/guestbooks/ui/guestbook-form";
+import { Guestbook } from "@/entities/guestbook/model";
 import { LoadingSpinner } from "@/shared/ui";
 import { getGuestbooks } from "../api";
+import { GuestbookCard } from "./guestbook-card";
+import { GuestbookForm } from "./guestbook-form";
 
 export function GuestbookList() {
   const [guestbooks, setGuestbooks] = useState<Guestbook[] | null>(null);

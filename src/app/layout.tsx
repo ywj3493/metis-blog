@@ -8,7 +8,7 @@ import "./globals.css";
 import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
-import { ThemeProvider } from "@/entities/theme/hooks";
+import { ThemeProvider } from "@/features/theme/hooks";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 import { Header } from "@/widgets/ui";
 

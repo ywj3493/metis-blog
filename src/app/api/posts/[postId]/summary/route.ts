@@ -3,8 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import {
   getNotionPostContentForSummary,
   patchNotionPostSummary,
-} from "@/entities/notion/model";
-import { getAISummary } from "@/entities/openai/model";
+} from "@/entities/post/api";
+import { getAISummary } from "@/entities/summary/api";
 
 export async function PATCH(
   _: NextRequest,

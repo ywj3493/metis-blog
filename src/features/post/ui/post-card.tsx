@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Post } from "@/entities/posts/model";
-// import 때문에 next 서버 쪽 모듈들이 흘러들어옴
-import { AISummaryButton } from "@/features/posts/ui/ai-summary-button";
+import type { Post } from "@/entities/post/model";
+import { AISummaryButton, AISummaryCard } from "@/features/summary/ui";
 import { TagChip } from "@/shared/ui";
-import { AISummaryCard } from "./ai-summary-card";
 
 type PostCardProps = {
   post: Post;

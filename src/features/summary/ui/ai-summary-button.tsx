@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AISummaryCard } from "@/entities/posts/ui/ai-summary-card";
 import { Button } from "@/shared/ui/button";
 import { updatePostSummary } from "../api";
+import { AISummaryCard } from "./ai-summary-card";
 
 type AISummaryButtonProps = {
   postId: string;
@@ -42,8 +42,6 @@ export function AISummaryButton({ postId }: AISummaryButtonProps) {
     }
   };
 
-  // 요약이 생성된 후에는 서버에서 다시 렌더링되도록 하거나
-  // 로컬 상태로 표시
   if (summary) {
     return <AISummaryCard summary={summary} />;
   }

@@ -1,4 +1,4 @@
-import { FeaturedPosts } from "@/features/posts/ui";
+import { FeaturedPosts } from "@/features/post/ui";
 import { Hero } from "@/features/profile/ui";
 import { CACHE_CONFIG } from "@/shared/config";
 

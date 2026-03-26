@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getNotionPostMetadata, getNotionPosts } from "@/entities/notion/model";
+import { getNotionPostMetadata, getNotionPosts } from "@/entities/post/api";
 import { server } from "@/mocks/server";
 
 const isDeepTest = !!process.env.DEEP_TEST;
