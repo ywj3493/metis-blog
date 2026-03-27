@@ -1,2 +1,2 @@
-export * from "./ai-summary-button";
-export * from "./ai-summary-card";
+export * from "./summary-button";
+export * from "./summary-card";

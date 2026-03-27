@@ -4,7 +4,7 @@ import {
   getNotionPostContentForSummary,
   patchNotionPostSummary,
 } from "@/entities/post/api";
-import { getAISummary } from "@/entities/summary/api";
+import { getSummary } from "@/features/summary/api";
 
 export async function PATCH(
   _: NextRequest,
@@ -22,7 +22,7 @@ export async function PATCH(
     }
 
     // 2. AI 요약 생성
-    const newSummary = await getAISummary(title, content);
+    const newSummary = await getSummary(title, content);
 
     // 3. Notion 업데이트
     await patchNotionPostSummary(postId, newSummary);
