@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function AISummaryCard({ summary }: { summary: string }) {
+export function SummaryCard({ summary }: { summary: string }) {
   return (
     <div className="relative overflow-hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 shadow-sm dark:border-blue-800/30 dark:from-blue-950/40 dark:via-purple-950/40 dark:to-pink-950/40">
       <div className="absolute top-2 right-2 opacity-10">

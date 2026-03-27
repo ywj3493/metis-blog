@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "@/entities/post/model";
-import { AISummaryButton, AISummaryCard } from "@/features/summary/ui";
+import { SummaryButton, SummaryCard } from "@/features/summary/ui";
 import { TagChip } from "@/shared/ui";
 
 type PostCardProps = {
@@ -80,10 +80,9 @@ export function PostCard({ post }: PostCardProps) {
         {/* AI 요약 섹션 */}
         <div className="p-4">
           {aiSummarized && aiSummary ? (
-            <AISummaryCard summary={aiSummary} />
+            <SummaryCard summary={aiSummary} />
           ) : (
-            // AI 요약이 없는 경우 (클라이언트 컴포넌트로 위임)
-            <AISummaryButton postId={id} />
+            <SummaryButton postId={id} />
           )}
         </div>
       </article>
