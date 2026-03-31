@@ -1,3 +1,4 @@
+import { APIErrorCode, isNotionClientError } from "@notionhq/client";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import {
@@ -49,9 +50,33 @@ export async function PATCH(
     console.error(`❌ [API Route] 요약 업데이트 실패 (${postId}):`, error);
 
     if (error instanceof NotionApiError) {
+      const cause = error.cause;
+      if (isNotionClientError(cause)) {
+        if (cause.code === APIErrorCode.ObjectNotFound) {
+          return NextResponse.json(
+            { success: false, error: "포스트를 찾을 수 없습니다." },
+            { status: 404 },
+          );
+        }
+        if (cause.code === APIErrorCode.RateLimited) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: "요청 제한에 걸렸습니다. 잠시 후 다시 시도해주세요.",
+            },
+            { status: 429 },
+          );
+        }
+        if (cause.code === APIErrorCode.Unauthorized) {
+          return NextResponse.json(
+            { success: false, error: "Notion API 권한이 부족합니다." },
+            { status: 403 },
+          );
+        }
+      }
       return NextResponse.json(
-        { success: false, error: "포스트를 찾을 수 없습니다." },
-        { status: 404 },
+        { success: false, error: "Notion API 요청에 실패했습니다." },
+        { status: 502 },
       );
     }
 
