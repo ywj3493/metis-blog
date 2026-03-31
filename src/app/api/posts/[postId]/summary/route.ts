@@ -5,6 +5,7 @@ import {
   patchNotionPostSummary,
 } from "@/entities/post/api";
 import { getSummary } from "@/features/summary/api";
+import { NotionApiError, SummaryServiceError } from "@/shared/lib";
 
 export async function PATCH(
   _: NextRequest,
@@ -45,27 +46,26 @@ export async function PATCH(
       },
     });
   } catch (error) {
-    console.error(`❌ [API Route] AI 요약 업데이트 실패 (${postId}):`, error);
+    console.error(`❌ [API Route] 요약 업데이트 실패 (${postId}):`, error);
 
-    let errorMessage = "AI 요약 생성에 실패했습니다.";
-
-    if (error instanceof Error) {
-      if (error.message.includes("unauthorized")) {
-        errorMessage = "Notion API 권한이 부족합니다.";
-      } else if (error.message.includes("not found")) {
-        errorMessage = "포스트를 찾을 수 없습니다.";
-      } else if (error.message.includes("rate limit")) {
-        errorMessage = "요청 제한에 걸렸습니다. 잠시 후 다시 시도해주세요.";
-      } else {
-        errorMessage = error.message;
-      }
+    if (error instanceof NotionApiError) {
+      return NextResponse.json(
+        { success: false, error: "포스트를 찾을 수 없습니다." },
+        { status: 404 },
+      );
     }
 
-    return new NextResponse(
-      JSON.stringify({
-        success: false,
-        error: errorMessage,
-      }),
+    if (error instanceof SummaryServiceError) {
+      return NextResponse.json(
+        { success: false, error: "요약 서비스에 문제가 발생했습니다." },
+        { status: 502 },
+      );
+    }
+
+    const message =
+      error instanceof Error ? error.message : "요약 생성에 실패했습니다.";
+    return NextResponse.json(
+      { success: false, error: message },
       { status: 500 },
     );
   }
