@@ -10,7 +10,7 @@ export const CACHE_CONFIG = {
 export const SUMMARY_MODEL_CONFIG = {
   model:
     process.env.NODE_ENV === "development"
-      ? process.env.LOCAL_AI_MODEL
+      ? (process.env.LOCAL_AI_MODEL ?? "gemma3:1b")
       : "gpt-4o-mini",
   temperature: 0.2,
   max_tokens: 50,
