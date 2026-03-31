@@ -23,7 +23,7 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <Link href={`/posts/${slugifiedTitle}`} className="mx-auto block h-min">
-      <article className="clickable hover:-translate-x-1 hover:-translate-y-1 flex w-80 flex-col overflow-hidden rounded-sm bg-white shadow-lg dark:bg-gray-800">
+      <article className="clickable flex w-80 flex-col overflow-hidden rounded-sm bg-white shadow-lg hover:-translate-x-1 hover:-translate-y-1 dark:bg-gray-800">
         {/* 이미지와 오버레이 메타데이터 섹션 */}
         <div className="relative">
           <Image
