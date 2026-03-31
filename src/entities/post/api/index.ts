@@ -1,5 +1,10 @@
 import type { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { notion, notionApi } from "@/shared/api";
+import {
+  MOCK_PAGE_RECORD_MAP,
+  MOCK_POSTS,
+  MOCK_TAGS,
+} from "@/shared/api/notion-mock";
 import { NotionApiError } from "@/shared/lib";
 import { nextServerCache } from "@/shared/lib/cache";
 import { Post } from "../model";
@@ -7,8 +12,11 @@ import type { TagDatabaseResponse } from "../model/type";
 
 const notionAboutPageID = process.env.NOTION_ABOUT_PAGE_ID;
 const notionPostDatabaseId = process.env.NOTION_POST_DATABASE_ID;
+const isCiMock = process.env.CI_MOCK === "true";
 
 async function _getNotionPosts() {
+  if (isCiMock) return MOCK_POSTS;
+
   if (!notionPostDatabaseId) {
     throw Error("notionPostDatabaseId is not settled.");
   }
@@ -70,6 +78,8 @@ async function _getNotionPostContentForSummary(id: string) {
 }
 
 async function _getNotionPostDatabaseTags() {
+  if (isCiMock) return MOCK_TAGS as TagDatabaseResponse[];
+
   if (!notionPostDatabaseId) {
     throw Error("notionPostDatabaseId is not settled.");
   }
@@ -84,17 +94,19 @@ async function _getNotionPostDatabaseTags() {
 }
 
 async function _getNotionPage(id: string) {
-  const response = await notionApi.getPage(id);
+  if (isCiMock) return MOCK_PAGE_RECORD_MAP as never;
 
+  const response = await notionApi.getPage(id);
   return response;
 }
 
 async function _getNotionAboutPage() {
+  if (isCiMock) return MOCK_PAGE_RECORD_MAP as never;
+
   if (!notionAboutPageID) {
     throw Error("notionAboutPageID is not settled.");
   }
   const response = await notionApi.getPage(notionAboutPageID);
-
   return response;
 }
 

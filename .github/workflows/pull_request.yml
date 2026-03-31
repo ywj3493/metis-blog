@@ -46,9 +46,10 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          NOTION_KEY: ${{ secrets.NOTION_KEY }}
-          NOTION_POST_DATABASE_ID: ${{ secrets.NOTION_POST_DATABASE_ID }}
-          NOTION_TOKEN_V2: ${{ secrets.NOTION_TOKEN_V2 }}
-          NOTION_USER_ID: ${{ secrets.NOTION_USER_ID }}
-          NOTION_GUESTBOOK_DATABASE_ID: ${{ secrets.NOTION_GUESTBOOK_DATABASE_ID }}
-          NOTION_ABOUT_PAGE_ID: ${{ secrets.NOTION_ABOUT_PAGE_ID }}
+          CI_MOCK: "true"
+          NOTION_KEY: mock_key
+          NOTION_POST_DATABASE_ID: mock_db_id
+          NOTION_TOKEN_V2: mock_token
+          NOTION_USER_ID: mock_user
+          NOTION_GUESTBOOK_DATABASE_ID: mock_guestbook_db
+          NOTION_ABOUT_PAGE_ID: mock_about_page
