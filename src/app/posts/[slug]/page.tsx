@@ -1,10 +1,4 @@
-import { slug } from "github-slugger";
-import {
-  getNotionPage,
-  getNotionPostMetadata,
-  getNotionPosts,
-  getSlugMap,
-} from "@/entities/post/api";
+import { getNotionPage, getNotionPosts, getSlugMap } from "@/entities/post/api";
 import { Post } from "@/entities/post/model";
 import { isNotionPageId } from "@/entities/post/utils";
 import { ClientNotionRenderer, PostNavigator } from "@/features/post/ui";
@@ -26,16 +20,21 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps) {
-  const postId = await slugToPostId(params.slug);
+  const posts = (await getNotionPosts()).map(Post.create);
+  const post = posts.find(
+    (p) => p.slugifiedTitle === decodeURIComponent(params.slug),
+  );
 
-  const { title, content, tags } = await getNotionPostMetadata(postId);
+  if (!post) {
+    return { title: "Post Not Found" };
+  }
 
   return {
-    title,
-    description: content,
-    keywords: tags,
+    title: post.title,
+    description: post.aiSummary || `${post.title} - 블로그 포스트`,
+    keywords: post.tags.map((t) => t.name),
     alternates: {
-      canonical: `${process.env.BLOG_URL}/posts/${slug(title)}`,
+      canonical: `${process.env.BLOG_URL}/posts/${post.slugifiedTitle}`,
     },
   };
 }

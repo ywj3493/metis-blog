@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getNotionPostMetadata, getNotionPosts } from "@/entities/post/api";
+import { getNotionPosts } from "@/entities/post/api";
+import { Post } from "@/entities/post/model";
 import { server } from "@/mocks/server";
 
 const isDeepTest = !!process.env.DEEP_TEST;
@@ -14,16 +15,19 @@ describe.skipIf(!isDeepTest)("Deep test for Notion API", () => {
   });
 
   it(
-    "should make metadata correctly for all posts",
+    "should create Post model correctly for all posts",
     { timeout: Number.POSITIVE_INFINITY },
     async () => {
       server.close();
-      const posts = await getNotionPosts();
-      const metadatas = await Promise.all(
-        posts.map((post) => getNotionPostMetadata(post.id)),
-      );
+      const posts = (await getNotionPosts()).map(Post.create);
 
-      expect(metadatas).toBeDefined();
+      expect(posts).toBeDefined();
+      expect(posts.length).toBeGreaterThan(0);
+      for (const post of posts) {
+        expect(post.title).toBeTruthy();
+        expect(post.slugifiedTitle).toBeTruthy();
+        expect(post.tags).toBeDefined();
+      }
       server.listen();
     },
   );

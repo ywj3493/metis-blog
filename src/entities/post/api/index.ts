@@ -31,41 +31,6 @@ async function _getNotionPosts() {
   return response.results as DatabaseObjectResponse[];
 }
 
-async function _getNotionPostMetadata(id: string) {
-  const pageResponse = await notion.pages.retrieve({
-    page_id: id,
-  });
-  const contentResponse = await notion.blocks.children.list({
-    block_id: id,
-  });
-
-  /* @ts-expect-error Notion Type Error */
-  const title = pageResponse.properties.제목.title[0].plain_text;
-
-  /* @ts-expect-error Notion Type Error */
-  const tags = pageResponse.properties.Tags.multi_select.map(
-    /* @ts-expect-error Notion Type Error */
-    (tag) => tag.name,
-  );
-
-  const content =
-    contentResponse.results
-      /* @ts-expect-error Notion Type Error */
-      .filter((block) => block.type === "paragraph")
-      /* @ts-expect-error Notion Type Error */
-      .find((block) => block.paragraph.rich_text.length > 0)
-      /* @ts-expect-error Notion Type Error */
-      ?.paragraph.rich_text.map((text) => text.plain_text)
-      .join("")
-      .substr(0, 77) || "";
-
-  return {
-    title,
-    content,
-    tags,
-  };
-}
-
 async function _getNotionPostContentForSummary(id: string) {
   try {
     const pageResponse = await notion.pages.retrieve({
@@ -171,7 +136,6 @@ const _patchNotionPostSummary = async (postId: string, aiSummary: string) => {
 };
 
 export const getNotionPosts = nextServerCache(_getNotionPosts, ["posts"]);
-export const getNotionPostMetadata = _getNotionPostMetadata;
 export const getNotionPostDatabaseTags = nextServerCache(
   _getNotionPostDatabaseTags,
   ["tags"],
