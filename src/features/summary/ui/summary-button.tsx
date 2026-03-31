@@ -33,9 +33,7 @@ export function SummaryButton({ postId }: SummaryButtonProps) {
         setError(result?.error || "요약 생성에 실패했습니다.");
       }
     } catch (error) {
-      setError(
-        "요약 생성 중 오류가 발생했습니다. 페이지를 새로고침 해주세요.",
-      );
+      setError("요약 생성 중 오류가 발생했습니다. 페이지를 새로고침 해주세요.");
       console.error("요약 생성 실패:", error);
     } finally {
       setIsGenerating(false);
