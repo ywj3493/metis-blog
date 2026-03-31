@@ -8,8 +8,11 @@ export const CACHE_CONFIG = {
 } as const;
 
 export const SUMMARY_MODEL_CONFIG = {
-	model: process.env.NODE_ENV === "development" ? "gemma3:1b" : "gpt-4o-mini",
-	temperature: 0.2,
-	max_tokens: 50,
-	top_p: 0.9,
+  model:
+    process.env.NODE_ENV === "development"
+      ? process.env.LOCAL_AI_MODEL
+      : "gpt-4o-mini",
+  temperature: 0.2,
+  max_tokens: 50,
+  top_p: 0.9,
 } as const;
