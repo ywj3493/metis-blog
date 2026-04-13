@@ -18,6 +18,7 @@ Create `.env.local` with the following variables:
 | `NOTION_USER_ID` | Notion active user ID (react-notion-x) | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | `NOTION_POST_DATABASE_ID` | Post database ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | `NOTION_GUESTBOOK_DATABASE_ID` | Guestbook database ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+| `NOTION_ABOUT_PAGE_ID` | About page ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 
 ### AI / LLM
 
@@ -34,18 +35,26 @@ Create `.env.local` with the following variables:
 | `AUTH_USER` | Gmail sender address | `your@gmail.com` |
 | `AUTH_PASS` | Gmail app password (NOT regular password) | `xxxx xxxx xxxx xxxx` |
 
+### SEO (Required for production)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `BLOG_URL` | Blog base URL (used for sitemap, canonical URLs, robots.txt) | `https://your-blog.vercel.app` |
+
 ### Optional
 
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `NEXT_PUBLIC_GA_ID` | Google Analytics measurement ID | `G-XXXXXXXXXX` |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console verification file name | `googleXXXXX.html` |
+| `LOG_LEVEL` | Pino logger level (default: `info`) | `debug`, `warn`, `error` |
 
 ### CI / Build
 
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `CI_MOCK` | Enable mock data for Notion API in CI builds | `true` |
+| `DEEP_TEST` | Enable real Notion API integration tests | `true` |
 
 ## Application Configuration
 
