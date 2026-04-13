@@ -101,13 +101,48 @@ revalidatePath(`/posts/${postId}`);  // Invalidate specific post page
 | Development | Ollama | Local endpoint, configurable model |
 | Production | OpenAI | `gpt-4o-mini`, API key required |
 
-## Monitoring
+## CI/CD Pipeline
+
+### Pull Request CI (`.github/workflows/pull_request.yml`)
+
+Runs on every PR to `main`:
+
+1. **Code Quality** — `biome ci .` (Biome 2.4.2)
+2. **Lint** — `pnpm lint` (ESLint)
+3. **Test** — `pnpm test --run` (Vitest with MSW)
+4. **Build** — `pnpm build` with `CI_MOCK=true` (Notion API mocked)
+
+CI build uses mock env vars for all Notion credentials.
+
+### Production Deploy (`.github/workflows/deploy.yml`)
+
+Triggered by `v*` tags (e.g., `v1.0.0`):
+
+1. Verify tag is on `main` branch
+2. Install dependencies (`pnpm install --frozen-lockfile`)
+3. Pull Vercel environment (`vercel pull --environment=production`)
+4. Build with Vercel CLI (`vercel build --prod`)
+5. Deploy to Vercel (`vercel deploy --prebuilt --prod`)
+
+**Required secrets**: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+
+## Monitoring & Logging
 
 | Tool | Purpose |
 |------|---------|
 | `@vercel/analytics` | Page views and web analytics |
 | `@vercel/speed-insights` | Core Web Vitals monitoring |
 | Pino logger | Server-side structured logging |
+
+### Notion API Logger
+
+**Source**: `src/shared/lib/logger.ts`
+
+- `NotionAPILogger` (singleton) — tracks API call count, success/failure, response times
+- `withPinoLogger(fn, name)` — higher-order function wrapping any async function with automatic logging
+- `setupBuildEndLogger()` — registers process exit handlers to print final build statistics
+- Development: pretty logs to `logs/notion-api.log` via `pino-pretty`
+- Production: JSON structured logs to stdout
 
 ## Mock System (Testing & CI)
 
