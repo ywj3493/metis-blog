@@ -18,6 +18,7 @@
 | `NOTION_USER_ID` | Notion 활성 사용자 ID (react-notion-x) | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | `NOTION_POST_DATABASE_ID` | 포스트 데이터베이스 ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | `NOTION_GUESTBOOK_DATABASE_ID` | 방명록 데이터베이스 ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+| `NOTION_ABOUT_PAGE_ID` | About 페이지 ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 
 ### AI / LLM
 
@@ -34,18 +35,26 @@
 | `AUTH_USER` | Gmail 발신 주소 | `your@gmail.com` |
 | `AUTH_PASS` | Gmail 앱 비밀번호 (일반 비밀번호 아님) | `xxxx xxxx xxxx xxxx` |
 
+### SEO (프로덕션 필수)
+
+| 변수 | 설명 | 예시 |
+|------|------|------|
+| `BLOG_URL` | 블로그 기본 URL (사이트맵, canonical URL, robots.txt에 사용) | `https://your-blog.vercel.app` |
+
 ### 선택사항
 
 | 변수 | 설명 | 예시 |
 |------|------|------|
 | `NEXT_PUBLIC_GA_ID` | Google Analytics 측정 ID | `G-XXXXXXXXXX` |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console 인증 파일명 | `googleXXXXX.html` |
+| `LOG_LEVEL` | Pino 로거 레벨 (기본: `info`) | `debug`, `warn`, `error` |
 
 ### CI / 빌드
 
 | 변수 | 설명 | 예시 |
 |------|------|------|
 | `CI_MOCK` | CI 빌드에서 Notion API 목 데이터 사용 | `true` |
+| `DEEP_TEST` | 실제 Notion API 통합 테스트 활성화 | `true` |
 
 ## 애플리케이션 설정
 
