@@ -101,13 +101,48 @@ revalidatePath(`/posts/${postId}`);  // 특정 포스트 페이지 무효화
 | Development | Ollama | 로컬 엔드포인트, 모델 설정 가능 |
 | Production | OpenAI | `gpt-4o-mini`, API 키 필수 |
 
-## 모니터링
+## CI/CD 파이프라인
+
+### PR CI (`.github/workflows/pull_request.yml`)
+
+`main`으로의 모든 PR에서 실행:
+
+1. **코드 품질** — `biome ci .` (Biome 2.4.2)
+2. **린트** — `pnpm lint` (ESLint)
+3. **테스트** — `pnpm test --run` (Vitest + MSW)
+4. **빌드** — `pnpm build` with `CI_MOCK=true` (Notion API 목)
+
+CI 빌드는 모든 Notion 인증에 목 환경 변수를 사용합니다.
+
+### 프로덕션 배포 (`.github/workflows/deploy.yml`)
+
+`v*` 태그 (예: `v1.0.0`)로 트리거:
+
+1. 태그가 `main` 브랜치에 있는지 검증
+2. 의존성 설치 (`pnpm install --frozen-lockfile`)
+3. Vercel 환경 가져오기 (`vercel pull --environment=production`)
+4. Vercel CLI로 빌드 (`vercel build --prod`)
+5. Vercel에 배포 (`vercel deploy --prebuilt --prod`)
+
+**필요한 시크릿**: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+
+## 모니터링 및 로깅
 
 | 도구 | 용도 |
 |------|------|
 | `@vercel/analytics` | 페이지뷰 및 웹 분석 |
 | `@vercel/speed-insights` | Core Web Vitals 모니터링 |
 | Pino logger | 서버 사이드 구조화 로깅 |
+
+### Notion API 로거
+
+**소스**: `src/shared/lib/logger.ts`
+
+- `NotionAPILogger` (싱글톤) — API 호출 횟수, 성공/실패, 응답 시간 추적
+- `withPinoLogger(fn, name)` — 비동기 함수를 자동 로깅으로 래핑하는 고차 함수
+- `setupBuildEndLogger()` — 프로세스 종료 핸들러 등록하여 최종 빌드 통계 출력
+- 개발: `pino-pretty`로 `logs/notion-api.log`에 예쁜 로그
+- 프로덕션: stdout에 JSON 구조화 로그
 
 ## 목 시스템 (테스트 및 CI)
 
