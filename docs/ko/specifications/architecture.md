@@ -75,19 +75,24 @@ src/
 | `app/` | `api/posts/[postId]/summary/` | AI 요약 PATCH 엔드포인트 | `features/summary`, `entities/post` |
 | `app/` | `api/sitemap/` | 동적 사이트맵 생성 | `entities/post` |
 | `app/` | `api/alarm/` | 이메일 알림 엔드포인트 | `entities/alarm` |
-| `widgets/` | `header` | 사이트 네비게이션 + 테마 토글 | `features/theme` |
+| `widgets/ui/` | `header` | 사이트 네비게이션 + 테마 토글 | `features/theme` |
 | `features/` | `post` | 포스트 카드, 그리드, 네비게이터, 필터링 | `entities/post`, `shared/ui` |
 | `features/` | `tag` | 태그 필터 컴포넌트 | `entities/post` |
 | `features/` | `guestbook` | 방명록 폼 및 목록 | `entities/guestbook`, `shared/ui` |
 | `features/` | `summary` | AI 요약 카드 및 트리거 버튼 | `entities/post`, `shared/api` |
 | `features/` | `profile` | 히어로 섹션, 연락처 정보 | `shared/ui` |
 | `features/` | `theme` | 다크/라이트 모드 토글 | — |
-| `entities/` | `post` | Post, Tag 도메인 모델 + Notion API | `shared/api`, `shared/lib` |
+| `entities/` | `post/model` | Post, Tag 도메인 모델 + 타입 가드 | `shared/api`, `shared/lib` |
+| `entities/` | `post/api` | 포스트용 Notion API 쿼리 + 캐싱 | `shared/api`, `shared/lib` |
+| `entities/` | `post/utils` | `isNotionPageId()` — Notion 페이지 ID 유효성 검증 | — |
 | `entities/` | `guestbook` | Guestbook 도메인 모델 + Notion API | `shared/api`, `shared/lib` |
 | `entities/` | `alarm` | 이메일 서비스 (Nodemailer) | — |
 | `shared/` | `api` | Notion, OpenAI 클라이언트 인스턴스 | `shared/config` |
 | `shared/` | `config` | 캐시 타이밍, LLM 모델 설정 | — |
-| `shared/` | `lib` | 캐시 래퍼, 에러 클래스, 로거, 유틸리티 | `shared/config` |
+| `shared/` | `lib/cache` | `nextServerCache()` ISR 캐시 래퍼 | `shared/config` |
+| `shared/` | `lib/errors` | `NotionApiError`, `SummaryServiceError` | — |
+| `shared/` | `lib/logger` | `NotionAPILogger` (싱글톤), `withPinoLogger` (데코레이터), 빌드 통계 | — |
+| `shared/` | `lib/utils` | `cn()` — Tailwind 클래스 머지 유틸리티 | — |
 | `shared/` | `ui` | Button, Loading, Error, TagChip, Tooltip | — |
 
 ## 디자인 패턴

@@ -75,19 +75,24 @@ src/
 | `app/` | `api/posts/[postId]/summary/` | AI summary PATCH endpoint | `features/summary`, `entities/post` |
 | `app/` | `api/sitemap/` | Dynamic sitemap generation | `entities/post` |
 | `app/` | `api/alarm/` | Email notification endpoint | `entities/alarm` |
-| `widgets/` | `header` | Site navigation with theme toggle | `features/theme` |
+| `widgets/ui/` | `header` | Site navigation with theme toggle | `features/theme` |
 | `features/` | `post` | Post cards, grid, navigator, filtering | `entities/post`, `shared/ui` |
 | `features/` | `tag` | Tag filter component | `entities/post` |
 | `features/` | `guestbook` | Guestbook form and list | `entities/guestbook`, `shared/ui` |
 | `features/` | `summary` | AI summary card and trigger button | `entities/post`, `shared/api` |
 | `features/` | `profile` | Hero section and contact info | `shared/ui` |
 | `features/` | `theme` | Dark/light mode toggle | — |
-| `entities/` | `post` | Post and Tag domain models + Notion API | `shared/api`, `shared/lib` |
+| `entities/` | `post/model` | Post and Tag domain models + type guards | `shared/api`, `shared/lib` |
+| `entities/` | `post/api` | Notion API queries for posts + caching | `shared/api`, `shared/lib` |
+| `entities/` | `post/utils` | `isNotionPageId()` — Notion page ID validation | — |
 | `entities/` | `guestbook` | Guestbook domain model + Notion API | `shared/api`, `shared/lib` |
 | `entities/` | `alarm` | Email service (Nodemailer) | — |
 | `shared/` | `api` | Notion and OpenAI client instances | `shared/config` |
 | `shared/` | `config` | Cache timing and LLM model configuration | — |
-| `shared/` | `lib` | Cache wrapper, error classes, logger, utilities | `shared/config` |
+| `shared/` | `lib/cache` | `nextServerCache()` ISR cache wrapper | `shared/config` |
+| `shared/` | `lib/errors` | `NotionApiError`, `SummaryServiceError` | — |
+| `shared/` | `lib/logger` | `NotionAPILogger` (singleton), `withPinoLogger` (decorator), build stats | — |
+| `shared/` | `lib/utils` | `cn()` — Tailwind class merge utility | — |
 | `shared/` | `ui` | Button, Loading, Error, TagChip, Tooltip | — |
 
 ## Design Patterns
