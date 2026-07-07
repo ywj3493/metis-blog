@@ -44,5 +44,8 @@ google*.html
 # logs
 *.log
 
-# agents
-.claude
+# agents — ignore local/session state, but commit shared team config
+.claude/*
+!.claude/settings.json
+!.claude/rules
+!.claude/hooks
