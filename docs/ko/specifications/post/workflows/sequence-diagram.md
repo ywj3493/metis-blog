@@ -173,8 +173,16 @@ sequenceDiagram
 |------|---------|-------|------|
 | `getNotionPosts()` | `["posts"]` | `ISR_REVALIDATE_TIME` | — |
 | `getNotionPostDatabaseTags()` | `["tags"]` | `ISR_REVALIDATE_TIME` | — |
-| `getNotionPage()` | 없음 (캐시 안 됨) | — | — |
+| `getNotionPage()` | 없음 (의도적 미캐시) | — | — |
 | `getSlugMap()` | 없음 (`getNotionPosts`에서 파생) | — | — |
+
+`nextServerCache()`는 `unstable_cache`(영속 데이터 캐시) 위에 React `cache()`(요청 단위 메모이제이션)를 겹친다. 한 번의 렌더링 안에서 `generateMetadata`, `slugToPostId`, `PostNavigator`가 반복 호출하는 `getNotionPosts()`는 1회 실행으로 합쳐진다.
+
+`getNotionPage()` / `getNotionAboutPage()`는 의도적으로 `nextServerCache()`를 적용하지 **않는다**:
+
+- `recordMap.signed_urls`(S3 presigned URL)는 약 1시간 뒤 만료되어, 데이터 캐시의 stale-while-revalidate 동작으로 만료된 이미지 URL이 서빙될 수 있다.
+- Vercel 데이터 캐시는 항목당 약 2MB 제한이 있어 이미지가 많은 포스트는 조용히 캐시가 스킵된다.
+- 포스트 상세는 온디맨드 ISR이므로 slug당 재검증 주기에 최대 1회만 렌더링되어, 하위 데이터 캐시는 이득이 없다.
 
 > **전체 문서**
 > [요구사항](../requirements/requirements.md) | [유저 스토리](../requirements/user-stories.md) | [유스케이스](use-cases.md) | **[시퀀스 다이어그램]** | [컴포넌트 명세](component-spec.md) | [테스트 명세](test-spec.md)
