@@ -57,6 +57,7 @@ pnpm test:deep        # Real Notion API integration tests (requires credentials)
 - **Platform**: Vercel
 - **Build**: ISR (Incremental Static Regeneration)
 - **Revalidation**: 300 seconds in production
+- **On-demand post generation**: Post detail pages are **not** pre-rendered at build time (`generateStaticParams()` returns `[]`). This caps build-time Notion API usage at roughly three logical calls (posts query, tags query, About page) — pre-rendering all posts previously fanned out into hundreds of requests and triggered Notion rate-limit blocks that failed the build. Each post page is generated on its first request and cached by ISR.
 - **CI Mock**: When `CI_MOCK=true`, Notion API calls use mock data from `src/shared/api/notion-mock.ts`
 
 ### ISR Caching Strategy

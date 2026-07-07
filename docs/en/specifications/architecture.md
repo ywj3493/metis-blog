@@ -131,7 +131,7 @@ Two separate Notion libraries serve different purposes:
 
 ### Server-Side Caching
 
-All Notion data fetching is wrapped with `nextServerCache()` from `src/shared/lib/cache.ts`, which delegates to Next.js `unstable_cache` with ISR revalidation times from `src/shared/config/index.ts`.
+List-style Notion data fetching is wrapped with `nextServerCache()` from `src/shared/lib/cache.ts`, which layers React `cache()` (request-level memoization, deduplicating repeated calls within a single render) on top of Next.js `unstable_cache` with ISR revalidation times from `src/shared/config/index.ts`. Page-content fetchers (`getNotionPage`, `getNotionAboutPage`) are intentionally left uncached — the on-demand ISR page cache already throttles them, and recordMap signed URLs expire too quickly to cache safely (see the post domain sequence diagram for details).
 
 ### Environment-Based LLM Selection
 

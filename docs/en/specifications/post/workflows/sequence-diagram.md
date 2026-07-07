@@ -173,8 +173,16 @@ sequenceDiagram
 |----------|-----------|-------------|------|
 | `getNotionPosts()` | `["posts"]` | `ISR_REVALIDATE_TIME` | — |
 | `getNotionPostDatabaseTags()` | `["tags"]` | `ISR_REVALIDATE_TIME` | — |
-| `getNotionPage()` | None (not cached) | — | — |
+| `getNotionPage()` | None (intentionally uncached) | — | — |
 | `getSlugMap()` | None (derived from `getNotionPosts`) | — | — |
+
+`nextServerCache()` layers React `cache()` (request-level memoization) on top of `unstable_cache` (persistent data cache). Within a single render, repeated calls such as `getNotionPosts()` from `generateMetadata`, `slugToPostId`, and `PostNavigator` collapse into one execution.
+
+`getNotionPage()` / `getNotionAboutPage()` are intentionally **not** wrapped with `nextServerCache()`:
+
+- `recordMap.signed_urls` (S3 presigned URLs) expire after ~1 hour; the data cache's stale-while-revalidate behavior could serve expired image URLs.
+- Vercel's data cache has a ~2MB per-entry limit — image-heavy posts would silently skip caching.
+- Post detail pages use on-demand ISR, so each slug renders at most once per revalidate window; a data cache underneath adds no benefit.
 
 > **All Documents**
 > [Requirements](../requirements/requirements.md) | [User Stories](../requirements/user-stories.md) | [Use Cases](use-cases.md) | **[Sequence Diagram]** | [Component Spec](component-spec.md) | [Test Spec](test-spec.md)

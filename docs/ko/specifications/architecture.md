@@ -131,7 +131,7 @@ export class Post {
 
 ### 서버 사이드 캐싱
 
-모든 Notion 데이터 페칭은 `src/shared/lib/cache.ts`의 `nextServerCache()`로 래핑되며, `src/shared/config/index.ts`의 ISR 재검증 시간과 함께 Next.js `unstable_cache`에 위임합니다.
+목록성 Notion 데이터 페칭은 `src/shared/lib/cache.ts`의 `nextServerCache()`로 래핑되며, Next.js `unstable_cache`(`src/shared/config/index.ts`의 ISR 재검증 시간 사용) 위에 React `cache()`(요청 단위 메모이제이션, 한 렌더링 내 반복 호출을 1회로 합침)를 겹칩니다. 페이지 콘텐츠 페처(`getNotionPage`, `getNotionAboutPage`)는 의도적으로 캐시하지 않습니다 — 온디맨드 ISR 페이지 캐시가 이미 호출을 스로틀하며, recordMap의 signed URL은 만료가 빨라 캐시하기에 안전하지 않습니다(상세는 post 도메인 시퀀스 다이어그램 참고).
 
 ### 환경 기반 LLM 선택
 
