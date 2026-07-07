@@ -51,6 +51,12 @@ This repo ships committed Claude Code configuration — rely on it instead of re
 - `git commit` messages are **validated by a hook** against the commit rule below; non-compliant commits are blocked.
 - `pnpm lint` / `pnpm build` / `pnpm test --run` / `gh` read commands are pre-allowed; `pnpm test:deep` always asks (real Notion API); `.env*` reads are denied.
 
+Path-scoped rules load when a matching file is **read** — when creating a brand-new file without reading neighbors first, remember at minimum:
+
+- All files and directories use `kebab-case`.
+- Every `docs/en/` change needs a `docs/ko/` mirror at the identical path.
+- Policy/spec docs start with `<!-- Created: YYYY-MM-DD | Last Modified: YYYY-MM-DD | Status: Active -->`.
+
 Agents that don't read `.claude/` (e.g., GitHub Copilot): the same rules live in `docs/en/policy/` and `docs/en/specifications/` — use the routing table below.
 
 ## Task Routing (What to Read When)

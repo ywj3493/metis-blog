@@ -19,8 +19,8 @@
       "Bash(pnpm test:deep)"
     ],
     "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)"
+      "Read(/.env)",
+      "Read(/.env.*)"
     ]
   },
   "hooks": {
