@@ -1,0 +1,55 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm lint)",
+      "Bash(pnpm build)",
+      "Bash(pnpm biome:write)",
+      "Bash(pnpm test --run)",
+      "Bash(pnpm test --run *)",
+      "Bash(pnpm exec biome *)",
+      "Bash(gh issue list *)",
+      "Bash(gh issue view *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)"
+    ],
+    "ask": [
+      "Bash(pnpm test:deep)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.sh\"",
+            "timeout": 60,
+            "statusMessage": "Biome formatting edited file..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "if": "Bash(git commit *)",
+            "prompt": "You are validating a git commit command against this repo's commit message rule (docs/en/policy/commit-message-rule.md). The command is in $ARGUMENTS. If the command is NOT a git commit with a message (no -m argument, an editor-based commit, or an amend without a new message), answer ok=true immediately. Otherwise extract the commit message (the -m argument, including heredoc form). The first line must match: '<type>: <Korean summary>' where type is one of feat, fix, style, chore, lint, config, perf, seo, docs, test; the summary is written in Korean; the line does not end with a period; and the full first line is under 72 characters. An optional issue reference like '(refs #93)' at the end is allowed. Answer ok=true if the message complies, ok=false with the specific violation if not.",
+            "timeout": 30,
+            "statusMessage": "Validating commit message format..."
+          }
+        ]
+      }
+    ]
+  }
+}
