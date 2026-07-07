@@ -152,6 +152,12 @@ export const getNotionPostDatabaseTags = nextServerCache(
   _getNotionPostDatabaseTags,
   ["tags"],
 );
+// getNotionPage / getNotionAboutPage 는 의도적으로 nextServerCache 를 적용하지 않는다:
+// - recordMap 의 signed_urls(S3 presigned URL)는 약 1시간 뒤 만료되는데, 데이터 캐시의
+//   stale-while-revalidate 특성상 만료된 이미지 URL 이 서빙될 수 있다.
+// - Vercel 데이터 캐시는 항목당 약 2MB 제한이 있어 이미지가 많은 포스트는 조용히 캐시가 스킵된다.
+// - 페이지 자체가 온디맨드 ISR 로 캐시되어 slug 당 revalidate 주기에 1회만 렌더링되므로
+//   데이터 캐시를 겹쳐도 이득이 없다.
 export const getNotionPage = _getNotionPage;
 export const getNotionAboutPage = _getNotionAboutPage;
 export const getNotionPostContentForSummary = _getNotionPostContentForSummary;

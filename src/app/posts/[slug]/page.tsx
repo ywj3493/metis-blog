@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getNotionPage, getNotionPosts, getSlugMap } from "@/entities/post/api";
 import { Post } from "@/entities/post/model";
 import { isNotionPageId } from "@/entities/post/utils";
@@ -10,13 +11,14 @@ type PostDetailPageProps = {
 
 export const revalidate = CACHE_CONFIG.ISR_REVALIDATE_TIME;
 
-// 모든 페이지에 대해 한번만 호출됨
-export async function generateStaticParams() {
-  const posts = (await getNotionPosts()).map(Post.create);
+// 기본값이지만 명시 — false 로 바꾸면 사전 렌더링되지 않은 모든 포스트가 404가 된다.
+export const dynamicParams = true;
 
-  return posts.map(({ slugifiedTitle }) => ({
-    slug: slugifiedTitle,
-  }));
+// 빈 배열 반환: 빌드 시 포스트 페이지를 사전 렌더링하지 않는다 (온디맨드 ISR).
+// 포스트마다 notionApi.getPage 가 여러 HTTP 요청으로 팬아웃되어, 전체 사전 렌더링 시
+// Notion 이 요청을 차단해 빌드가 실패한다. 각 페이지는 첫 요청 시 생성 후 ISR 캐시된다.
+export async function generateStaticParams() {
+  return [];
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps) {
@@ -66,10 +68,7 @@ async function slugToPostId(slugOrId: string) {
   const postId = slugMap[decodeURIComponent(slugOrId)];
 
   if (!postId) {
-    console.error(
-      `Post not found for given slug or id. Slug: ${slugOrId}, Id: ${postId}, SlugMap: ${JSON.stringify(slugMap)}`,
-    );
-    throw new Error("Post not found for given slug or id.");
+    notFound();
   }
 
   return postId;
