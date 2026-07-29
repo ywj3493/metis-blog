@@ -51,5 +51,16 @@
         ]
       }
     ]
+  },
+  "extraKnownMarketplaces": {
+    "claude-skills": {
+      "source": {
+        "source": "github",
+        "repo": "ywj3493/claude-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "explainable@claude-skills": true
   }
 }

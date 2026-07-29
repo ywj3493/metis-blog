@@ -77,7 +77,7 @@ graph TD
 ### Post Detail (`src/app/posts/[slug]/page.tsx`)
 
 - **Type**: Server Component with dynamic route
-- **SSG**: `generateStaticParams()` pre-renders all slugs
+- **On-demand ISR**: `generateStaticParams()` returns `[]` — no post pages are pre-rendered at build time. Each page is generated on first request and cached by ISR (`revalidate` = `ISR_REVALIDATE_TIME`). Rationale: pre-rendering every post fans out `notionApi.getPage()` into hundreds of Notion HTTP requests, triggering rate-limit blocks that fail the build. `dynamicParams = true` is declared explicitly; unknown slugs return 404 via `notFound()`.
 - **Data Fetching**: `getSlugMap()`, `getNotionPage()`, `getNotionPosts()`
 - **Metadata**: Dynamic `generateMetadata()` from post title
 - **Renders**: `ClientNotionRenderer` + `PostNavigator`

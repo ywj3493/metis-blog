@@ -57,6 +57,7 @@ pnpm test:deep        # 실제 Notion API 통합 테스트 (인증 정보 필요
 - **플랫폼**: Vercel
 - **빌드**: ISR (Incremental Static Regeneration)
 - **재검증**: 프로덕션에서 300초
+- **온디맨드 포스트 생성**: 포스트 상세 페이지는 빌드 시 사전 렌더링하지 **않는다**(`generateStaticParams()`가 `[]` 반환). 이로써 빌드 시 Notion API 사용이 논리적 호출 약 3회(포스트 목록 쿼리, 태그 쿼리, About 페이지)로 제한된다 — 이전에는 전체 포스트 사전 렌더링이 수백 회 요청으로 팬아웃되어 Notion rate limit 차단으로 빌드가 실패했다. 각 포스트 페이지는 첫 요청 시 생성되어 ISR로 캐시된다.
 - **CI 목**: `CI_MOCK=true`일 때 Notion API 호출은 `src/shared/api/notion-mock.ts`의 목 데이터 사용
 
 ### ISR 캐싱 전략

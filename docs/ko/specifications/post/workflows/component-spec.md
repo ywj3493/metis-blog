@@ -77,7 +77,7 @@ graph TD
 ### 포스트 상세 (`src/app/posts/[slug]/page.tsx`)
 
 - **유형**: 동적 라우트 서버 컴포넌트
-- **SSG**: `generateStaticParams()`로 모든 slug 사전 렌더링
+- **온디맨드 ISR**: `generateStaticParams()`가 `[]`를 반환 — 빌드 시 포스트 페이지를 사전 렌더링하지 않는다. 각 페이지는 첫 요청 시 생성되어 ISR로 캐시된다(`revalidate` = `ISR_REVALIDATE_TIME`). 사유: 전체 포스트 사전 렌더링 시 `notionApi.getPage()`가 수백 회의 Notion HTTP 요청으로 팬아웃되어 rate limit 차단으로 빌드가 실패한다. `dynamicParams = true`를 명시하며, 없는 slug는 `notFound()`로 404를 반환한다.
 - **데이터 페칭**: `getSlugMap()`, `getNotionPage()`, `getNotionPosts()`
 - **메타데이터**: 포스트 제목으로 동적 `generateMetadata()`
 - **렌더링**: `ClientNotionRenderer` + `PostNavigator`
