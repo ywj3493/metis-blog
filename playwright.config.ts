@@ -7,8 +7,12 @@ import { defineConfig, devices } from "@playwright/test";
  * layer return the fixtures in `src/shared/api/notion-mock.ts` instead of
  * hitting the real Notion API. This lets the full site render (and the E2E
  * suite run) with no external credentials.
+ *
+ * A dedicated port (3100, not the default 3000) is used so the E2E suite never
+ * reuses a developer's regular `pnpm dev` server — which would run without
+ * `CI_MOCK` and make the mock-data assertions hit real/credential-less Notion.
  */
-const PORT = 3000;
+const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
@@ -34,10 +38,13 @@ export default defineConfig({
   webServer: {
     command: "pnpm dev",
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    // Never reuse an already-running server: always start a fresh one bound to
+    // the dedicated port with CI_MOCK enabled, so the mock env is guaranteed.
+    reuseExistingServer: false,
     timeout: 180_000,
     env: {
       CI_MOCK: "true",
+      PORT: String(PORT),
     },
   },
 });
