@@ -1,57 +1,87 @@
-import { unstable_cache } from "next/cache";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { CACHE_CONFIG } from "../config";
-import { nextServerCache } from "./cache";
 
-vi.mock("next/cache", () => ({
-  unstable_cache: vi.fn((fn: unknown) => fn),
+// `unstable_cache` is mocked as identity so we can inspect its call args and
+// follow the value through the outer `requestMemo` wrapper.
+const { unstableCacheMock } = vi.hoisted(() => ({
+  unstableCacheMock: vi.fn(
+    (fn: (...args: unknown[]) => Promise<unknown>) => fn,
+  ),
 }));
 
-const mockedUnstableCache = vi.mocked(unstable_cache);
+vi.mock("next/cache", () => ({ unstable_cache: unstableCacheMock }));
 
-beforeEach(() => {
-  mockedUnstableCache.mockClear();
-});
+/**
+ * Load a fresh copy of cache.ts with a specific `react.cache` export so both
+ * sides of the `typeof cache === "function"` ternary are covered.
+ */
+async function loadWithReactCache(reactCache: unknown) {
+  vi.resetModules();
+  vi.doMock("react", () => ({ cache: reactCache }));
+  const { nextServerCache } = await import("./cache");
+  return nextServerCache;
+}
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.doUnmock("react");
+  vi.resetModules();
+  unstableCacheMock.mockClear();
 });
 
 describe("nextServerCache", () => {
-  it("wraps the fn with default revalidate from CACHE_CONFIG when no options", async () => {
-    const fn = vi.fn(async () => "value");
-    const keys = ["a", "b"];
+  describe("when React.cache is unavailable (identity requestMemo)", () => {
+    it("passes fn, keys and the default revalidate to unstable_cache", async () => {
+      const nextServerCache = await loadWithReactCache(undefined);
+      const fn = vi.fn(async () => "value");
+      const keys = ["a", "b"];
 
-    const wrapped = nextServerCache(fn, keys);
+      const wrapped = nextServerCache(fn, keys);
 
-    expect(mockedUnstableCache).toHaveBeenCalledTimes(1);
-    expect(mockedUnstableCache).toHaveBeenCalledWith(fn, keys, {
-      revalidate: CACHE_CONFIG.ISR_REVALIDATE_TIME,
+      expect(unstableCacheMock).toHaveBeenCalledWith(fn, keys, {
+        revalidate: CACHE_CONFIG.ISR_REVALIDATE_TIME,
+      });
+      // identity fallback returns the unstable_cache result unchanged
+      expect(wrapped).toBe(fn);
+      await expect(wrapped()).resolves.toBe("value");
     });
-    // Our mock returns fn unchanged.
-    expect(wrapped).toBe(fn);
-    await expect(wrapped()).resolves.toBe("value");
+
+    it("merges provided options, overriding revalidate and adding tags", async () => {
+      const nextServerCache = await loadWithReactCache(undefined);
+      const fn = vi.fn(async () => 1);
+
+      nextServerCache(fn, ["k"], { revalidate: 99, tags: ["posts"] });
+
+      expect(unstableCacheMock).toHaveBeenCalledWith(fn, ["k"], {
+        revalidate: 99,
+        tags: ["posts"],
+      });
+    });
+
+    it("supports revalidate: false override", async () => {
+      const nextServerCache = await loadWithReactCache(undefined);
+      const fn = vi.fn(async () => 1);
+
+      nextServerCache(fn, ["k"], { revalidate: false });
+
+      expect(unstableCacheMock).toHaveBeenCalledWith(fn, ["k"], {
+        revalidate: false,
+      });
+    });
   });
 
-  it("merges provided options, overriding revalidate and adding tags", () => {
-    const fn = vi.fn(async () => 1);
-    const keys = ["k"];
+  describe("when React.cache is available (server runtime)", () => {
+    it("wraps the unstable_cache result with React.cache for per-request memoization", async () => {
+      const requestMemoized = vi.fn();
+      const reactCache = vi.fn(() => requestMemoized);
+      const nextServerCache = await loadWithReactCache(reactCache);
+      const fn = vi.fn(async () => "v");
 
-    nextServerCache(fn, keys, { revalidate: 99, tags: ["posts"] });
+      const wrapped = nextServerCache(fn, ["k"]);
 
-    expect(mockedUnstableCache).toHaveBeenCalledWith(fn, keys, {
-      revalidate: 99,
-      tags: ["posts"],
-    });
-  });
-
-  it("supports revalidate: false override", () => {
-    const fn = vi.fn(async () => 1);
-
-    nextServerCache(fn, ["k"], { revalidate: false });
-
-    expect(mockedUnstableCache).toHaveBeenCalledWith(fn, ["k"], {
-      revalidate: false,
+      // requestMemo (= react.cache) memoizes the unstable_cache result (our
+      // identity mock returns `fn`).
+      expect(reactCache).toHaveBeenCalledWith(fn);
+      expect(wrapped).toBe(requestMemoized);
     });
   });
 });

@@ -46,7 +46,7 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       exclude: [
         "**/*.d.ts", // type-only definitions
-        "**/*.spec.{ts,tsx}", // test files
+        "**/*.{test,spec}.{ts,tsx}", // test files
         "src/__test__/**", // legacy deep-test dir
         "src/mocks/**", // MSW test infrastructure & stubs
         "src/shared/api/notion-mock.ts", // dev/test-only Notion mock client

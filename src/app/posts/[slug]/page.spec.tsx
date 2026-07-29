@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
+import { notFound } from "next/navigation";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getNotionPage, getNotionPosts, getSlugMap } from "@/entities/post/api";
 import { isNotionPageId } from "@/entities/post/utils";
-import PostDetailPage, { generateMetadata, generateStaticParams } from "./page";
+import PostDetailPage, {
+  dynamicParams,
+  generateMetadata,
+  generateStaticParams,
+} from "./page";
 
 vi.mock("@/entities/post/api", () => ({
   getNotionPage: vi.fn(),
@@ -12,16 +17,21 @@ vi.mock("@/entities/post/api", () => ({
 vi.mock("@/entities/post/utils", () => ({
   isNotionPageId: vi.fn(),
 }));
+vi.mock("next/navigation", () => ({
+  notFound: vi.fn(() => {
+    throw new Error("NEXT_NOT_FOUND");
+  }),
+}));
 vi.mock("@/features/post/ui", () => ({
   ClientNotionRenderer: () => <div>renderer</div>,
-  // biome-ignore lint/suspicious/noExplicitAny: test stub
-  PostNavigator: ({ id }: any) => <div>navigator-{id}</div>,
+  PostNavigator: ({ id }: { id: string }) => <div>navigator-{id}</div>,
 }));
 
 const mockedGetPage = vi.mocked(getNotionPage);
 const mockedGetPosts = vi.mocked(getNotionPosts);
 const mockedGetSlugMap = vi.mocked(getSlugMap);
 const mockedIsNotionPageId = vi.mocked(isNotionPageId);
+const mockedNotFound = vi.mocked(notFound);
 
 // IPost-shaped fixtures (Post.create accepts IPost directly)
 function makePost(overrides: Record<string, unknown> = {}) {
@@ -42,16 +52,17 @@ function makePost(overrides: Record<string, unknown> = {}) {
 describe("posts/[slug] page", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  it("exposes dynamicParams as true (on-demand ISR)", () => {
+    expect(dynamicParams).toBe(true);
   });
 
   describe("generateStaticParams", () => {
-    it("returns the slug list", async () => {
-      mockedGetPosts.mockResolvedValueOnce([makePost()] as never);
-
-      const result = await generateStaticParams();
-
-      expect(result).toEqual([{ slug: "my-title" }]);
+    it("returns an empty list so pages are generated on demand", async () => {
+      // Intentionally does not pre-render any post at build time.
+      await expect(generateStaticParams()).resolves.toEqual([]);
+      expect(mockedGetPosts).not.toHaveBeenCalled();
     });
   });
 
@@ -120,13 +131,14 @@ describe("posts/[slug] page", () => {
       ).rejects.toThrow("Slug map not found");
     });
 
-    it("throws when the slug is not in the map", async () => {
+    it("calls notFound() when the slug is not in the map", async () => {
       mockedIsNotionPageId.mockReturnValueOnce(false);
       mockedGetSlugMap.mockResolvedValueOnce({ other: "id" } as never);
 
       await expect(
         PostDetailPage({ params: { slug: "missing" } }),
-      ).rejects.toThrow("Post not found for given slug or id.");
+      ).rejects.toThrow("NEXT_NOT_FOUND");
+      expect(mockedNotFound).toHaveBeenCalledTimes(1);
     });
   });
 });
