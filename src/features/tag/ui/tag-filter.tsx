@@ -29,6 +29,7 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
 
   const checkScroll = () => {
     const el = scrollRef.current;
+    /* v8 ignore next */
     if (!el) return;
     const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
     setShowScrollHint(!atBottom);
@@ -36,6 +37,7 @@ export function TagFilter({ tags, selectedTags, setSelectedTags }: LNBProps) {
 
   useEffect(() => {
     const el = scrollRef.current;
+    /* v8 ignore next */
     if (!el) return;
     checkScroll(); // 최초 mount 시 확인
   }, [tags.length]);

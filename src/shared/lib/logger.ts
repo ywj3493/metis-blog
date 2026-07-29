@@ -76,7 +76,8 @@ export class NotionAPILogger {
     );
     const averageDuration =
       validDurations.length > 0
-        ? validDurations.reduce((acc, c) => acc + (c.duration || 0), 0) /
+        ? /* v8 ignore next -- c.duration is guaranteed >0 by the filter above, so `|| 0` is unreachable and exists only for TS's number|undefined type */
+          validDurations.reduce((acc, c) => acc + (c.duration || 0), 0) /
           validDurations.length
         : 0;
 

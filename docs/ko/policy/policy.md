@@ -10,7 +10,7 @@
 | 문서 위치 | `docs/en/` (영어), `docs/ko/` (한국어 미러) |
 | 워크플로우 | 이슈 → 브랜치 → 구현 → PR → 리뷰 → 머지 |
 | 코드 품질 | TypeScript strict, Biome 포매팅, ESLint 린팅 |
-| 테스팅 | Vitest + MSW; entities 80%+, API routes 80%+, features 70%+ |
+| 테스팅 | Vitest + MSW (100% 커버리지 게이트) + Playwright E2E |
 | 브랜칭 | `<type>/<issue-number>[-description]` from `main` |
 
 ## 문서 구조
@@ -80,17 +80,22 @@ docs/
 
 ### 테스팅
 
-| 코드 유형 | 커버리지 목표 |
-|-----------|-------------|
-| Entities / 도메인 모델 | 80%+ |
-| API 라우트 | 80%+ |
-| 사용자 인터랙션 기능 | 70%+ |
-| 로직이 있는 UI 컴포넌트 | 50%+ |
+테스트 스위트는 포함된 모든 소스에 대해 **100% 커버리지**(구문, 분기, 함수, 라인)를 강제하며, `vitest.config.ts`의 `coverage.thresholds`로 게이팅됩니다. 아래 계층별 수치는 과거의 최소값이며, 현재 게이트는 100%입니다.
 
-**테스트하지 않을 것**: 단순 프레젠테이션 컴포넌트, 타입 정의, 설정 파일, 커스텀 로직 없는 서드파티 래퍼.
+| 코드 유형 | 최소값 | 현재 게이트 |
+|-----------|--------|------------|
+| Entities / 도메인 모델 | 80%+ | 100% |
+| API 라우트 | 80%+ | 100% |
+| 사용자 인터랙션 기능 | 70%+ | 100% |
+| 로직이 있는 UI 컴포넌트 | 50%+ | 100% |
+
+**커버리지 제외**(`vitest.config.ts`): 타입 정의(`*.d.ts`), 테스트 파일, MSW/스텁 인프라(`src/mocks/**`), dev/테스트 전용 Notion mock 클라이언트(`src/shared/api/notion-mock.ts`). 도달 불가능한 방어적 분기는 `/* v8 ignore */` 주석과 사유를 함께 표기합니다.
 
 **테스트 명령어**:
-- `pnpm test` — MSW 모킹 표준 테스트
+- `pnpm test` — MSW 모킹 watch 모드
+- `pnpm test --run` — MSW 모킹 단일 실행
+- `pnpm test:coverage` — 단일 실행 + 커버리지 리포트, 100% 미만 시 실패
+- `pnpm test:e2e` — Playwright E2E (`CI_MOCK=true` dev 서버를 띄워 실제 Notion 인증 정보 불필요; 스펙은 `e2e/`에 위치)
 - `pnpm test:deep` — 실제 Notion API 호출 (인증 정보 필요)
 
 ## 협업: 사람 + AI 에이전트

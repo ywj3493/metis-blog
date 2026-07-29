@@ -19,6 +19,9 @@ export function SummaryButton({ postId }: SummaryButtonProps) {
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
+    // Defensive guard: unreachable via the UI because the Button is
+    // `disabled={isGenerating}`, so onClick cannot fire while generating.
+    /* v8 ignore next */
     if (isGenerating) return;
 
     setIsGenerating(true);
