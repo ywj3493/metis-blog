@@ -1,7 +1,6 @@
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
-import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 
 // Load .env.local file
@@ -17,16 +16,16 @@ dotenv.config({
  * None of it matters for behaviour under test, so we short-circuit resolution
  * to keep every component importable.
  */
-function stubCssPlugin(): Plugin {
+function stubCssPlugin() {
   const VIRTUAL = "\0virtual:empty-css";
   return {
     name: "stub-css",
-    enforce: "pre",
-    resolveId(id) {
+    enforce: "pre" as const,
+    resolveId(id: string) {
       if (id.endsWith(".css")) return VIRTUAL;
       return null;
     },
-    load(id) {
+    load(id: string) {
       if (id === VIRTUAL) return "";
       return null;
     },

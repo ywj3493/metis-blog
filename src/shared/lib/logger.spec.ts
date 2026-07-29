@@ -12,7 +12,7 @@ const h = vi.hoisted(() => {
     debug: vi.fn(),
   });
   const pino = Object.assign(
-    vi.fn(() => {
+    vi.fn((_options?: unknown) => {
       const l = makeLogger();
       loggers.push(l);
       return l;

@@ -234,10 +234,8 @@ describe("Post.create", () => {
 
   it("falls back to defaults when optional fields are absent", () => {
     const r = validDbResponse();
-    // @ts-expect-error intentional invalid
     r.cover = {};
     r.icon = undefined;
-    // @ts-expect-error intentional invalid
     r.properties.summary = { rich_text: [] };
     const post = Post.create(r);
     expect(post.cover).toBe("");

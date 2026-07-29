@@ -22,7 +22,7 @@ function Wrapper({ initial }: { initial?: Set<string> }) {
   );
   return (
     <TooltipProvider>
-      <span data-testid="selected">{[...selectedTags].join(",")}</span>
+      <span data-testid="selected">{Array.from(selectedTags).join(",")}</span>
       <TagFilter
         tags={tags}
         selectedTags={selectedTags}
