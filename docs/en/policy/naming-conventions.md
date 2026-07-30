@@ -18,7 +18,7 @@
 
 - **All files**: `kebab-case` — lowercase with hyphens
 - **React component files**: `kebab-case.tsx` (component export is `PascalCase`)
-- **Test files**: `<name>.test.ts` or `<name>.test.tsx`
+- **Test files**: `<name>.spec.ts` or `<name>.spec.tsx` (unit/integration, colocated); E2E specs `<name>.spec.ts` under `e2e/`
 - **Type definition files**: `type.d.ts`
 - **Index files**: `index.ts` for barrel exports
 

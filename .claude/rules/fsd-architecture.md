@@ -38,7 +38,7 @@ src/features/<name>/
 | Constants | `UPPER_SNAKE_CASE` | `ISR_REVALIDATE_TIME` |
 | Types / interfaces | `PascalCase` (domain interfaces use `I` prefix: `IPost`) | `type TagName = string` |
 | Private methods | `_camelCase` | `private _validatePost()` |
-| Test files | `<name>.test.ts(x)` | `post.test.ts` |
+| Test files | `<name>.spec.ts(x)` | `post.spec.ts` |
 
 - Domain models (Post, Tag, Guestbook) use private constructors with static `create()` factories.
 - shadcn/ui components live in `src/shared/ui/` — import as `@/shared/ui/<component>`.

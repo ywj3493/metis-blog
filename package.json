@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test:deep": "DEEP_TEST=true vitest --run"
+    "test:coverage": "vitest run --coverage",
+    "test:deep": "DEEP_TEST=true vitest --run",
+    "test:e2e": "playwright test"
   },
   "engines": {
     "node": "22.x"
@@ -45,6 +47,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",
+    "@playwright/test": "catalog:test",
     "@testing-library/jest-dom": "catalog:test",
     "@testing-library/react": "catalog:test",
     "@testing-library/user-event": "catalog:test",
@@ -53,6 +56,7 @@
     "@types/react": "catalog:types",
     "@types/react-dom": "catalog:types",
     "@vitejs/plugin-react": "catalog:build",
+    "@vitest/coverage-v8": "catalog:test",
     "babel-loader": "catalog:build",
     "babel-plugin-macros": "catalog:build",
     "dotenv": "catalog:build",

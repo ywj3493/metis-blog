@@ -10,7 +10,7 @@
 | Docs location | `docs/en/` (English), `docs/ko/` (Korean mirror) |
 | Workflow | Issue → Branch → Implementation → PR → Review → Merge |
 | Code quality | TypeScript strict, Biome formatting, ESLint linting |
-| Testing | Vitest + MSW; entities 80%+, API routes 80%+, features 70%+ |
+| Testing | Vitest + MSW (100% coverage gate) + Playwright E2E |
 | Branching | `<type>/<issue-number>[-description]` from `main` |
 
 ## Documentation Structure
@@ -80,17 +80,22 @@ docs/
 
 ### Testing
 
-| Code Type | Coverage Target |
-|-----------|----------------|
-| Entities / domain models | 80%+ |
-| API routes | 80%+ |
-| Features with user interaction | 70%+ |
-| UI components with logic | 50%+ |
+The suite enforces **100% coverage** (statements, branches, functions, lines) on all included source, gated by Vitest `coverage.thresholds` in `vitest.config.ts`. The tiered numbers below are historical minimums; the current gate is 100%.
 
-**What NOT to test**: Simple presentational components, type definitions, config files, third-party wrappers without custom logic.
+| Code Type | Minimum | Current gate |
+|-----------|---------|--------------|
+| Entities / domain models | 80%+ | 100% |
+| API routes | 80%+ | 100% |
+| Features with user interaction | 70%+ | 100% |
+| UI components with logic | 50%+ | 100% |
+
+**Excluded from coverage** (in `vitest.config.ts`): type definitions (`*.d.ts`), test files, MSW/stub infrastructure (`src/mocks/**`), and the dev/test-only Notion mock client (`src/shared/api/notion-mock.ts`). Genuinely unreachable defensive branches are annotated with a `/* v8 ignore */` comment and a justification.
 
 **Test commands**:
-- `pnpm test` — Standard tests with MSW mocking
+- `pnpm test` — Watch mode with MSW mocking
+- `pnpm test --run` — Single run with MSW mocking
+- `pnpm test:coverage` — Single run + coverage report, fails below 100%
+- `pnpm test:e2e` — Playwright E2E (starts a `CI_MOCK=true` dev server so no real Notion credentials are needed; specs live in `e2e/`)
 - `pnpm test:deep` — Real Notion API calls (requires credentials)
 
 ## Collaboration: Human + AI Agent

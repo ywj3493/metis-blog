@@ -18,7 +18,7 @@
 
 - **모든 파일**: `kebab-case` — 소문자와 하이픈
 - **React 컴포넌트 파일**: `kebab-case.tsx` (컴포넌트 export는 `PascalCase`)
-- **테스트 파일**: `<name>.test.ts` 또는 `<name>.test.tsx`
+- **테스트 파일**: `<name>.spec.ts` 또는 `<name>.spec.tsx` (단위/통합, 코로케이션); E2E 스펙은 `e2e/` 아래 `<name>.spec.ts`
 - **타입 정의 파일**: `type.d.ts`
 - **인덱스 파일**: `index.ts` (barrel export)
 
